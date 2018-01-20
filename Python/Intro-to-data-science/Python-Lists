@@ -1,0 +1,210 @@
+Q1:-
+Create a list, areas, that contains the area of the hallway (hall), kitchen (kit), living room (liv), bedroom (bed) and bathroom (bath), in this order. Use the predefined variables.
+Print areas with the print() function.
+
+Solution:-
+# area variables (in square meters)
+hall = 11.25
+kit = 18.0
+liv = 20.0
+bed = 10.75
+bath = 9.50
+
+# Create list areas
+areas = [hall,kit,liv,bed,bath]
+
+# Print areas
+print(areas)
+
+Q2:-
+Finish the line of code that creates the areas list such that the list first contains the name of each room as a string and then its area. More specifically, add the strings "hallway", "kitchen" and "bedroom" at the appropriate locations.
+Print areas again; is the printout more informative this time?
+
+Solution:-
+# area variables (in square meters)
+hall = 11.25
+kit = 18.0
+liv = 20.0
+bed = 10.75
+bath = 9.50
+
+# Adapt list areas
+areas = ["hallway",hall,"kitchen", kit, "living room", liv, "bedroom",bed, "bathroom", bath]
+
+# Print areas
+print(areas)
+
+Q3:-
+Finish the list of lists so that it also contains the bedroom and bathroom data. Make sure you enter these in order!
+Print out house; does this way of structuring your data make more sense?
+Print out the type of house. Are you still dealing with a list?
+
+Solution:-
+# area variables (in square meters)
+hall = 11.25
+kit = 18.0
+liv = 20.0
+bed = 10.75
+bath = 9.50
+
+# house information as list of lists
+house = [["hallway", hall],
+         ["kitchen", kit],
+         ["living room", liv],
+         ["bedroom",bed],
+         ["bathroom",bath]]
+
+# Print out house
+print(house)
+
+# Print out the type of house
+print(type(house))
+
+Q4:-
+Print out the second element from the areas list, so 11.25.
+Subset and print out the last element of areas, being 9.50. Using a negative index makes sense here!
+Select the number representing the area of the living room and print it out.
+
+Solution:-
+# Create the areas list
+areas = ["hallway", 11.25, "kitchen", 18.0, "living room", 20.0, "bedroom", 10.75, "bathroom", 9.50]
+
+# Print out second element from areas
+print(areas[1])
+
+# Print out last element from areas
+print(areas[-1])
+
+# Print out the area of the living room
+print(areas[5])
+
+Q5:-
+Using a combination of list subsetting and variable assignment, create a new variable, eat_sleep_area, that contains the sum of the area of the kitchen and the area of the bedroom.
+Print the new variable eat_sleep_area.
+
+Solution:-
+# Create the areas list
+areas = ["hallway", 11.25, "kitchen", 18.0, "living room", 20.0, "bedroom", 10.75, "bathroom", 9.50]
+
+# Sum of kitchen and bedroom area: eat_sleep_area
+eat_sleep_area = areas[3] + areas[7]
+
+# Print the variable eat_sleep_area
+print(eat_sleep_area)
+
+Q6:-
+Use slicing to create a list, downstairs, that contains the first 6 elements of areas.
+Do a similar thing to create a new variable, upstairs, that contains the last 4 elements of areas.
+Print both downstairs and upstairs using print().
+
+Solution:-
+# Create the areas list
+areas = ["hallway", 11.25, "kitchen", 18.0, "living room", 20.0, "bedroom", 10.75, "bathroom", 9.50]
+
+# Use slicing to create downstairs
+downstairs = areas[:6]
+
+# Use slicing to create upstairs
+upstairs = areas[6:11]
+
+# Print out downstairs and upstairs
+print(downstairs)
+print(upstairs)
+
+Q7:-
+Use slicing to create the lists downstairs and upstairs again, but this time without using indexes if it's not necessary. 
+Remember downstairs is the first 6 elements of areas and upstairs is the last 4 elements of areas.
+
+Solution:-
+# Create the areas list
+areas = ["hallway", 11.25, "kitchen", 18.0, "living room", 20.0, "bedroom", 10.75, "bathroom", 9.50]
+
+# Alternative slicing to create downstairs
+downstairs = areas[:6]
+
+# Alternative slicing to create upstairs
+upstairs = areas[6:]
+
+Q8:-
+You did a miscalculation when determining the area of the bathroom; it's 10.50 square meters instead of 9.50. Can you make the changes?
+Make the areas list more trendy! Change "living room" to "chill zone".
+
+Solution:-
+# Create the areas list
+areas = ["hallway", 11.25, "kitchen", 18.0, "living room", 20.0, "bedroom", 10.75, "bathroom", 9.50]
+
+# Correct the bathroom area
+areas[-1] = 10.50 
+
+# Change "living room" to "chill zone"
+areas[4] = "chill zone"
+
+Q9:-
+Use the + operator to paste the list ["poolhouse", 24.5] to the end of the areas list. Store the resulting list as areas_1.
+Further extend areas_1 by adding data on your garage. Add the string "garage" and float 15.45. Name the resulting list areas_2.
+
+Solution:-
+# Create the areas list and make some changes
+areas = ["hallway", 11.25, "kitchen", 18.0, "chill zone", 20.0,
+         "bedroom", 10.75, "bathroom", 10.50]
+
+# Add poolhouse data to areas, new list is areas_1
+areas_1 = areas + ["poolhouse", 24.5]
+
+# Add garage data to areas_1, new list is areas_2
+areas_2 = areas_1 + ["garage", 15.45]
+
+Q10:-
+Change the second command, that creates the variable areas_copy, such that areas_copy is an explicit copy of areas
+Now, changes made to areas_copy shouldn't affect areas. Hit Submit Answer to check this.
+
+Solution:-
+# Create list areas
+areas = [11.25, 18.0, 20.0, 10.75, 9.50]
+
+# Create areas_copy
+areas_copy = list(areas)
+
+# Change areas_copy
+areas_copy[0] = 5.0
+
+# Print areas
+print(areas)
+
+Q11:-
+Use print() in combination with type() to print out the type of var1.
+Use len() to get the length of the list var1. Wrap it in a print() call to directly print it out.
+Use int() to convert var2 to an integer. Store the output as out2.
+
+Solution:-
+# Create variables var1 and var2
+var1 = [1, 2, 3, 4]
+var2 = True
+
+# Print out type of var1
+print(type(var1))
+
+# Print out length of var1
+print(len(var1))
+
+# Convert var2 to an integer: out2
+out2 = int(var2)
+
+Q12:-
+Use + to merge the contents of first and second into a new list: full.
+Call sorted() on full and specify the reverse argument to be True. Save the sorted list as full_sorted.
+Finish off by printing out full_sorted.
+
+Solution:-
+# Create lists first and second
+first = [11.25, 18.0, 20.0]
+second = [10.75, 9.50]
+
+# Paste together first and second: full
+full = first + second
+
+# Sort full in descending order: full_sorted
+full_sorted = sorted(full,reverse=True)
+
+# Print out full_sorted
+print(full_sorted)
