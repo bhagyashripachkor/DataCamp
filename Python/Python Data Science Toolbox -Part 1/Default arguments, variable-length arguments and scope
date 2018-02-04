@@ -322,7 +322,6 @@ result2 = count_entries(tweets_df, 'lang', 'source')
 print(result1)
 print(result2)
 
-Q11:-
 
     
 
