@@ -1,0 +1,105 @@
+Q1:-
+Define the lambda function echo_word using the variables word1 and echo. Replicate what the original function definition for echo_word() does above.
+Call echo_word() with the string argument 'hey' and the value 5, in that order. Assign the call to result.
+
+Solution:-
+# Define echo_word as a lambda function: echo_word
+echo_word = (lambda word1,echo: word1*echo)
+
+# Call echo_word: result
+result = echo_word('hey',5)
+
+# Print result
+print(result)
+
+Q2:-
+In the map() call, pass a lambda function that concatenates the string '!!!' to a string item; also pass the list of strings, spells. Assign the resulting map object to shout_spells.
+Convert shout_spells to a list and print out the list.
+
+Solution:-
+# Create a list of strings: spells
+spells = ["protego", "accio", "expecto patronum", "legilimens"]
+
+# Use map() to apply a lambda function over spells: shout_spells
+shout_spells = map(lambda item:item+"!!!", spells)
+
+# Convert shout_spells to a list: shout_spells_list
+shout_spells_list = list(shout_spells)
+
+# Convert shout_spells into a list and print it
+print(shout_spells_list)
+
+Q3:-
+In the filter() call, pass a lambda function and the list of strings, fellowship. The lambda function should check if the number of characters in a string member is greater than 6; use the len() function to do this. Assign the resulting filter object to result.
+Convert result to a list and print out the list.
+
+Solution:-
+# Create a list of strings: fellowship
+fellowship = ['frodo', 'samwise', 'merry', 'aragorn', 'legolas', 'boromir', 'gimli']
+
+# Use filter() to apply a lambda function over fellowship: result
+result = filter(lambda a:len(a) > 6, fellowship)
+
+# Convert result to a list: result_list
+result_list = list(result)
+
+# Convert result into a list and print it
+print(result_list)
+
+Q4:-
+Import the reduce function from the functools module.
+In the reduce() call, pass a lambda function that takes two string arguments item1 and item2 and concatenates them; also pass the list of strings, stark. Assign the result to result. 
+The first argument to reduce() should be the lambda function and the second argument is the list stark.
+
+Solution:-
+# Import reduce from functools
+import functools
+from functools import reduce
+# Create a list of strings: stark
+stark = ['robb', 'sansa', 'arya', 'eddard', 'jon']
+
+# Use reduce() to apply a lambda function over stark: result
+result = reduce(lambda item1,item2:item1 + item2, stark)
+
+# Print the result
+print(result)
+
+Q5:-
+Initialize the variables echo_word and shout_words to empty strings.
+Add the keywords try and except in the appropriate locations for the exception handling block.
+Use the * operator to concatenate echo copies of word1. Assign the result to echo_word.
+Concatenate the string '!!!' to echo_word. Assign the result to shout_words.
+
+Solution:-
+# Define shout_echo
+def shout_echo(word1, echo=1):
+    """Concatenate echo copies of word1 and three
+    exclamation marks at the end of the string."""
+
+    # Initialize empty strings: echo_word, shout_words
+    echo_word = ""
+    shout_words = ""
+    
+
+    # Add exception handling with try-except
+    try:
+        # Concatenate echo copies of word1 using *: echo_word
+        echo_word = word1*echo
+
+        # Concatenate '!!!' to echo_word: shout_words
+        shout_words = echo_word + "!!!"
+    except:
+        # Print error message
+        print("word1 must be a string and echo must be an integer.")
+
+    # Return shout_words
+    return shout_words
+
+# Call shout_echo
+shout_echo("particle", echo="accelerator")
+
+Q6:-
+Complete the if statement by checking if the value of echo is less than 0.
+In the body of the if statement, add a raise statement that raises the error message 'echo must be greater than 0' when the value supplied by the user to echo is less than 0.
+
+Solution:-
