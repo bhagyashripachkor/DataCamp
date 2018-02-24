@@ -1,0 +1,46 @@
+Q1:-
+Import the pickle package.
+Complete the second argument of open() so that it is read only for a binary file. This argument will be a string of two letters, one signifying 'read only', the other 'binary'.
+Pass the correct argument to pickle.load(); it should use the variable that is bound to open.
+Print the data, d.
+Print the datatype of d; take your mind back to your previous use of the function type().
+
+Solution:-
+# Import pickle package
+import pickle
+
+# Open pickle file and load data: d
+with open('data.pkl', 'rb') as file:
+    d = pickle.load(file)
+
+# Print d
+print(d)
+
+# Print datatype of d
+print(type(d))
+
+Q2:-
+Assign the filename to the variable file.
+Pass the correct argument to pd.ExcelFile() to load the file using pandas.
+Print the sheetnames of the Excel spreadsheet by passing the necessary argument to the print() function.
+
+Solution:-
+# Import pandas
+import pandas as pd
+
+# Assign spreadsheet filename: file
+file = 'battledeath.xlsx'
+
+# Load spreadsheet: xl
+xl = pd.ExcelFile(file)
+
+# Print sheet names
+print(xl.sheet_names)
+
+Q3:-
+Load the sheet '2004' into the DataFrame df1 using its name as a string.
+Print the head of df1 to the shell.
+Load the sheet 2002 into the DataFrame df2 using its index.
+Print the head of df2 to the shell.
+
+Solution:-
