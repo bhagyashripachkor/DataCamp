@@ -37,6 +37,7 @@ xl = pd.ExcelFile(file)
 # Print sheet names
 print(xl.sheet_names)
 
+
 Q3:-
 Load the sheet '2004' into the DataFrame df1 using its name as a string.
 Print the head of df1 to the shell.
@@ -44,3 +45,123 @@ Load the sheet 2002 into the DataFrame df2 using its index.
 Print the head of df2 to the shell.
 
 Solution:-
+# Load a sheet into a DataFrame by name: df1
+df1 = xl.parse('2004')
+
+# Print the head of the DataFrame df1
+print(df1.head())
+
+# Load a sheet into a DataFrame by index: df2
+df2 = xl.parse(0)
+
+# Print the head of the DataFrame df2
+print(df2.head())
+
+Q4:-
+Parse the first sheet by index. In doing so, skip the first row of data and name the columns 'Country' and 'AAM due to War (2002)' using the argument names. 
+The values passed to skiprows and names all need to be of type list.
+Parse the second sheet by index. In doing so, parse only the first column with the parse_cols parameter, skip the first row and rename the column 'Country'. 
+The argument passed to parse_cols also needs to be of type list.
+
+Solution:-
+# Parse the first sheet and rename the columns: df1
+df1 = xl.parse(0, skiprows=[0], names=['Country','AAM due to War (2002)'])
+
+# Print the head of the DataFrame df1
+print(df1.head())
+
+# Parse the first column of the second sheet and rename the column: df2
+df2 = xl.parse(1, parse_cols=[0], skiprows=[0], names=['Country'])
+
+# Print the head of the DataFrame df2
+print(df2.head())
+
+Q5:-
+How to import SAS7BDAT
+How do you correctly import the function SAS7BDAT() from the package sas7bdat?
+
+Solution:-
+from sas7bdat import SAS7BDAT
+
+Q6:-
+Import the module SAS7BDAT from the library sas7bdat.
+In the context of the file 'sales.sas7bdat', load its contents to a DataFrame df_sas, using the method to_data_frame() on the object file.
+Print the head of the DataFrame df_sas.
+Execute your entire script to produce a histogram plot!
+
+Solution:-
+# Import sas7bdat package
+from sas7bdat import SAS7BDAT
+
+# Save file to a DataFrame: df_sas
+with SAS7BDAT('sales.sas7bdat') as file:
+    df_sas = file.to_data_frame()
+
+# Print head of DataFrame
+print(df_sas.head())
+
+# Plot histogram of DataFrame features (pandas and pyplot already imported)
+pd.DataFrame.hist(df_sas[['P']])
+plt.ylabel('count')
+plt.show()
+
+Q7:-
+What is the correct way of using the read_stata() function to import disarea.dta into the object df?
+
+Solution:-
+df = pd.read_stata('disarea.dta')
+
+Q8:-
+Use pd.read_stata() to load the file 'disarea.dta' into the DataFrame df.
+Print the head of the DataFrame df.
+Visualize your results by plotting a histogram of the column disa10. We’ve already provided this code for you, so just run it!
+
+Solution:-
+# Import pandas
+import pandas as pd
+
+# Load Stata file into a pandas DataFrame: df
+df = pd.read_stata('disarea.dta')
+
+# Print the head of the DataFrame df
+print(df.head())
+
+# Plot histogram of one column of the DataFrame
+pd.DataFrame.hist(df[['disa10']])
+plt.xlabel('Extent of disease')
+plt.ylabel('Number of coutries')
+plt.show()
+
+Q9:-
+What is the correct way of using the h5py function, File(), to import the file in h5py_file into an object, h5py_data, for reading only?
+
+Solution:-
+h5py_data = h5py.File(h5py_file, 'r')
+
+Q10:-
+Import the package h5py.
+Assign the name of the file to the variable file.
+Load the file as read only into the variable data.
+Print the datatype of data.
+Print the names of the groups in the HDF5 file 'LIGO_data.hdf5'.
+
+Solution:-
+# Import packages
+import numpy as np
+import h5py
+
+# Assign filename: file
+file = 'LIGO_data.hdf5'
+
+# Load file: data
+data = h5py.File(file, 'r')
+
+# Print the datatype of the loaded file
+print(type(data))
+
+# Print the keys of the file
+for key in data.keys():
+    print(key)
+    
+Q11:-
+
