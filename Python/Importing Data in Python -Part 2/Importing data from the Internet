@@ -1,1 +1,60 @@
 Q1:-
+Import the function urlretrieve from the subpackage urllib.request.
+Assign the URL of the file to the variable url.
+Use the function urlretrieve() to save the file locally as 'winequality-red.csv'.
+Execute the remaining code to load 'winequality-red.csv' in a pandas DataFrame and to print its head to the shell.
+
+Solution:-
+# Import package
+from urllib.request import urlretrieve
+
+# Import pandas
+import pandas as pd
+import os
+# Assign url of file: url
+url = 'https://s3.amazonaws.com/assets.datacamp.com/production/course_1606/datasets/winequality-red.csv'
+
+# Save file locally
+urlretrieve(url, 'winequality-red.csv')
+
+# Read file into a DataFrame and print its head
+df = pd.read_csv('winequality-red.csv', sep=';')
+print(df.head())
+
+Q2:-
+Assign the URL of the file to the variable url.
+Read file into a DataFrame df using pd.read_csv(), recalling that the separator in the file is ';'.
+Print the head of the DataFrame df.
+Execute the rest of the code to plot histogram of the first feature in the DataFrame df.
+
+Solution:-
+# Import packages
+import matplotlib.pyplot as plt
+import pandas as pd
+from urllib.request import urlretrieve
+# Assign url of file: url
+url = 'https://s3.amazonaws.com/assets.datacamp.com/production/course_1606/datasets/winequality-red.csv'
+
+# Save file locally
+urlretrieve(url, 'winequality-red.csv')
+
+# Read file into a DataFrame: df
+df = pd.read_csv('winequality-red.csv', sep=';')
+
+# Print the head of the DataFrame
+print(df.head())
+
+# Plot first column of df
+pd.DataFrame.hist(df.ix[:, 0:1])
+plt.xlabel('fixed acidity (g(tartaric acid)/dm$^3$)')
+plt.ylabel('count')
+plt.show()
+
+
+Q3:-
+Assign the URL of the file to the variable url.
+Read the file in url into a dictionary xl using pd.read_excel() recalling that, in order to import all sheets you need to pass None to the argument sheetname.
+Print the names of the sheets in the Excel spreadsheet; these will be the keys of the dictionary xl.
+Print the head of the first sheet using the sheet name, not the index of the sheet! The sheet name is '1700'
+
+Solution
