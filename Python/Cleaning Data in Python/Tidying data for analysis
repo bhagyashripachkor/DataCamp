@@ -1,0 +1,90 @@
+Q1:-
+Print the head of airquality.
+Use pd.melt() to melt the Ozone, Solar.R, Wind, and Temp columns of airquality into rows. 
+Do this by using id_vars to specify the columns you do not wish to melt: 'Month' and 'Day'.
+Print the head of airquality_melt.
+
+Solution:-
+# Print the head of airquality
+print(airquality.head())
+
+# Melt airquality: airquality_melt
+airquality_melt = pd.melt(airquality, id_vars=['Month', 'Day'])
+
+# Print the head of airquality_melt
+print(airquality_melt.head())
+
+Q2:-
+Print the head of airquality.
+Melt the Ozone, Solar.R, Wind, and Temp columns of airquality into rows, with the default variable column renamed to 'measurement' and the default value column renamed to 'reading'. You can do this by specifying, respectively, the var_name and value_name parameters.
+Print the head of airquality_melt.
+
+Solution:-
+# Print the head of airquality
+print(airquality.head())
+
+# Melt airquality: airquality_melt
+airquality_melt = pd.melt(airquality, id_vars=['Month', 'Day'], var_name='measurement', value_name='reading')
+
+# Print the head of airquality_melt
+print(airquality_melt.head())
+
+Q3:-
+Print the head of airquality_melt.
+Pivot airquality_melt by using .pivot_table() with the rows indexed by 'Month' and 'Day', the columns indexed by 'measurement', and the values populated with 'reading'.
+Print the head of airquality_pivot.
+
+Solution:-
+# Print the head of airquality_melt
+print(airquality_melt.head())
+
+# Pivot airquality_melt: airquality_pivot
+airquality_pivot = airquality_melt.pivot_table(index=['Month', 'Day'], columns='measurement', values='reading')
+
+# Print the head of airquality_pivot
+print(airquality_pivot.head())
+
+Q4:-
+Print the index of airquality_pivot by accessing its .index attribute. This has been done for you.
+Reset the index of airquality_pivot using its .reset_index() method.
+Print the new index of airquality_pivot.
+Print the head of airquality_pivot.
+
+Solution:-
+# Print the index of airquality_pivot
+print(airquality_pivot.index)
+
+# Reset the index of airquality_pivot: airquality_pivot
+airquality_pivot = airquality_pivot.reset_index()
+
+# Print the new index of airquality_pivot
+print(airquality_pivot.index)
+
+# Print the head of airquality_pivot
+print(airquality_pivot.head())
+
+Q5:-
+Pivot airquality_dup by using .pivot_table() with the rows indexed by 'Month' and 'Day', the columns indexed by 'measurement', and the values populated with 'reading'. Use np.mean for the aggregation function.
+Flatten airquality_pivot by resetting its index.
+Print the head of airquality_pivot and then the original airquality DataFrame to compare their structure.
+
+Solution:-
+# Pivot airquality_dup: airquality_pivot
+airquality_pivot = airquality_dup.pivot_table(index=['Month', 'Day'], columns='measurement', values='reading', aggfunc=np.mean)
+
+# Reset the index of airquality_pivot
+airquality_pivot = airquality_pivot.reset_index()
+
+# Print the head of airquality_pivot
+print(airquality_pivot.head())
+
+# Print the head of airquality
+print(airquality.head())
+
+Q6:-
+Melt tb keeping 'country' and 'year' fixed.
+Create a 'gender' column by slicing the first letter of the variable column of tb_melt.
+Create an 'age_group' column by slicing the rest of the variable column of tb_melt.
+Print the head of tb_melt
+
+Solution:-
