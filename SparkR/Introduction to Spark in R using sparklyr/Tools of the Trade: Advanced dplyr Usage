@@ -39,3 +39,36 @@ A Spark connection has been created for you as spark_conn. A tibble attached to 
 Find the distinct values of the artist_name column from track_metadata_tbl.
 
 Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
+
+track_metadata_tbl %>%
+  # Only return rows with distinct artist_name
+  distinct(artist_name)
+
+Q4:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Count the values in the artist_name column from track_metadata_tbl.
+Pass sort = TRUE to sort the rows by descending popularity.
+Restrict the results to the top 20 using top_n().
+
+Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
+
+track_metadata_tbl %>%
+  # Count the artist_name values
+  count(artist_name,sort=TRUE) %>%
+  # Restrict to top 20
+  top_n(n=20)
+  
+Q5:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Filter the rows of track_metadata_tbl where artist_familiarity is greater than 0.9, assigning the results to results.
+Print the class of results, noting that it is a tbl_lazy (used for remote data).
+Collect your results, assigning them to collected.
+Print the class of collected, noting that it is a tbl_df (used for local data).
+
+Solution:-
