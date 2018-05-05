@@ -1,0 +1,41 @@
+Q1:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Select all columns from track_metadata_tbl starting with "artist".
+Select all columns from track_metadata_tbl ending with "id"
+
+Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
+
+track_metadata_tbl %>%
+  # Select columns starting with artist
+  select(starts_with('artist'))
+
+track_metadata_tbl %>%
+  # Select columns ending with id
+  select(ends_with('id'))
+
+Q2:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Select all columns from track_metadata_tbl containing "ti".
+Select all columns from track_metadata_tbl matching the regular expression "ti.?t".
+
+Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
+
+track_metadata_tbl %>%
+  # Select columns containing ti
+  select(contains('ti'))
+
+track_metadata_tbl %>%
+  # Select columns matching ti.?t
+  select(matches("ti.?t"))
+
+Q3:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+Find the distinct values of the artist_name column from track_metadata_tbl.
+
+Solution:-
