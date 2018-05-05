@@ -1,0 +1,7 @@
+Q1:-
+Load the sparklyr package with library().
+Connect to Spark by calling spark_connect(), with argument master = "local". Assign the result to spark_conn.
+Get the Spark version using spark_version(), with argument sc = spark_conn.
+Disconnect from Spark using spark_disconnect(), with argument sc = spark_conn.
+
+Solution:-
