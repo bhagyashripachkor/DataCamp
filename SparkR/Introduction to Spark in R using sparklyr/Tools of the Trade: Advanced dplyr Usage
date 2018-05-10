@@ -72,3 +72,57 @@ Collect your results, assigning them to collected.
 Print the class of collected, noting that it is a tbl_df (used for local data).
 
 Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
+
+results <- track_metadata_tbl %>%
+  # Filter where artist familiarity is greater than 0.9
+  filter(artist_familiarity > 0.9)
+
+# Examine the class of the results
+print(class(results))
+
+# Collect your results
+collected <- results %>%
+  collect(results)
+
+# Examine the class of the collected results
+print(class(collected))
+
+Q6:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Filter the rows of track_metadata_tbl where artist_familiarity is greater than 0.8.
+Compute the results using compute().
+Store the results in a Spark data frame named "familiar_artists".
+Assign the result to an R tibble named computed.
+See the available Spark datasets using src_tbls().
+Print the class() of computed. Notice that unlike collect(), compute() returns a remote tibble. The data is still stored in the Spark cluster.
+
+Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
+
+computed <- track_metadata_tbl %>%
+  # Filter where artist familiarity is greater than 0.8
+  filter(artist_familiarity > 0.8) %>%
+  # Compute the results
+  compute("familiar_artists")
+
+# See the available datasets
+src_tbls(spark_conn)
+
+# Examine the class of the computed results
+class(computed)
+
+Q7:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Group the contents of track_metadata by artist_name, then:
+Summarize the groupwise mean of duration as a new column, mean_duration.
+Assign the results to duration_by_artist.
+Find the artists with the shortest songs by arranging the rows in ascending order of mean_duration.
+Likewise, find those with the longest songs by arranging in descending order of mean_duration.
+
+Solution:-
+
