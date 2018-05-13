@@ -1,1 +1,25 @@
 Q1:-
+Which of these statements is true?
+
+sparklyr's dplyr methods convert code into Scala code before running it on Spark.
+Converting R code into SQL code limits the number of supported computations.
+Most Spark MLlib modeling functions require DoubleType inputs and return DoubleType outputs.
+Most Spark MLlib modeling functions require IntegerType inputs and return BooleanType outputs
+
+Solution:-
+2 and 3.
+
+Q2:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Create a variable named hotttnesss from track_metadata_tbl.
+Select the artist_hotttnesss field.
+Use ft_binarizer() to create a new field, is_hottt_or_nottt, which is true when artist_hotttnesss is greater than 0.5.
+Collect the result.
+Convert the is_hottt_or_nottt field to be logical.
+Draw a ggplot() bar plot of is_hottt_or_nottt.
+The first argument to ggplot() is the data argument, hotttnesss.
+The second argument to ggplot() is the aesthetic, is_hottt_or_nottt wrapped in aes().
+Add geom_bar() to draw the bars.
+
+Solution:-
