@@ -125,4 +125,106 @@ Find the artists with the shortest songs by arranging the rows in ascending orde
 Likewise, find those with the longest songs by arranging in descending order of mean_duration.
 
 Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
 
+duration_by_artist <- track_metadata_tbl %>%
+  # Group by artist
+  group_by(artist_name) %>%
+  # Calc mean duration
+  summarize(mean_duration = mean(duration))
+
+duration_by_artist %>%
+  # Sort by ascending mean duration
+  arrange(mean_duration)
+
+duration_by_artist %>%
+  # Sort by descending mean duration
+  arrange(desc(mean_duration))
+
+Q8:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Group the contents of track_metadata by artist_name.
+Add a new column named time_since_first_release.
+Make this equal to the groupwise year minus the first year (that is, the min() year) that the artist released a track.
+Arrange the rows in descending order of time_since_first_release.
+
+Solution:-
+# track_metadata_tbl has been pre-defined
+track_metadata_tbl
+
+track_metadata_tbl %>%
+  # Group by artist
+  group_by(artist_name) %>%
+  # Calc time since first release
+  mutate(time_since_first_release = year - min(year)) %>%
+  # Arrange by descending time since first release
+  arrange(desc(time_since_first_release))
+  
+Q9:-
+A Spark connection has been created for you as spark_conn. A tibble attached to the track metadata stored in Spark has been pre-defined as track_metadata_tbl.
+
+Complete the query to select all columns from the track_metadata Spark data frame where the year is less than 1935 and the duration is greater than 300 seconds.
+Call dbGetQuery() to execute the query, assigning the results to results, then view the output.
+
+Solution:-
+# Write SQL query
+query <- "SELECT * FROM track_metadata WHERE year < 1935 AND duration > 300"
+
+# Run the query
+(results <-  dbGetQuery(spark_conn, query))
+
+Q10:-
+A Spark connection has been created for you as spark_conn. Tibbles attached to the track metadata and artist terms stored in Spark have been pre-defined as track_metadata_tbl and artist_terms_tbl respectively.
+
+Use a left join to join the artist terms to the track metadata by the artist_id column.
+The table to be joined to, track_metadata_tbl, comes first.
+The table that joins the first, artist_terms_tbl, comes next.
+Assign the result to joined.
+Use dim() to determine how many rows and columns there are in the joined table.
+
+Solution:-
+# track_metadata_tbl and artist_terms_tbl have been pre-defined
+track_metadata_tbl
+artist_terms_tbl
+
+# Left join artist terms to track metadata by artist_id
+joined <- left_join(track_metadata_tbl, artist_terms_tbl, by = c("artist_id"))
+
+# How many rows and columns are in the joined table?
+dim(joined)
+
+Q11:-
+A Spark connection has been created for you as spark_conn. Tibbles attached to the track metadata and artist terms stored in Spark have been pre-defined as track_metadata_tbl and artist_terms_tbl respectively.
+
+Use an anti join to join the artist terms to the track metadata by the artist_id column. Assign the result to joined.
+Use dim() to determine how many rows and columns there are in the joined table.
+
+Solution:-
+# track_metadata_tbl and artist_terms_tbl have been pre-defined
+track_metadata_tbl
+artist_terms_tbl
+
+# Anti join artist terms to track metadata by artist_id
+joined <- anti_join(track_metadata_tbl,artist_terms_tbl, by = c("artist_id"))
+
+# How many rows and columns are in the joined table?
+dim(joined)
+
+Q12:-
+A Spark connection has been created for you as spark_conn. Tibbles attached to the track metadata and artist terms stored in Spark have been pre-defined as track_metadata_tbl and artist_terms_tbl respectively.
+
+Use a semi join to join the artist terms to the track metadata by the artist_id column. Assign the result to joined.
+Use dim() to determine how many rows and columns there are in the joined table.
+
+Solution:-
+# track_metadata_tbl and artist_terms_tbl have been pre-defined
+track_metadata_tbl
+artist_terms_tbl
+
+# Semi join artist terms to track metadata by artist_id
+joined <- semi_join(track_metadata_tbl,artist_terms_tbl,by = c("artist_id"))
+
+# How many rows and columns are in the joined table?
+dim(joined)
