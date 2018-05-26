@@ -1,0 +1,7 @@
+Q1:-
+How do you connect to a Spark cluster from PySpark?
+
+Solution:-
+Create an instance of the SparkContext class.
+
+Q2:-
