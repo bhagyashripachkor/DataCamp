@@ -12,3 +12,65 @@ print(flights.show())
 
 # Add duration_hrs
 flights = flights.withColumn("duration_hrs",flights.air_time/60 )
+
+Q2:-
+Which of the following queries returns a table of tail numbers and destinations for flights that lasted more than 10 hours?
+
+Solution:-
+SELECT dest, tail_num FROM flights WHERE air_time > 600;
+
+Q3:-
+What information would this query get? Remember the flights table holds information about flights that departed PDX and SEA in 2014 and 2015. Note that AVG() function gets the average value of a column!
+SELECT AVG(air_time) / 60 FROM flights
+GROUP BY origin, carrier;
+
+Solution:-
+The average length of each airline's flights from SEA and PDX in hours.
+
+Q4:-
+Use the .filter() method to find all the flights that flew over 1000 miles two ways:
+First, pass a SQL string to .filter() that checks the distance is greater than 1000. Save this as long_flights1.
+Then pass a boolean column to .filter() that checks the same thing. Save this as long_flights2.
+Print the .show() of both DataFrames and make sure they're actually equal!
+
+Solution:-
+# Filter flights with a SQL string
+long_flights1 = flights.filter("distance > 1000")
+
+# Filter flights with a boolean column
+long_flights2 = flights.filter(flights.distance > 1000)
+
+# Examine the data to check they're equal
+print(long_flights1.show())
+print(long_flights2.show())
+
+Q5:-
+Select the columns tailnum, origin, and dest from flights by passing the column names as strings. Save this as selected1.
+Select the columns origin, dest, and carrier using the df.colName syntax and then filter the result using both of the filters already defined for you (filterA and filterB) to only keep flights from SEA to PDX. 
+Save this as selected2.
+
+Solution:-
+# Select the first set of columns
+selected1 = flights.select("tailnum","origin","dest")
+
+# Select the second set of columns
+temp = flights.select(flights.origin, flights.dest, flights.carrier)
+
+# Define first filter
+filterA = flights.origin == "SEA"
+
+# Define second filter
+filterB = flights.dest == "PDX"
+
+# Filter the data, first by filterA then by filterB
+selected2 = temp.filter(filterA).filter(filterB)
+
+Q6:-
+Create a table of the average speed of each flight both ways.
+
+Calculate average speed by dividing the distance by the air_time (converted to hours). Use the .alias() method name this column "avg_speed". Save the output as the variable avg_speed.
+Select the columns "origin", "dest", "tailnum", and avg_speed (without quotes!). Save this as speed1.
+Create the same table using .selectExpr() and a string containing a SQL expression. Save this as speed2.
+
+Solution:-
+
