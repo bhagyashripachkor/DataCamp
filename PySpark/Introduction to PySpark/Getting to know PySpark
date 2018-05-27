@@ -5,3 +5,36 @@ Solution:-
 Create an instance of the SparkContext class.
 
 Q2:-
+Get to know the SparkContext.
+Call print() on sc to verify there's a SparkContext in your environment.
+print() sc.version to see what version of Spark is running on your cluster.
+
+Solution:-
+# Verify SparkContext
+print(sc)
+
+# Print Spark version
+print(sc.version)
+
+Q3:-
+Which of the following is an advantage of Spark DataFrames over RDDs?
+
+Solution:-
+Operations using DataFrames are automatically optimized.
+
+Q4:-
+Import SparkSession from pyspark.sql.
+Make a new SparkSession called my_spark using SparkSession.builder.getOrCreate().
+Print my_spark to the console to verify it's a SparkSession.
+
+Solution:-
+# Import SparkSession from pyspark.sql
+from pyspark.sql  import SparkSession
+
+# Create my_spark
+my_spark = SparkSession.builder.getOrCreate()
+
+# Print my_spark
+print(my_spark)
+
+Q5:-
