@@ -38,3 +38,14 @@ my_spark = SparkSession.builder.getOrCreate()
 print(my_spark)
 
 Q5:-
+See what tables are in your cluster by calling spark.catalog.listTables() and printing the result!
+
+Solution:-
+# Print the tables in the catalog
+print(spark.catalog.listTables())
+
+Q6:-
+Use the .sql() method to get the first 10 rows of the flights table and save the result to flights10. The variable query contains the appropriate SQL query.
+Use the DataFrame method .show() to print flights10
+
+Solution:-
