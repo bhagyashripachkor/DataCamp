@@ -49,3 +49,60 @@ Use the .sql() method to get the first 10 rows of the flights table and save the
 Use the DataFrame method .show() to print flights10
 
 Solution:-
+# Don't change this query
+query = "FROM flights SELECT * LIMIT 10"
+
+# Get the first 10 rows of flights
+flights10 = spark.sql(query)
+
+# Show the results
+flights10.show()
+
+Q7:-
+Run the query using the .sql() method. Save the result in flight_counts.
+Use the .toPandas() method on flight_counts to create a pandas DataFrame called pd_counts.
+Print the .head() of pd_counts to the console.
+
+Solution:-
+# Don't change this query
+query = "SELECT origin, dest, COUNT(*) as N FROM flights GROUP BY origin, dest"
+
+# Run the query
+flight_counts = spark.sql(query)
+
+# Convert the results to a pandas DataFrame
+pd_counts = flight_counts.toPandas()
+
+# Print the head of pd_counts
+print(pd_counts.head())
+
+Q8:-
+The code to create a pandas DataFrame of random numbers has already been provided and saved under pd_temp.
+Create a Spark DataFrame called spark_temp by calling the .createDataFrame() method with pd_temp as the argument.
+Examine the list of tables in your Spark cluster and verify that the new DataFrame is not present. Remember you can use spark.catalog.listTables() to do so.
+Register spark_temp as a temporary table named "temp" using the .createOrReplaceTempView() method. Rememeber that the table name is set including it as the only argument!
+Examine the list of tables again!
+
+Solution:-
+# Create pd_temp
+pd_temp = pd.DataFrame(np.random.random(10))
+
+# Create spark_temp from pd_temp
+spark_temp = spark.createDataFrame(pd_temp)
+
+# Examine the tables in the catalog
+print(spark.catalog.listTables())
+
+# Add spark_temp to the catalog
+spark_temp.createOrReplaceTempView("temp")
+
+# Examine the tables in the catalog again
+print(spark.catalog.listTables())
+
+Q9:-
+Use the .read.csv() method to create a Spark DataFrame called airports
+The first argument is file_path
+Pass the argument header=True so that Spark knows to take the column names from the first line of the file.
+Print out this DataFrame by calling .show().
+
+Solution:-
