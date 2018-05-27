@@ -73,4 +73,61 @@ Select the columns "origin", "dest", "tailnum", and avg_speed (without quotes!).
 Create the same table using .selectExpr() and a string containing a SQL expression. Save this as speed2.
 
 Solution:-
+# Define avg_speed
+avg_speed = (flights.distance/(flights.air_time/60)).alias("avg_speed")
 
+# Select the correct columns
+speed1 = flights.select("origin", "dest", "tailnum", avg_speed)
+
+# Create the same table using a SQL expression
+speed2 = flights.selectExpr("origin", "dest", "tailnum", "distance/(air_time/60) as avg_speed")
+
+Q7:-
+Find the length of the shortest (in terms of distance) flight that left PDX by first .filter()ing and using the .min() method.
+Find the length of the longest (in terms of time) flight that left SEA by filter()ing and using the .max() method.
+
+Solution:-
+# Find the shortest flight from PDX in terms of distance
+flights.filter(flights.origin == "PDX").groupBy().min("distance").show()
+
+# Find the longest flight from SEA in terms of duration
+flights.filter(flights.origin == "SEA").groupBy().max("air_time").show()
+
+Q8:-
+Use the .avg() method to get the average air time of Delta Airlines flights (where the carrier column has the value "DL") that left SEA. 
+Th place of departure is stored in the column origin. show() the result.
+Use the .sum() method to get the total number of hours all planes in this dataset spent in the air by creating a column called duration_hrs from the column air_time. show() the result.
+
+Solution:-
+# Average duration of Delta flights
+flights.filter(flights.carrier == "DL").filter(flights.origin == "SEA").groupBy().avg("air_time").show()
+
+# Total hours in the air
+flights.withColumn("duration_hrs", flights.air_time/60).groupBy().sum("duration_hrs").show()
+
+Q9:-
+Create a DataFrame called by_plane that is grouped by the column tailnum.
+Use the .count() method with no arguments to count the number of flights each plane made.
+Create a DataFrame called by_origin that is grouped by the column origin.
+Find the .avg() of the air_time column to find average duration of flights from PDX and SEA.
+
+Solution:-
+# Group by tailnum
+by_plane = flights.groupBy("tailnum")
+
+# Number of flights each plane made
+by_plane.count().show()
+
+# Group by origin
+by_origin = flights.groupBy("origin")
+
+# Average duration of flights from PDX and SEA
+by_origin.avg("air_time").show()
+
+Q10:-
+Import the submodule pyspark.sql.functions as F.
+Create a GroupedData table called by_month_dest that's grouped by both the month and dest columns.
+Use the .avg() method on the by_month_dest DataFrame to get the average dep_delay in each month for each destination.
+Find the corresponding standard deviation of each average by using the .agg() method with the function F.stddev().
+
+Solution:-
