@@ -106,3 +106,11 @@ Pass the argument header=True so that Spark knows to take the column names from 
 Print out this DataFrame by calling .show().
 
 Solution:-
+# Don't change this file path
+file_path = "/usr/local/share/datasets/airports.csv"
+
+# Read in the airports data
+airports = spark.read.csv(file_path,header=True)
+
+# Show the data
+print(airports.show())
