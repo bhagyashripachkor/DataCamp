@@ -131,3 +131,28 @@ Use the .avg() method on the by_month_dest DataFrame to get the average dep_dela
 Find the corresponding standard deviation of each average by using the .agg() method with the function F.stddev().
 
 Solution:-
+# Import pyspark.sql.functions as F
+import pyspark.sql.functions as F
+
+# Group by month and dest
+by_month_dest = flights.groupBy("month", "dest")
+
+# Average departure delay by month and destination
+by_month_dest.avg("dep_delay").show()
+
+# Standard deviation
+by_month_dest.agg(F.stddev("dep_delay")).show()
+
+Q11:-
+Examine the airports DataFrame by printing the .show(). Note which key column will let you join airports to the flights table.
+Rename the faa column in airports to dest by re-assigning the result of airports.withColumnRenamed("faa", "dest") to airports.
+Join the airports DataFrame to the flights DataFrame on the dest column by calling the .join() method on flights. 
+Save the result as flights_with_airports.
+The first argument should be the other DataFrame, airports.
+The second argument, on should be the key column.
+The third argument should be how="leftouter"
+Print the .show() of flights_with_airports. Note the new information that has been added.
+
+Solution:-
+
+
