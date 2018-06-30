@@ -154,5 +154,15 @@ The third argument should be how="leftouter"
 Print the .show() of flights_with_airports. Note the new information that has been added.
 
 Solution:-
+# Examine the data
+print(airports.show())
 
+# Rename the faa column
+airports = airports.withColumnRenamed("faa", "dest")
+
+# Join the DataFrames
+flights_with_airports = flights.join(airports, on="dest", how="leftouter")
+
+# Examine the data again
+print(flights_with_airports.show())
 
