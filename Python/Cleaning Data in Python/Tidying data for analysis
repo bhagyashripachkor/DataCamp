@@ -88,3 +88,22 @@ Create an 'age_group' column by slicing the rest of the variable column of tb_me
 Print the head of tb_melt
 
 Solution:-
+# Melt tb: tb_melt
+tb_melt = pd.melt(tb, id_vars=['country', 'year'])
+
+# Create the 'gender' column
+tb_melt['gender'] = tb_melt.variable.str[0]
+
+# Create the 'age_group' column
+tb_melt['age_group'] = tb_melt.variable.str[1:]
+
+# Print the head of tb_melt
+print(tb_melt.head())
+
+Q7:-
+Create a column called 'str_split' by splitting the 'type_country' column of ebola_melt on '_'. Note that you will first have to access the str attribute of type_country before you can use .split().
+Create a column called 'type' by using the .get() method to retrieve index 0 of the 'str_split' column of ebola_melt.
+Create a column called 'country' by using the .get() method to retrieve index 1 of the 'str_split' column of ebola_melt.
+Print the head of ebola. This has been done for you, so hit 'Submit Answer' to view the results!
+
+Solution:-
