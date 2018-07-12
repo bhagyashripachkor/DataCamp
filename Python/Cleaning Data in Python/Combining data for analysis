@@ -3,3 +3,121 @@ Concatenate uber1, uber2, and uber3 together using pd.concat(). You'll have to p
 Print the shape and then the head of the concatenated DataFrame, row_concat.
 
 Solution:-
+# Concatenate uber1, uber2, and uber3: row_concat
+row_concat = pd.concat([uber1,uber2,uber3])
+
+# Print the shape of row_concat
+print(row_concat.shape)
+
+# Print the head of row_concat
+print(row_concat.head())
+
+Q2:-
+Concatenate ebola_melt and status_country column-wise into a single DataFrame called ebola_tidy. Be sure to specify axis=1 and to pass the two DataFrames in as a list.
+Print the shape and then the head of the concatenated DataFrame, ebola_tidy.
+
+Solution:-
+# Concatenate ebola_melt and status_country column-wise: ebola_tidy
+ebola_tidy = pd.concat([ebola_melt,status_country], axis=1)
+
+# Print the shape of ebola_tidy
+print(ebola_tidy.shape)
+
+# Print the head of ebola_tidy
+print(ebola_tidy.head())
+
+
+Q3:-
+Import the glob module along with pandas (as its usual alias pd).
+Write a pattern to match all .csv files.
+Save all files that match the pattern using the glob() function within the glob module. That is, by using glob.glob().
+Print the list of file names. This has been done for you.
+Read the second file in csv_files (i.e., index 1) into a DataFrame called csv2.
+Hit 'Submit Answer' to print the head of csv2. Does it look familiar?
+
+Solution:-
+# Import necessary modules
+import glob
+import pandas as pd
+
+# Write the pattern: pattern
+pattern = '*.csv'
+
+# Save all file matches: csv_files
+csv_files = glob.glob(pattern)
+
+# Print the file names
+print(csv_files)
+
+# Load the second file into a DataFrame: csv2
+csv2 = pd.read_csv(csv_files[1])
+
+# Print the head of csv2
+print(csv2.head())
+
+
+Q4:-
+Write a for loop to iterate though csv_files:
+In each iteration of the loop, read csv into a DataFrame called df.
+After creating df, append it to the list frames using the .append() method.
+Concatenate frames into a single DataFrame called uber.
+Hit 'Submit Answer' to see the head and shape of the concatenated DataFrame!
+
+Solution:-
+# Create an empty list: frames
+frames = []
+
+#  Iterate over csv_files
+for csv in csv_files:
+
+    #  Read csv into a DataFrame: df
+    df = pd.read_csv(csv)
+    
+    # Append df to frames
+    frames.append(df)
+
+# Concatenate frames into a single DataFrame: uber
+uber = pd.concat(frames)
+
+# Print the shape of uber
+print(uber.shape)
+
+# Print the head of uber
+print(uber.head())
+
+Q5:-
+Merge the site and visited DataFrames on the 'name' column of site and 'site' column of visited.
+Print the merged DataFrame o2o.
+
+Solution:-
+# Merge the DataFrames: o2o
+o2o = pd.merge(left=site, right=visited, left_on='name', right_on='site')
+
+# Print o2o
+print(o2o)
+
+Q6:-
+Merge the site and visited DataFrames on the 'name' column of site and 'site' column of visited, exactly as you did in the previous exercise.
+Print the merged DataFrame and then hit 'Submit Answer' to see the different output produced by this merge!
+
+Solution:-
+# Merge the DataFrames: m2o
+m2o = pd.merge(left=site, right=visited, left_on='name', right_on='site')
+
+# Print m2o
+print(m2o)
+
+Q7:-
+Merge the site and visited DataFrames on the 'name' column of site and 'site' column of visited, exactly as you did in the previous two exercises. Save the result as m2m.
+Merge the m2m and survey DataFrames on the 'ident' column of m2m and 'taken' column of survey.
+Hit 'Submit Answer' to print the first 20 lines of the merged DataFrame!
+
+Solution:-
+# Merge site and visited: m2m
+m2m = pd.merge(left=site, right=visited, left_on='name', right_on='site')
+
+# Merge m2m and survey: m2m
+m2m = pd.merge(left=m2m, right=survey, left_on='ident', right_on='taken')
+
+# Print the first 20 lines of m2m
+print(m2m.head(20))
