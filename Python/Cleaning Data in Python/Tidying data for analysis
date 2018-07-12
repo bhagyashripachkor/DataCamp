@@ -122,5 +122,3 @@ ebola_melt['country'] = ebola_melt.str_split.str.get(1)
 # Print the head of ebola_melt
 print(ebola_melt.head())
 
-Q8:-
-
