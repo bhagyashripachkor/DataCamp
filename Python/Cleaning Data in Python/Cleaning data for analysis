@@ -88,3 +88,99 @@ print(pattern2)
 # Write the third pattern
 pattern3 = bool(re.match(pattern='[A-Z]\w*', string='Australia'))
 print(pattern3)
+
+Q6:-
+Define a function named recode_sex() that has one parameter: sex_value.
+If sex_value equals 'Male', return 1.
+Else, if sex_value equals 'Female', return 0.
+If sex_value does not equal 'Male' or 'Female', return np.nan. NumPy has been pre-imported for you.
+Apply your recode_sex() function over tips.sex using the .apply() method to create a new column: 'sex_recode'. Note that when passing in a function inside the .apply() method, you don't need to specify the parentheses after the function name.
+Hit 'Submit Answer' and take note of the new 'sex_recode' column in the tips DataFrame!
+
+Solution:-
+# Define recode_sex()
+def recode_sex(sex_value):
+
+    # Return 1 if sex_value is 'Male'
+    if sex_value == 'Male':
+        return 1
+    
+    # Return 0 if sex_value is 'Female'    
+    elif sex_value == 'Female':
+        return 0
+    
+    # Return np.nan    
+    else:
+        return np.nan
+
+# Apply the function to the sex column
+tips['sex_recode'] = tips.sex.apply(recode_sex)
+
+# Print the first five rows of tips
+print(tips.head())
+
+Q7:-
+Use the .replace() method inside a lambda function to remove the dollar sign from the 'total_dollar' column of tips.
+You need to specify two arguments to the .replace() method: The string to be replaced ('$'), and the string to replace it by ('').
+Apply the lambda function over the 'total_dollar' column of tips.
+Use a regular expression to remove the dollar sign from the 'total_dollar' column of tips.
+The pattern has been provided for you: It is the first argument of the re.findall() function.
+Complete the rest of the lambda function and apply it over the 'total_dollar' column of tips. Notice that because re.findall() returns a list, you have to slice it in order to access the actual value.
+Hit 'Submit Answer' to verify that you have removed the dollar sign from the column.
+
+Solution:-
+# Write the lambda function using replace
+tips['total_dollar_replace'] = tips.total_dollar.apply(lambda x: x.replace('$', ''))
+
+# Write the lambda function using regular expressions
+tips['total_dollar_re'] = tips.total_dollar.apply(lambda x: re.findall('\d+\.\d+', x)[0])
+
+# Print the head of tips
+print(tips.head())
+
+Q8:-
+Create a new DataFrame called tracks that contains the following columns from billboard: 'year', 'artist', 'track', and 'time'.
+Print the info of tracks. This has been done for you.
+Drop duplicate rows from tracks using the .drop_duplicates() method. Save the result to tracks_no_duplicates.
+Print the info of tracks_no_duplicates. This has been done for you, so hit 'Submit Answer' to see the results!
+
+Solution:-
+# Create the new DataFrame: tracks
+tracks = billboard[['year','artist','track','time']]
+
+# Print info of tracks
+print(tracks.info())
+
+# Drop the duplicates: tracks_no_duplicates
+tracks_no_duplicates = tracks.drop_duplicates()
+
+# Print info of tracks
+print(tracks_no_duplicates.info())
+
+Q9:-
+Calculate the mean of the Ozone column of airquality using the .mean() method on airquality.Ozone.
+Use the .fillna() method to replace all the missing values in the Ozone column of airquality with the mean, oz_mean.
+Hit 'Submit Answer' to see the result of filling in the missing values!
+
+Solution-
+# Calculate the mean of the Ozone column: oz_mean
+oz_mean = airquality.Ozone.mean()
+
+# Replace all the missing values in the Ozone column with the mean
+airquality['Ozone'] = airquality.Ozone.fillna(oz_mean)
+
+# Print the info of airquality
+print(airquality.info())
+
+Q10:-
+Write an assert statement to confirm that there are no missing values in ebola.
+Use the pd.notnull() function on ebola (or the .notnull() method of ebola) and chain two .all() methods (that is, .all().all()). The first .all() method will return a True or False for each column, while the second .all() method will return a single True or False.
+Write an assert statement to confirm that all values in ebola are greater than or equal to 0.
+Chain two all() methods to the Boolean condition (ebola >= 0).
+
+Solution:-
+# Assert that there are no missing values
+assert pd.notnull(ebola).all().all()
+
+# Assert that all values are >= 0
+assert (ebola >= 0).all().all()
