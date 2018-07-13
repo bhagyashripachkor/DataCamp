@@ -68,3 +68,128 @@ print(gapminder.shape)
 print(gapminder.head())
 
 Q4:-
+Reshape gapminder by melting it. Keep 'Life expectancy' fixed by specifying it as an argument to the id_vars parameter.
+Rename the three columns of the melted DataFrame to 'country', 'year', and 'life_expectancy' by passing them in as a list to gapminder_melt.columns.
+Print the head of the melted DataFrame.
+
+Solution:-
+# Melt gapminder: gapminder_melt
+gapminder_melt = pd.melt(gapminder, id_vars='Life expectancy')
+
+# Rename the columns
+gapminder_melt.columns = ['country','year','life_expectancy']
+
+# Print the head of gapminder_melt
+print(gapminder_melt.head())
+
+Q5:-
+Convert the year column of gapminder using pd.to_numeric().
+Assert that the country column is of type np.object. This has been done for you.
+Assert that the year column is of type np.int64.
+Assert that the life_expectancy column is of type np.float64.
+
+Solution:-
+# Convert the year column to numeric
+gapminder.year = pd.to_numeric(gapminder.year)
+
+# Test if country is of type object
+assert gapminder.country.dtypes == np.object
+
+# Test if year is of type int64
+assert gapminder.year.dtypes == np.int64
+
+# Test if life_expectancy is of type float64
+assert gapminder.life_expectancy.dtypes == np.float64
+
+Q6:-
+Create a Series called countries consisting of the 'country' column of gapminder.
+Drop all duplicates from countries using the .drop_duplicates() method.
+Write a regular expression that tests your assumptions of what characters belong in countries:
+Anchor the pattern to match exactly what you want by placing a ^ in the beginning and $ in the end.
+Use A-Za-z to match the set of lower and upper case letters, \. to match periods, and \s to match whitespace between words.
+Use str.contains() to create a Boolean vector representing values that match the pattern.
+Invert the mask by placing a ~ before it.
+Subset the countries series using the .loc[] accessor and mask_inverse. Then hit 'Submit Answer' to see the invalid country names!
+
+Solution:-
+# Create the series of countries: countries
+countries = gapminder['country']
+
+# Drop all the duplicates from countries
+countries = countries.drop_duplicates()
+
+# Write the regular expression: pattern
+pattern = '^[A-Za-z\.\s]*$'
+
+# Create the Boolean vector: mask
+mask = countries.str.contains(pattern)
+
+# Invert the mask: mask_inverse
+mask_inverse = ~mask
+
+# Subset countries using mask_inverse: invalid_countries
+invalid_countries = countries.loc[mask_inverse]
+
+# Print invalid_countries
+print(invalid_countries)
+
+Q7:-
+Assert that country and year do not contain any missing values. The first assert statement has been written for you. Note the chaining of the .all() method to pd.notnull() to confirm that all values in the column are not null.
+Drop the rows in the data where any observation in life_expectancy is missing. As you confirmed that country and year don't have missing values, you can use the .dropna() method on the entire gapminder DataFrame, because any missing values would have to be in the life_expectancy column. The .dropna() method has the default keyword arguments axis=0 and how='any', which specify that rows with any missing values should be dropped.
+Print the shape of gapminder.
+
+Solution:-
+# Assert that country does not contain any missing values
+assert pd.notnull(gapminder.country).all()
+
+# Assert that year does not contain any missing values
+assert pd.notnull(gapminder.year).all()
+
+# Drop the missing values
+gapminder = gapminder.dropna()
+
+# Print the shape of gapminder
+print(gapminder.shape)
+
+Q8:-
+Create a histogram of the life_expectancy column using the .plot() method of gapminder. Specify kind='hist'.
+Group gapminder by 'year' and aggregate 'life_expectancy' by the mean. To do this:
+Use the .groupby() method on gapminder with 'year' as the argument. Then select 'life_expectancy' and chain the .mean() method to it.
+Print the head and tail of gapminder_agg. This has been done for you.
+Create a line plot of average life expectancy per year by using the .plot() method (without any arguments) on gapminder_agg.
+Save gapminder and gapminder_agg to csv files called 'gapminder.csv' and 'gapminder_agg.csv', respectively, using the .to_csv() method.
+
+Solution:-
+# Add first subplot
+plt.subplot(2, 1, 1) 
+
+# Create a histogram of life_expectancy
+gapminder.life_expectancy.plot(kind='hist')
+
+# Group gapminder: gapminder_agg
+gapminder_agg = gapminder.groupby('year')['life_expectancy'].mean()
+
+# Print the head of gapminder_agg
+print(gapminder_agg.head())
+
+# Print the tail of gapminder_agg
+print(gapminder_agg.tail())
+
+# Add second subplot
+plt.subplot(2, 1, 2)
+
+# Create a line plot of life expectancy per year
+gapminder_agg.plot()
+
+# Add title and specify axis labels
+plt.title('Life expectancy over the years')
+plt.ylabel('Life expectancy')
+plt.xlabel('Year')
+
+# Display the plots
+plt.tight_layout()
+plt.show()
+
+# Save both DataFrames to csv files
+gapminder.to_csv('gapminder.csv')
+gapminder_agg.to_csv('gapminder_agg.csv')
