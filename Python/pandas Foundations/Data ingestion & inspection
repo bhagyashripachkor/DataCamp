@@ -1,1 +1,71 @@
 Q1:-
+Import numpy using the standard alias np.
+Assign the numerical values in the DataFrame df to an array np_vals using the attribute values.
+Pass np_vals into the NumPy method log10() and store the results in np_vals_log10.
+Pass the entire df DataFrame into the NumPy method log10() and store the results in df_log10.
+Inspect the output of the print() code to see the type() of the variables that you created.
+
+Solution:-
+# Import numpy
+import numpy as np
+
+# Create array of DataFrame values: np_vals
+np_vals = df.values
+
+# Create new array of base 10 logarithm values: np_vals_log10
+np_vals_log10 = np.log10(np_vals)
+
+# Create array of new DataFrame by passing df to np.log10(): df_log10
+df_log10 = np.log10(df)
+
+# Print original and new data containers
+[print(x, 'has type', type(eval(x))) for x in ['np_vals', 'np_vals_log10', 'df', 'df_log10']]
+
+Q2:-
+Zip the 2 lists list_keys and list_values together into one list of (key, value) tuples. Be sure to convert the zip object into a list, and store the result in zipped.
+Inspect the contents of zipped using print(). This has been done for you.
+Construct a dictionary using zipped. Store the result as data.
+Construct a DataFrame using the dictionary. Store the result as df.
+
+Solution:-
+# Zip the 2 lists together into one list of (key,value) tuples: zipped
+zipped = list(zip(list_keys,list_values))
+
+# Inspect the list using print()
+print(zipped)
+
+# Build a dictionary with the zipped list: data
+data = dict(zipped)
+
+# Build and inspect a DataFrame from the dictionary: df
+df = pd.DataFrame(data)
+print(df)
+
+Q3:-
+Create a list of new column labels with 'year', 'artist', 'song', 'chart weeks', and assign it to list_labels.
+Assign your list of labels to df.columns.
+
+Solution:-
+# Build a list of labels: list_labels
+list_labels = ['year','artist','song','chart weeks']
+
+# Assign the list of labels to the columns attribute: df.columns
+df.columns = list_labels
+
+Q4:-
+Make a string object with the value 'PA' and assign it to state.
+Construct a dictionary with 2 key:value pairs: 'state':state and 'city':cities.
+Construct a pandas DataFrame from the dictionary you created and assign it to df.
+
+Solution:-
+# Make a string with the value 'PA': state
+state = "PA"
+
+# Construct a dictionary: data
+data = {'state':state, 'city':cities}
+
+# Construct a DataFrame from dictionary data: df
+df = pd.DataFrame(data)
+
+# Print the DataFrame
+print(df)
