@@ -1,0 +1,70 @@
+Q1:-
+Import matplotlib.pyplot as plt.
+Use the .plot() method on g1800s with kind='scatter' to create a scatter plot with '1800' on the x-axis and '1899' on the y-axis.
+Display the plot.
+
+Solution:-
+# Import matplotlib.pyplot
+import matplotlib.pyplot as plt
+
+# Create the scatter plot
+g1800s.plot(kind='scatter', x='1800', y='1899')
+
+# Specify axis labels
+plt.xlabel('Life Expectancy by Country in 1800')
+plt.ylabel('Life Expectancy by Country in 1899')
+
+# Specify axis limits
+plt.xlim(20, 55)
+plt.ylim(20, 55)
+
+# Display the plot
+plt.show()
+
+Q2:-
+Define a function called check_null_or_valid() that takes in one argument: row_data.
+Inside the function, convert no_na to a numeric data type using pd.to_numeric().
+Write an assert statement to make sure the first column (index 0) of the g1800s DataFrame is 'Life expectancy'.
+Write an assert statement to test that all the values are valid for the g1800s DataFrame. 
+Use the check_null_or_valid() function placed inside the .apply() method for this. 
+Note that because you're applying it over the entire DataFrame, and not just one column, you'll have to chain the .all() method twice, and remember that you don't have to use () for functions placed inside .apply().
+Write an assert statement to make sure that each country occurs only once in the data. Use the .value_counts() method on the 'Life expectancy' column for this. 
+Specifically, index 0 of .value_counts() will contain the most frequently occuring value. 
+If this is equal to 1 for the 'Life expectancy' column, then you can be certain that no country appears more than once in the data.
+
+Solution:-
+def check_null_or_valid(row_data):
+    """Function that takes a row of data,
+    drops all missing values,
+    and checks if all remaining values are greater than or equal to 0
+    """
+    no_na = row_data.dropna()[1:-1]
+    numeric = pd.to_numeric(no_na)
+    ge0 = numeric >= 0
+    return ge0
+
+# Check whether the first column is 'Life expectancy'
+assert g1800s.columns[0] == 'Life expectancy'
+
+# Check whether the values in the row are valid
+assert g1800s.iloc[:, 1:].apply(check_null_or_valid, axis=1).all().all()
+
+# Check that there is only one instance of each country
+assert g1800s['Life expectancy'].value_counts()[0] == 1
+
+Q3:-
+Use pd.concat() to concatenate g1800s, g1900s, and g2000s into one DataFrame called gapminder. 
+Make sure you pass DataFrames to pd.concat() in the form of a list.
+Print the shape and the head of the concatenated DataFrame.
+
+Solution:-
+# Concatenate the DataFrames row-wise
+gapminder = pd.concat([g1800s,g1900s,g2000s],axis=0)
+
+# Print the shape of gapminder
+print(gapminder.shape)
+
+# Print the head of gapminder
+print(gapminder.head())
+
+Q4:-
