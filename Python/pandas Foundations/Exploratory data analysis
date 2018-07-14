@@ -75,3 +75,85 @@ df.fraction.plot(kind='hist', bins=30, cumulative=True, normed=True, ax=axes[1],
 plt.show()
 
 Q5:-
+Print the minimum value of the 'Engineering' column.
+Print the maximum value of the 'Engineering' column.
+Construct the mean percentage per year with .mean(axis='columns'). Assign the result to mean.
+Plot the average percentage per year. 
+Since 'Year' is the index of df, it will appear on the x-axis of the plot. No keyword arguments are needed in your call to .plot().
+
+Solution:-
+# Print the minimum value of the Engineering column
+print(df['Engineering'].min())
+
+# Print the maximum value of the Engineering column
+print(df['Engineering'].max())
+
+# Construct the mean percentage per year: mean
+mean = df.mean(axis='columns')
+
+# Plot the average percentage per year
+mean.plot()
+
+# Display the plot
+plt.show()
+
+Q6:-
+Print summary statistics of the 'fare' column of df with .describe() and print(). Note: df.fare and df['fare'] are equivalent.
+Generate a box plot of the 'fare' column.
+
+Solution:-
+# Print summary statistics of the fare column with .describe()
+print(df['fare'].describe())
+
+# Generate a box plot of the fare column
+df.fare.plot(kind='box')
+
+# Show the plot
+plt.show()
+
+Q7:-
+Print the number of countries reported in 2015. To do this, use the .count() method on the '2015' column of df.
+Print the 5th and 95th percentiles of df. To do this, use the .quantile() method with the list [0.05, 0.95].
+Generate a box plot using the list of columns provided in years. 
+This has already been done for you, so click on 'Submit Answer' to view the result!
+
+Solution-
+# Print the number of countries reported in 2015
+print(df['2015'].count())
+
+# Print the 5th and 95th percentiles
+print(df.quantile([0.05, 0.95]))
+
+# Generate a box plot
+years = ['1800','1850','1900','1950','2000']
+df[years].plot(kind='box')
+plt.show()
+
+Q8:-
+Compute and print the means of the January and March data using the .mean() method.
+Compute and print the standard deviations of the January and March data using the .std() method.
+
+Solution:-
+# Print the mean of the January and March data
+print(january.mean(), march.mean())
+
+# Print the standard deviation of the January and March data
+print(january.std(), march.std())
+
+Q9:-
+Filtering and counting
+How many automobiles were manufactured in Asia in the automobile dataset? 
+The DataFrame has been provided for you as df. Use filtering and the .count() member method to determine the number of rows where the 'origin' column has the value 'Asia'.
+As an example, you can extract the rows that contain 'US' as the country of origin using df[df['origin'] == 'US'].
+
+Solution:-
+df[df['origin'] == 'Asia'].count()
+
+Q10:-
+Compute the global mean and global standard deviations of df using the .mean() and .std() methods. 
+Assign the results to global_mean and global_std.
+Filter the 'US' population from the 'origin' column and assign the result to us.
+Compute the US mean and US standard deviations of us using the .mean() and .std() methods. Assign the results to us_mean and us_std.
+Print the differences between us_mean and global_mean and us_std and global_std. This has already been done for you.
+
+Solution:-
