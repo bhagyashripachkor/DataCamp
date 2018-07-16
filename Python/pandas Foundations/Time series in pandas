@@ -21,3 +21,36 @@ Extract data from ts0 for a single day - July 4th, 2010 - and assign it to ts2.
 Extract data from ts0 for the second half of December 2010 - 12/15/2010 to 12/31/2010. Assign it to ts3.
 
 Solution:-
+# Extract the hour from 9pm to 10pm on '2010-10-11': ts1
+ts1 = ts0.loc['2010-10-11 21:00:00':'2010-10-11 22:00:00']
+
+# Extract '2010-07-04' from ts0: ts2
+ts2 = ts0.loc['2010-07-04']
+
+# Extract data from '2010-12-15' to '2010-12-31': ts3
+ts3 = ts0.loc['2010-12-15':'2010-12-31']
+
+Q3:-
+Create a new time series ts3 by reindexing ts2 with the index of ts1. To do this, call .reindex() on ts2 and pass in the index of ts1 (ts1.index).
+Create another new time series, ts4, by calling the same .reindex() as above, but also specifiying a fill method, using the keyword argument method="ffill" to forward-fill values.
+Add ts1 + ts2. Assign the result to sum12.
+Add ts1 + ts3. Assign the result to sum13.
+Add ts1 + ts4, Assign the result to sum14.
+
+Solution:-
+# Reindex without fill method: ts3
+ts3 = ts2.reindex(ts1.index)
+
+# Reindex with fill method, using forward fill: ts4
+ts4 = ts2.reindex(ts1.index, method="ffill")
+
+# Combine ts1 + ts2: sum12
+sum12 = ts1+ts2
+
+# Combine ts1 + ts3: sum13
+sum13 = ts1+ts3
+
+# Combine ts1 + ts4: sum14
+sum14 = ts1+ts4
+
+Q4:-
