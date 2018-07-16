@@ -14,3 +14,10 @@ my_datetimes = pd.to_datetime(date_list, format=time_format)
 
 # Construct a pandas Series using temperature_list and my_datetimes: time_series
 time_series = pd.Series(temperature_list, index=my_datetimes)
+
+Q2:-
+Extract data from ts0 for a single hour - the hour from 9pm to 10pm on 2010-10-11. Assign it to ts1.
+Extract data from ts0 for a single day - July 4th, 2010 - and assign it to ts2.
+Extract data from ts0 for the second half of December 2010 - 12/15/2010 to 12/31/2010. Assign it to ts3.
+
+Solution:-
