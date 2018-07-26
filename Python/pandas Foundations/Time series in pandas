@@ -54,3 +54,20 @@ sum13 = ts1+ts3
 sum14 = ts1+ts4
 
 Q4:-
+Downsample the 'Temperature' column of df to 6 hour data using .resample('6h') and .mean(). Assign the result to df1.
+Downsample the 'Temperature' column of df to daily data using .resample('D') and then count the number of data points in each day with .count(). Assign the result df2.
+
+Solution:-
+# Downsample to 6 hour data and aggregate by mean: df1
+df1 = df['Temperature'].resample('6h').mean()
+
+# Downsample to daily data and count the number of data points: df2
+df2 = df['Temperature'].resample('D').count()
+
+Q5:-
+Use partial string indexing to extract temperature data for August 2010 into august.
+Use the temperature data for August and downsample to find the daily maximum temperatures. Store the result in august_highs.
+Use partial string indexing to extract temperature data for February 2010 into february.
+Use the temperature data for February and downsample to find the daily minimum temperatures. Store the result in february_lows.
+
+Solution:-
