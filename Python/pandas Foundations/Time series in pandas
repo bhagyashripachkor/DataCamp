@@ -71,3 +71,52 @@ Use partial string indexing to extract temperature data for February 2010 into f
 Use the temperature data for February and downsample to find the daily minimum temperatures. Store the result in february_lows.
 
 Solution:-
+# Extract temperature data for August: august
+august = df['Temperature']['August 2010']
+
+# Downsample to obtain only the daily highest temperatures in August: august_highs
+august_highs = august.resample('D').max()
+
+# Extract temperature data for February: february
+february = df['Temperature']['February 2010']
+
+# Downsample to obtain the daily lowest temperatures in February: february_lows
+february_lows = february.resample('D').min()
+
+Q6:-
+Use partial string indexing to extract temperature data from August 1 2010 to August 15 2010. Assign to unsmoothed.
+Use .rolling() with a 24 hour window to smooth the mean temperature data. Assign the result to smoothed.
+Use a dictionary to create a new DataFrame august with the time series smoothed and unsmoothed as columns.
+Plot both the columns of august as line plots using the .plot() method.
+
+Solution:-
+# Extract data from 2010-Aug-01 to 2010-Aug-15: unsmoothed
+unsmoothed = df['Temperature']['2010-Aug-01':'2010-Aug-15']
+
+# Apply a rolling mean with a 24 hour window: smoothed
+smoothed = unsmoothed.rolling(window=24).mean()
+
+# Create a new DataFrame with columns smoothed and unsmoothed: august
+august = pd.DataFrame({'smoothed':smoothed, 'unsmoothed':unsmoothed})
+
+# Plot both smoothed and unsmoothed data using august.plot().
+august.plot()
+plt.show()
+
+Q7:-
+Use partial string indexing to extract August 2010 temperature data, and assign to august.
+Resample to daily frequency, saving the maximum daily temperatures, and assign the result to daily_highs.
+As part of one long method chain, repeat the above resampling (or you can re-use daily_highs) and then combine it with .rolling() to apply a 7 day .mean() (with window=7 inside .rolling()) so as to smooth the daily highs. Assign the result to daily_highs_smoothed and print the result.
+
+Solution:-
+# Extract the August 2010 data: august
+august = df['Temperature']['August 2010']
+
+# Resample to daily data, aggregating by max: daily_highs
+daily_highs = august.resample('D').max()
+
+# Use a rolling 7-day window with method chaining to smooth the daily high temperatures in August
+daily_highs_smoothed = daily_highs.rolling(window=7).mean()
+print(daily_highs_smoothed)
+
+
