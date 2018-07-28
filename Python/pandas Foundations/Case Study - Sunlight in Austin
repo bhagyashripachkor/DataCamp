@@ -1,1 +1,189 @@
 Q1:-
+Import pandas as pd.
+Read the file 'data.csv' into a DataFrame called df.
+Print the output of df.head(). This has been done for you. Notice the formatting problems in df.
+Re-read the data using specifying the keyword argument header=None and assign it to df_headers.
+Print the output of df_headers.head(). This has already been done for you. Hit 'Submit Answer' and see how this resolves the formatting issues.
+
+Solution:-
+# Import pandas
+import pandas as pd
+
+# Read in the data file: df
+df = pd.read_csv('data.csv')
+
+# Print the output of df.head()
+print(df.head())
+
+# Read in the data file with header=None: df_headers
+df_headers = pd.read_csv('data.csv', header=None)
+
+# Print the output of df_headers.head()
+print(df_headers.head())
+
+Q2:-
+Convert the comma separated string column_labels to a list of strings using .split(','). Assign the result to column_labels_list.
+Reassign df.columns using the list of strings column_labels_list.
+Call df.drop() with list_to_drop and axis='columns'. Assign the result to df_dropped.
+Print df_dropped.head() to examine the result. This has already been done for you.
+
+Solution:-
+# Split on the comma to create a list: column_labels_list
+column_labels_list = column_labels.split(',')
+
+# Assign the new column labels to the DataFrame: df.columns
+df.columns = column_labels_list
+
+# Remove the appropriate columns: df_dropped
+df_dropped = df.drop(list_to_drop,axis='columns')
+
+# Print the output of df_dropped.head()
+print(df_dropped.head())
+
+Q3:-
+Convert the 'date' column to a string with .astype(str) and assign to df_dropped['date'].
+Add leading zeros to the 'Time' column. This has been done for you.
+Concatenate the new 'date' and 'Time' columns together. Assign to date_string.
+Convert the date_string Series to datetime values with pd.to_datetime(). Specify the format parameter.
+Set the index of the df_dropped DataFrame to be date_times. Assign the result to df_clean.
+
+Solution:-
+# Convert the date column to string: df_dropped['date']
+df_dropped['date'] = df_dropped['date'].astype(str)
+
+# Pad leading zeros to the Time column: df_dropped['Time']
+df_dropped['Time'] = df_dropped['Time'].apply(lambda x:'{:0>4}'.format(x))
+
+# Concatenate the new date and Time columns: date_string
+date_string = df_dropped['date'] + df_dropped['Time']
+
+# Convert the date_string Series to datetime: date_times
+date_times = pd.to_datetime(date_string, format='%Y%m%d%H%M')
+
+# Set the index to be the new date_times container: df_clean
+df_clean = df_dropped.set_index(date_times)
+
+# Print the output of df_clean.head()
+print(df_clean.head())
+
+Q4:-
+Print the 'dry_bulb_faren' temperature between 8 AM and 9 AM on June 20, 2011.
+Convert the 'dry_bulb_faren' column to numeric values with pd.to_numeric(). Specify errors='coerce'.
+Print the transformed dry_bulb_faren temperature between 8 AM and 9 AM on June 20, 2011.
+Convert the 'wind_speed' and 'dew_point_faren' columns to numeric values with pd.to_numeric(). Again, specify errors='coerce'.
+
+Solution:-
+# Print the dry_bulb_faren temperature between 8 AM and 9 AM on June 20, 2011
+print(df_clean.loc['2011-06-20 08:00:00':'2011-06-20 09:00:00', 'dry_bulb_faren'])
+
+# Convert the dry_bulb_faren column to numeric values: df_clean['dry_bulb_faren']
+df_clean['dry_bulb_faren'] = pd.to_numeric(df_clean['dry_bulb_faren'], errors='coerce')
+
+# Print the transformed dry_bulb_faren temperature between 8 AM and 9 AM on June 20, 2011
+print(df_clean.loc['2011-06-20 08:00:00':'2011-06-20 09:00:00', 'dry_bulb_faren'])
+
+# Convert the wind_speed and dew_point_faren columns to numeric values
+df_clean['wind_speed'] = pd.to_numeric(df_clean['wind_speed'],errors='coerce')
+df_clean['dew_point_faren'] = pd.to_numeric(df_clean['dew_point_faren'],errors='coerce')
+
+Q5:-
+Select the 'dry_bulb_faren' column and print the output of .median().
+Use .loc[] to select the range '2011-Apr':'2011-Jun' from dry_bulb_faren' and print the output of .median().
+Use .loc[] to select the month '2011-Jan' from 'dry_bulb_faren' and print the output of .median().
+
+Solution:-
+# Print the median of the dry_bulb_faren column
+print(df_clean['dry_bulb_faren'].median())
+
+# Print the median of the dry_bulb_faren column for the time range '2011-Apr':'2011-Jun'
+print(df_clean.loc['2011-Apr':'2011-Jun', 'dry_bulb_faren'].median())
+
+# Print the median of the dry_bulb_faren column for the month of January
+print(df_clean.loc['2011-Jan', 'dry_bulb_faren'].median())
+
+Q6:-
+Downsample df_clean with daily frequency and aggregate by the mean. Store the result as daily_mean_2011.
+Extract the 'dry_bulb_faren' column from daily_mean_2011 as a NumPy array using .values. Store the result as daily_temp_2011. Note: .values is an attribute, not a method, so you don't have to use ().
+Downsample df_climate with daily frequency and aggregate by the mean. Store the result as daily_climate.
+Extract the 'Temperature' column from daily_climate using the .reset_index() method. To do this, first reset the index of daily_climate, and then use bracket slicing to access 'Temperature'. Store the result as daily_temp_climate.
+
+Solution:-
+# Downsample df_clean by day and aggregate by mean: daily_mean_2011
+daily_mean_2011 = df_clean.resample('D').mean()
+
+# Extract the dry_bulb_faren column from daily_mean_2011 using .values: daily_temp_2011
+daily_temp_2011 = daily_mean_2011.dry_bulb_faren.values
+
+# Downsample df_climate by day and aggregate by mean: daily_climate
+daily_climate = df_climate.resample('D').mean()
+
+# Extract the Temperature column from daily_climate using .reset_index(): daily_temp_climate
+daily_temp_climate = daily_climate.reset_index()['Temperature']
+
+# Compute the difference between the two arrays and print the mean difference
+difference = daily_temp_2011 - daily_temp_climate
+print(difference.mean())
+
+Q7:-
+Use .loc[] to select sunny days and assign to sunny. If 'sky_condition' equals 'CLR', then the day is sunny.
+Use .loc[] to select overcast days and assign to overcast. If 'sky_condition' contains 'OVC', then the day is overcast.
+Resample sunny and overcast and aggregate by the maximum (.max()) daily ('D') temperature. Assign to sunny_daily_max and overcast_daily_max.
+Print the difference between the mean of sunny_daily_max and overcast_daily_max. This has already been done for you, so click 'Submit Answer' to view the result!
+
+Solution:-
+# Select days that are sunny: sunny
+sunny = df_clean.loc[df_clean['sky_condition'] == 'CLR']
+
+# Select days that are overcast: overcast
+overcast = df_clean.loc[df_clean['sky_condition'].str.contains( 'OVC')]
+
+# Resample sunny and overcast, aggregating by maximum daily temperature
+sunny_daily_max = sunny.resample('D').max()
+overcast_daily_max = overcast.resample('D').max()
+
+# Print the difference between the mean of sunny_daily_max and overcast_daily_max
+print(sunny_daily_max.mean() - overcast_daily_max.mean())
+
+Q8:-
+Import matplotlib.pyplot as plt.
+Select the 'visibility' and 'dry_bulb_faren' columns and resample them by week, aggregating the mean. Assign the result to weekly_mean.
+Print the output of weekly_mean.corr().
+Plot the weekly_mean dataframe with .plot(), specifying subplots=True.
+
+Solution:-
+# Import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+# Select the visibility and dry_bulb_faren columns and resample them: weekly_mean
+weekly_mean = df_clean.loc[:,['visibility','dry_bulb_faren']].resample('W').mean()
+
+# Print the output of weekly_mean.corr()
+print(weekly_mean.corr())
+
+# Plot weekly_mean with subplots=True
+weekly_mean.plot(subplots=True)
+plt.show()
+
+Q9:-
+Create a Boolean Series for sunny days. Assign the result to sunny.
+Resample sunny by day and compute the sum. Assign the result to sunny_hours.
+Resample sunny by day and compute the count. Assign the result to total_hours.
+Divide sunny_hours by total_hours. Assign to sunny_fraction.
+Make a box plot of sunny_fraction.
+
+Solution:-
+# Create a Boolean Series for sunny days: sunny
+sunny = df_clean.loc[df_clean['sky_condition'] == 'CLR']
+
+# Resample the Boolean Series by day and compute the sum: sunny_hours
+sunny_hours = sunny.resample('D').sum()
+
+# Resample the Boolean Series by day and compute the count: total_hours
+total_hours = sunny.resample('D').count()
+
+# Divide sunny_hours by total_hours: sunny_fraction
+sunny_fraction = sunny_hours / total_hours
+
+# Make a box plot of sunny_fraction
+sunny_fraction.plot(kind='box')
+plt.show()
