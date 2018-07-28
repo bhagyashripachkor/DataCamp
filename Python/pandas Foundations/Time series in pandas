@@ -119,4 +119,95 @@ daily_highs = august.resample('D').max()
 daily_highs_smoothed = daily_highs.rolling(window=7).mean()
 print(daily_highs_smoothed)
 
+Q8:-
+Use .str.strip() to strip extra whitespace from df.columns. Assign the result back to df.columns.
+In the 'Destination Airport' column, extract all entries where Dallas ('DAL') is the destination airport. Use .str.contains('DAL') for this and store the result in dallas.
+Resample dallas such that you get the total number of departures each day. Store the result in daily_departures.
+Generate summary statistics for daily Dallas departures using .describe(). Store the result in stats.
+
+Solution:-
+# Strip extra whitespace from the column names: df.columns
+df.columns = df.columns.str.strip()
+
+# Extract data for which the destination airport is Dallas: dallas
+dallas = df['Destination Airport'].str.contains('DAL')
+
+# Compute the total number of Dallas departures each day: daily_departures
+daily_departures = dallas.resample('D').sum()
+
+# Generate the summary statistics for daily Dallas departures: stats
+stats = daily_departures.describe()
+
+Q9:-
+Replace the index of ts2 with that of ts1, and then fill in the missing values of ts2 by using .interpolate(how='linear'). Save the result as ts2_interp.
+Compute the difference between ts1 and ts2_interp. Take the absolute value of the difference with np.abs(), and assign the result to differences.
+Generate and print summary statistics of the differences with .describe() and print().
+
+Solution:-
+# Reset the index of ts2 to ts1, and then use linear interpolation to fill in the NaNs: ts2_interp
+ts2_interp = ts2.reindex(ts1.index).interpolate(how='linear')
+
+# Compute the absolute difference of ts1 and ts2_interp: differences 
+differences = np.abs(ts2_interp-ts1)
+
+# Generate and print summary statistics of the differences
+print(differences.describe())
+
+Q10:-
+Create a Boolean mask, mask, such that if the 'Destination Airport' column of df equals 'LAX', the result is True, and otherwise, it is False.
+Use the mask to extract only the LAX rows. Assign the result to la.
+Concatenate the two columns la['Date (MM/DD/YYYY)'] and la['Wheels-off Time'] with a ' ' space in between. Pass this to pd.to_datetime() to create a datetime array of all the times the LAX-bound flights left the ground.
+Use Series.dt.tz_localize() to localize the time to 'US/Central'.
+Use the .dt.tz_convert() method to convert datetimes from 'US/Central' to 'US/Pacific'.
+
+Solution:-
+# Build a Boolean mask to filter out all the 'LAX' departure flights: mask
+mask = df['Destination Airport'] == 'LAX'
+
+# Use the mask to subset the data: la
+la = df[mask]
+
+# Combine two columns of data to create a datetime series: times_tz_none 
+times_tz_none = pd.to_datetime( la['Date (MM/DD/YYYY)'] + ' ' + la['Wheels-off Time'] )
+
+# Localize the time to US/Central: times_tz_central
+times_tz_central = times_tz_none.dt.tz_localize('US/Central')
+
+# Convert the datetimes from US/Central to US/Pacific
+times_tz_pacific = times_tz_central.dt.tz_convert('US/Pacific')
+
+Q11:-
+Use pd.to_datetime() to convert the 'Date' column to a collection of datetime objects, and assign back to df.Date.
+Set the index to this updated 'Date' column, using df.set_index() with the optional keyword argument inplace=True, so that you don't have to assign the result back to df.
+Re-plot the DataFrame to see that the axis is now datetime aware. This code has been written for you.
+
+Solution:-
+# Plot the raw data before setting the datetime index
+df.plot()
+plt.show()
+
+# Convert the 'Date' column into a collection of datetime objects: df.Date
+df.Date = pd.to_datetime(df.Date)
+
+# Set the index to be the converted 'Date' column
+df.set_index('Date', inplace=True)
+
+# Re-plot the DataFrame to see that the axis is now datetime aware!
+df.plot()
+plt.show()
+
+Q12:-
+Plot the summer temperatures using method chaining. The summer ranges from the months '2010-Jun' to '2010-Aug'.
+Plot the temperatures for one week in June using the same method chaining, but this time indexing with '2010-06-10':'2010-06-17' before you follow up with .plot().
+
+Solution:-
+# Plot the summer data
+df.Temperature['2010-Jun':'2010-Aug'].plot()
+plt.show()
+plt.clf()
+
+# Plot the one week data
+df.Temperature['2010-06-10':'2010-06-17'].plot()
+plt.show()
+plt.clf()
 
