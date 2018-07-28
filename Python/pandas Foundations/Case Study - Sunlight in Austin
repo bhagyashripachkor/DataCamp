@@ -173,7 +173,7 @@ Make a box plot of sunny_fraction.
 
 Solution:-
 # Create a Boolean Series for sunny days: sunny
-sunny = df_clean.loc[df_clean['sky_condition'] == 'CLR']
+sunny = df_clean['sky_condition'] == 'CLR'
 
 # Resample the Boolean Series by day and compute the sum: sunny_hours
 sunny_hours = sunny.resample('D').sum()
@@ -183,7 +183,46 @@ total_hours = sunny.resample('D').count()
 
 # Divide sunny_hours by total_hours: sunny_fraction
 sunny_fraction = sunny_hours / total_hours
+print(sunny_fraction)
+
 
 # Make a box plot of sunny_fraction
 sunny_fraction.plot(kind='box')
+plt.show()
+
+Q10:-
+Select the 'dew_point_faren' and 'dry_bulb_faren' columns (in that order). Resample by month and aggregate the maximum monthly temperatures. Assign the result to monthly_max.
+Plot a histogram of the resampled data with bins=8, alpha=0.5, and subplots=True.
+
+Solution:-
+# Resample dew_point_faren and dry_bulb_faren by Month, aggregating the maximum values: monthly_max
+monthly_max = df_clean.loc[:,['dew_point_faren','dry_bulb_faren']].resample('M').max()
+
+# Generate a histogram with bins=8, alpha=0.5, subplots=True
+monthly_max.plot(kind='hist',bins=8,alpha=0.5, subplots=True)
+
+# Show the plot
+plt.show()
+
+Q11:-
+From df_climate, extract the maximum temperature observed in August 2010. The relevant column here is 'Temperature'. You can select the rows corresponding to August 2010 in multiple ways. For example, df_climate.loc['2011-Feb'] selects all rows corresponding to February 2011, while df_climate.loc['2009-09', 'Pressure'] selects the rows corresponding to September 2009 from the 'Pressure' column.
+From df_clean, select the August 2011 temperature data from the 'dry_bulb_faren'. Resample this data by day and aggregate the maximum value. Store the result in august_2011.
+Filter to keep days in august_2011 where the value exceeded august_max. Store the result in august_2011_high.
+Construct a CDF of august_2011_high using 25 bins. Remember to specify the kind, normed, and cumulative parameters in addition to bins.
+
+Solution:-
+# Extract the maximum temperature in August 2010 from df_climate: august_max
+august_max = df_climate.loc['2010-08', 'Temperature'].max()
+print(august_max)
+
+# Resample the August 2011 temperatures in df_clean by day and aggregate the maximum value: august_2011
+august_2011 = df_clean.loc['2011-Aug', 'dry_bulb_faren'].resample('D').max()
+
+# Filter out days in august_2011 where the value exceeded august_max: august_2011_high
+august_2011_high = august_2011.loc[august_2011 > august_max]
+
+# Construct a CDF of august_2011_high
+august_2011_high.plot(kind='hist', normed=True,cumulative=True, bins=25)
+
+# Display the plot
 plt.show()
