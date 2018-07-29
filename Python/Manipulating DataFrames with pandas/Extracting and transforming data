@@ -67,3 +67,28 @@ Slice the columns from 'Romney' to the end and assign the result to right_column
 The code to print the first 5 rows of left_columns, middle_columns, and right_columns has been written, so hit 'Submit Answer' to see the results!
 
 Solution:-
+# Slice the columns from the starting column to 'Obama': left_columns
+left_columns = election.loc[:,'state':'Obama']
+
+# Print the output of left_columns.head()
+print(left_columns.head())
+
+# Slice the columns from 'Obama' to 'winner': middle_columns
+middle_columns = election.loc[:,'Obama':'winner']
+
+# Print the output of middle_columns.head()
+print(middle_columns.head())
+
+# Slice the columns from 'Romney' to the end: 'right_columns'
+right_columns = election.loc[:,'Romney':]
+
+# Print the output of right_columns.head()
+print(right_columns.head())
+
+Q6:-
+Create the list of row labels ['Philadelphia', 'Centre', 'Fulton'] and assign it to rows.
+Create the list of column labels ['winner', 'Obama', 'Romney'] and assign it to cols.
+Create a new DataFrame by selecting with rows and cols in .loc[] and assign it to three_counties.
+Print the three_counties DataFrame. This has been done for you, so hit 'Submit Answer` to see your new DataFrame.
+
+Solution:-
