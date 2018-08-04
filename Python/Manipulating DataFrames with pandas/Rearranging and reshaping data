@@ -1,0 +1,36 @@
+Q1:-
+Pivot the users DataFrame with the rows indexed by 'weekday', the columns indexed by 'city', and the values populated with 'visitors'.
+Print the pivoted DataFrame. This has been done for you, so hit 'Submit Answer' to view the result.
+
+Solution:-
+# Pivot the users DataFrame: visitors_pivot
+visitors_pivot = users.pivot(index='weekday', columns='city',values='visitors')
+
+# Print the pivoted DataFrame
+print(visitors_pivot)
+
+Q2:-
+Pivot the users DataFrame with the 'signups' indexed by 'weekday' in the rows and 'city' in the columns.
+Print the new DataFrame. This has been done for you.
+Pivot the users DataFrame with both 'signups' and 'visitors' pivoted - that is, all the variables. This will happen automatically if you do not specify an argument for the values parameter of .pivot().
+Print the pivoted DataFrame. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Pivot users with signups indexed by weekday and city: signups_pivot
+signups_pivot = users.pivot(index='weekday', columns='city', values='signups')
+
+# Print signups_pivot
+print(signups_pivot)
+
+# Pivot users pivoted by both signups and visitors: pivot
+pivot = users.pivot(index='weekday',columns='city')
+
+# Print the pivoted DataFrame
+print(pivot)
+
+Q3:-
+Define a DataFrame byweekday with the 'weekday' level of users unstacked.
+Print the byweekday DataFrame to see the new data layout. This has been done for you.
+Stack byweekday by 'weekday' and print it to check if you get the same layout as the original users DataFrame.
+
+Solution:-
