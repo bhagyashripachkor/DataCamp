@@ -1,1 +1,93 @@
 Q1:-
+Create a list new_idx with the same elements as in sales.index, but with all characters capitalized.
+Assign new_idx to sales.index.
+Print the sales dataframe. This has been done for you, so hit 'Submit Answer' and to see how the index changed.
+
+Solution:-
+# Create the list of new indexes: new_idx
+new_idx = [i.upper() for i in sales.index]
+
+# Assign new_idx to sales.index
+sales.index = new_idx
+
+# Print the sales DataFrame
+print(sales)
+
+Q2:-
+Assign the string 'MONTHS' to sales.index.name to create a name for the index.
+Print the sales dataframe to see the index name you just created.
+Now assign the string 'PRODUCTS' to sales.columns.name to give a name to the set of columns.
+Print the sales dataframe again to see the columns name you just created.
+
+Solution:-
+# Assign the string 'MONTHS' to sales.index.name
+sales.index.name = 'MONTHS'
+
+# Print the sales DataFrame
+print(sales)
+
+# Assign the string 'PRODUCTS' to sales.columns.name 
+sales.columns.name = 'PRODUCTS'
+
+# Print the sales dataframe again
+print(sales)
+
+Q3:-
+Generate a list months with the data ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']. This has been done for you.
+Assign months to sales.index.
+Print the modified sales dataframe and verify that you now have month information in the index.
+
+Solution:-
+# Generate the list of months: months
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+
+# Assign months to sales.index
+sales.index = months
+
+# Print the modified sales DataFrame
+print(sales)
+
+Q4:-
+Create a MultiIndex by setting the index to be the columns ['state', 'month'].
+Sort the MultiIndex using the .sort_index() method.
+Print the sales DataFrame. This has been done for you, so hit 'Submit Answer' to verify that indeed you have an index with the fields state and month!
+
+Solution:-
+# Set the index to be the columns ['state', 'month']: sales
+sales = sales.set_index(['state', 'month'])
+
+# Sort the MultiIndex: sales
+sales = sales.sort_index()
+
+# Print the sales DataFrame
+print(sales)
+
+Q5:-
+Set the index of sales to be the column 'state'.
+Print the sales DataFrame to verify that indeed you have an index with state values.
+Access the data from 'NY' and print it to verify that you obtain two rows.
+
+Solution:-
+# Set the index to the column 'state': sales
+sales = sales.set_index(['state'])
+
+# Print the sales DataFrame
+print(sales)
+
+# Access the data from 'NY'
+print(sales.loc['NY'])
+
+Q6:-
+Look up data for the New York column ('NY') in month 1.
+Look up data for the California and Texas columns ('CA', 'TX') in month 2.
+Look up data for all states in month 2. Use (slice(None), 2) to extract all rows in month 2.
+
+Solution:-
+# Look up data for NY in month 1: NY_month1
+NY_month1 = sales.loc[('NY',1)]
+
+# Look up data for CA and TX in month 2: CA_TX_month2
+CA_TX_month2 = sales.loc[(['CA','TX'],2),:]
+
+# Look up data for all states in month 2: all_month2
+all_month2 = sales.loc[(slice(None),2),:]
