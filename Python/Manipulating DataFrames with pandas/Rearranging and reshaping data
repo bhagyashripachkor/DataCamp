@@ -34,3 +34,151 @@ Print the byweekday DataFrame to see the new data layout. This has been done for
 Stack byweekday by 'weekday' and print it to check if you get the same layout as the original users DataFrame.
 
 Solution:-
+# Unstack users by 'weekday': byweekday
+byweekday = users.unstack(level=1)
+
+# Print the byweekday DataFrame
+print(byweekday)
+
+# Stack byweekday by 'weekday' and print it
+print(byweekday.stack(level='weekday'))
+
+Q4:-
+Define a DataFrame bycity with the 'city' level of users unstacked.
+Print the bycity DataFrame to see the new data layout. This has been done for you.
+Stack bycity by 'city' and print it to check if you get the same layout as the original users DataFrame.
+
+Solution:-
+# Unstack users by 'city': bycity
+bycity = users.unstack(level=0)
+
+# Print the bycity DataFrame
+print(bycity)
+
+# Stack bycity by 'city' and print it
+print(bycity.stack(level='city'))
+
+Q5:-
+Define a DataFrame newusers with the 'city' level stacked back into the index of bycity.
+Swap the levels of the index of newusers.
+Print newusers and verify that the index is not sorted. This has been done for you.
+Sort the index of newusers.
+Print newusers and verify that the index is now sorted. This has been done for you.
+Assert that newusers equals users. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Stack 'city' back into the index of bycity: newusers
+newusers = bycity.stack(level='city')
+
+# Swap the levels of the index of newusers: newusers
+newusers = newusers.swaplevel(0,1)
+
+# Print newusers and verify that the index is not sorted
+print(newusers)
+
+# Sort the index of newusers: newusers
+newusers = newusers.sort_index()
+
+# Print newusers and verify that the index is now sorted
+print(newusers)
+
+# Verify that the new DataFrame is equal to the original
+print(newusers.equals(users))
+
+Q6:-
+Reset the index of visitors_by_city_weekday with .reset_index().
+Print visitors_by_city_weekday and verify that you have just a range index, 0, 1, 2, 3. This has been done for you.
+Melt visitors_by_city_weekday to move the city names from the column labels to values in a single column called visitors.
+Print visitors to check that the city values are in a single column now and that the dataframe is longer and skinnier.
+
+Solution:-
+# Reset the index: visitors_by_city_weekday
+visitors_by_city_weekday = visitors_by_city_weekday.reset_index() 
+
+# Print visitors_by_city_weekday
+print(visitors_by_city_weekday)
+
+# Melt visitors_by_city_weekday: visitors
+visitors = pd.melt(visitors_by_city_weekday, id_vars='weekday', value_name='visitors')
+
+# Print visitors
+print(visitors)
+
+Q7:-
+Define a DataFrame skinny where you melt the 'visitors' and 'signups' columns of users into a single column.
+Print skinny to verify the results. Note the value column that had the cell values in users.
+
+Solution:-
+# Melt users: skinny
+skinny = pd.melt(users, id_vars=['weekday','city'])
+
+# Print skinny
+print(skinny)
+
+Q8:-
+Set the index of users to ['city', 'weekday'].
+Print the DataFrame users_idx to see the new index.
+Obtain the key-value pairs corresponding to visitors and signups by melting users_idx with the keyword argument col_level=0.
+
+Solution:-
+# Set the new index: users_idx
+users_idx = users.set_index(['city','weekday'])
+
+# Print the users_idx DataFrame
+print(users_idx)
+
+# Obtain the key-value pairs: kv_pairs
+kv_pairs = pd.melt(users_idx, col_level=0)
+
+# Print the key-value pairs
+print(kv_pairs)
+
+Q9:-
+Use a pivot table to index the rows of users by 'weekday' and the columns of users by 'city'. These correspond to the index and columns parameters of .pivot_table().
+Print by_city_day. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Create the DataFrame with the appropriate pivot table: by_city_day
+by_city_day = pd.pivot_table(users, index='weekday', columns='city')
+
+# Print by_city_day
+print(by_city_day)
+
+Q10:-
+Define a DataFrame count_by_weekday1 that shows the count of each column with the parameter aggfunc='count'. The index here is 'weekday'.
+Print count_by_weekday1. This has been done for you.
+Replace aggfunc='count' with aggfunc=len and verify you obtain the same result.
+
+Solution:-
+# Use a pivot table to display the count of each column: count_by_weekday1
+count_by_weekday1 = pd.pivot_table(users, index='weekday', aggfunc='count')
+
+# Print count_by_weekday
+print(count_by_weekday1)
+
+# Replace 'aggfunc='count'' with 'aggfunc=len': count_by_weekday2
+count_by_weekday2 = pd.pivot_table(users, index='weekday', aggfunc=len)
+
+# Verify that the same result is obtained
+print('==========================================')
+print(count_by_weekday1.equals(count_by_weekday2))
+
+Q11:-
+Define a DataFrame signups_and_visitors that shows the breakdown of signups and visitors by day.
+You will need to use aggfunc=sum to do this.
+Print signups_and_visitors. This has been done for you.
+Now pass the additional argument margins=True to the .pivot_table() method to obtain the totals.
+Print signups_and_visitors_total. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Create the DataFrame with the appropriate pivot table: signups_and_visitors
+signups_and_visitors = pd.pivot_table(users, index='weekday',aggfunc=sum)
+
+# Print signups_and_visitors
+print(signups_and_visitors)
+
+# Add in the margins: signups_and_visitors_total 
+signups_and_visitors_total = pd.pivot_table(users, index='weekday', aggfunc=sum, margins=True)
+
+# Print signups_and_visitors_total
+print(signups_and_visitors_total)
