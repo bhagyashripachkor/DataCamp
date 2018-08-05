@@ -1,1 +1,106 @@
 Q1:-
+Group by the 'pclass' column and save the result as by_class.
+Aggregate the 'survived' column of by_class using .count(). Save the result as count_by_class.
+Print count_by_class. This has been done for you.
+Group titanic by the 'embarked' and 'pclass' columns. Save the result as by_mult.
+Aggregate the 'survived' column of by_mult using .count(). Save the result as count_mult.
+Print count_mult. This has been done for you, so hit 'Submit Answer' to view the result.
+
+Solution:-
+# Group titanic by 'pclass'
+by_class = titanic.groupby('pclass')
+
+# Aggregate 'survived' column of by_class by count
+count_by_class = by_class['survived'].count()
+
+# Print count_by_class
+print(count_by_class)
+
+# Group titanic by 'embarked' and 'pclass'
+by_mult = titanic.groupby(['embarked','pclass'])
+
+# Aggregate 'survived' column of by_mult by count
+count_mult = by_mult['survived'].count()
+
+# Print count_mult
+print(count_mult)
+
+Q2:-
+Read life_fname into a DataFrame called life and set the index to 'Country'.
+Read regions_fname into a DataFrame called regions and set the index to 'Country'.
+Group life by the region column of regions and store the result in life_by_region.
+Print the mean over the 2010 column of life_by_region.
+
+Solution:-
+# Read life_fname into a DataFrame: life
+life = pd.read_csv(life_fname, index_col='Country')
+
+# Read regions_fname into a DataFrame: regions
+regions = pd.read_csv(regions_fname, index_col='Country')
+
+# Group life by regions['region']: life_by_region
+life_by_region = life.groupby(regions['region'])
+
+# Print the mean over the '2010' column of life_by_region
+print(life_by_region['2010'].mean())
+
+Q3:-
+Group titanic by 'pclass' and save the result as by_class.
+Select the 'age' and 'fare' columns from by_class and save the result as by_class_sub.
+Aggregate by_class_sub using 'max' and 'median'. You'll have to pass 'max' and 'median' in the form of a list to .agg().
+Use .loc[] to print all of the rows and the column specification ('age','max'). This has been done for you.
+Use .loc[] to print all of the rows and the column specification ('fare','median').
+
+Solution:-
+# Group titanic by 'pclass': by_class
+by_class = titanic.groupby('pclass')
+
+# Select 'age' and 'fare'
+by_class_sub = by_class[['age','fare']]
+
+# Aggregate by_class_sub by 'max' and 'median': aggregated
+aggregated = by_class_sub.agg(['max','median'])
+
+# Print the maximum age in each class
+print(aggregated.loc[:, ('age','max')])
+
+# Print the median fare in each class
+print(aggregated.loc[:,('fare','median')])
+
+Q4:-
+Read 'gapminder.csv' into a DataFrame with index_col=['Year','region','Country']. Sort the index.
+Group gapminder with a level of ['Year','region'] using its level parameter. Save the result as by_year_region.
+Define the function spread which returns the maximum and minimum of an input series. This has been done for you.
+Create a dictionary with 'population':'sum', 'child_mortality':'mean' and 'gdp':spread as aggregator. This has been done for you.
+Use the aggregator dictionary to aggregate by_year_region. Save the result as aggregated.
+Print the last 6 entries of aggregated. This has been done for you, so hit 'Submit Answer' to view the result.
+
+Solution:-
+# Read the CSV file into a DataFrame and sort the index: gapminder
+gapminder = pd.read_csv('gapminder.csv', index_col=['Year','region','Country'])
+
+gapminder = gapminder.sort_index()
+
+# Group gapminder by 'Year' and 'region': by_year_region
+by_year_region = gapminder.groupby(['Year','region'])
+
+# Define the function to compute spread: spread
+def spread(series):
+    return series.max() - series.min()
+
+# Create the dictionary: aggregator
+aggregator = {'population':'sum', 'child_mortality':'mean', 'gdp':spread}
+
+# Aggregate by_year_region using the dictionary: aggregated
+aggregated = by_year_region.agg(aggregator)
+
+# Print the last 6 entries of aggregated 
+print(aggregated.tail(6))
+
+Q5:-
+Read 'sales.csv' into a DataFrame with index_col='Date' and parse_dates=True.
+Create a groupby object with sales.index.strftime('%a') as input and assign it to by_day.
+Aggregate the 'Units' column of by_day with the .sum() method. Save the result as units_sum.
+Print units_sum. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
