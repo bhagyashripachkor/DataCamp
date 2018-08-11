@@ -105,3 +105,103 @@ Apply .sort_values(ascending=False) to rearrange the Series.
 Print the final Series Nsports. This has been done for you, so hit 'Submit Answer' to see the result!
 
 Solution:-
+# Extract all rows for which the 'Edition' is between 1952 & 1988: during_cold_war
+during_cold_war = (medals.Edition >= 1952) & (medals.Edition <= 1988)
+
+# Extract rows for which 'NOC' is either 'USA' or 'URS': is_usa_urs
+is_usa_urs = medals.NOC.isin(['USA','URS'])
+
+# Use during_cold_war and is_usa_urs to create the DataFrame: cold_war_medals
+cold_war_medals = medals.loc[during_cold_war & is_usa_urs]
+
+# Group cold_war_medals by 'NOC'
+country_grouped = cold_war_medals.groupby('NOC')
+
+# Create Nsports
+Nsports = country_grouped['Sport'].nunique().sort_values(ascending=False)
+
+# Print Nsports
+print(Nsports)
+
+Q8:-
+Construct medals_won_by_country using medals.pivot_table().
+The index should be the years ('Edition') & the columns should be country ('NOC')
+The values should be 'Athlete' (which captures every medal regardless of kind) & the aggregation method should be 'count' (which captures the total number of medals won).
+Create cold_war_usa_urs_medals by slicing the pivot table medals_won_by_country. Your slice should contain the editions from years 1952:1988 and only the columns 'USA' & 'URS' from the pivot table.
+Create the Series most_medals by applying the .idxmax() method to cold_war_usa_urs_medals. Be sure to use axis='columns'.
+Print the result of applying .value_counts() to most_medals. The result reported gives the number of times each of the USA or the USSR won more Olympic medals in total than the other between 1952 and 1988.
+
+Solution:-
+# Create the pivot table: medals_won_by_country
+medals_won_by_country = medals.pivot_table(index='Edition', columns='NOC',values='Athlete', aggfunc='count')
+
+# Slice medals_won_by_country: cold_war_usa_urs_medals
+cold_war_usa_urs_medals = medals_won_by_country.loc[1952:1988, ['USA','URS']]
+
+# Create most_medals 
+most_medals = cold_war_usa_urs_medals.idxmax(axis='columns')
+
+# Print most_medals.value_counts()
+print(most_medals.value_counts())
+
+Q9:-
+Create a DataFrame usa with data only for the USA.
+Group usa such that ['Edition', 'Medal'] is the index. Aggregate the count over 'Athlete'.
+Use .unstack() with level='Medal' to reshape the DataFrame usa_medals_by_year.
+Construct a line plot from the final DataFrame usa_medals_by_year. This has been done for you, so hit 'Submit Answer' to see the plot!
+
+Solution:-
+# Create the DataFrame: usa
+usa = medals[medals.NOC == 'USA']
+
+# Group usa by ['Edition', 'Medal'] and aggregate over 'Athlete'
+usa_medals_by_year = usa.groupby(['Edition','Medal'])['Athlete'].count()
+
+# Reshape usa_medals_by_year by unstacking
+usa_medals_by_year = usa_medals_by_year.unstack(level='Medal')
+
+# Plot the DataFrame usa_medals_by_year
+usa_medals_by_year.plot()
+plt.show()
+
+Q10:-
+Create an area plot of usa_medals_by_year. This can be done by using .plot.area().
+
+Solution:-
+# Create the DataFrame: usa
+usa = medals[medals.NOC == 'USA']
+
+# Group usa by 'Edition', 'Medal', and 'Athlete'
+usa_medals_by_year = usa.groupby(['Edition', 'Medal'])['Athlete'].count()
+
+# Reshape usa_medals_by_year by unstacking
+usa_medals_by_year = usa_medals_by_year.unstack(level='Medal')
+
+# Create an area plot of usa_medals_by_year
+usa_medals_by_year.plot.area()
+plt.show()
+
+Q11:-
+Redefine the 'Medal' column of the DataFrame medals as an ordered categorical. To do this, use pd.Categorical() with three keyword arguments:
+values = medals.Medal.
+categories=['Bronze', 'Silver', 'Gold'].
+ordered=True.
+After this, you can verify that the type has changed using medals.info().
+Plot the final DataFrame usa_medals_by_year as an area plot. This has been done for you, so hit 'Submit Answer' to see how the plot has changed!
+
+Solution:-
+# Redefine 'Medal' as an ordered categorical
+medals.Medal = pd.Categorical(values=medals.Medal, categories=['Bronze','Silver','Gold'],ordered=True)
+
+# Create the DataFrame: usa
+usa = medals[medals.NOC == 'USA']
+
+# Group usa by 'Edition', 'Medal', and 'Athlete'
+usa_medals_by_year = usa.groupby(['Edition', 'Medal'])['Athlete'].count()
+
+# Reshape usa_medals_by_year by unstacking
+usa_medals_by_year = usa_medals_by_year.unstack(level='Medal')
+
+# Create an area plot of usa_medals_by_year
+usa_medals_by_year.plot.area()
+plt.show()
