@@ -1,0 +1,162 @@
+Q1:-
+Read the files 'sales-jan-2015.csv', 'sales-feb-2015.csv' and 'sales-mar-2015.csv' into the DataFrames jan, feb, and mar respectively.
+Use parse_dates=True and index_col='Date'.
+Extract the 'Units' column of jan, feb, and mar to create the Series jan_units, feb_units, and mar_units respectively.
+Construct the Series quarter1 by appending feb_units to jan_units and then appending mar_units to the result. Use chained calls to the .append() method to do this.
+Verify that quarter1 has the individual Series stacked vertically. To do this:
+Print the slice containing rows from jan 27, 2015 to feb 2, 2015.
+Print the slice containing rows from feb 26, 2015 to mar 7, 2015.
+Compute and print the total number of units sold from the Series quarter1. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+# Import pandas
+import pandas as pd
+
+# Load 'sales-jan-2015.csv' into a DataFrame: jan
+jan = pd.read_csv('sales-jan-2015.csv',index_col='Date', parse_dates=True)
+
+# Load 'sales-feb-2015.csv' into a DataFrame: feb
+feb = pd.read_csv('sales-feb-2015.csv',index_col='Date', parse_dates=True)
+
+# Load 'sales-mar-2015.csv' into a DataFrame: mar
+mar = pd.read_csv('sales-mar-2015.csv',index_col='Date', parse_dates=True)
+
+# Extract the 'Units' column from jan: jan_units
+jan_units = jan['Units']
+
+# Extract the 'Units' column from feb: feb_units
+feb_units = feb['Units']
+
+# Extract the 'Units' column from mar: mar_units
+mar_units = mar['Units']
+
+# Append feb_units and then mar_units to jan_units: quarter1
+quarter1 = jan_units.append(feb_units).append(mar_units)
+
+# Print the first slice from quarter1
+print(quarter1.loc['jan 27, 2015':'feb 2, 2015'])
+
+# Print the second slice from quarter1
+print(quarter1.loc['feb 26, 2015':'mar 7, 2015'])
+
+# Compute & print total sales in quarter1
+print(quarter1.sum())
+
+Q2:-
+Create an empty list called units. This has been done for you.
+Use a for loop to iterate over [jan, feb, mar]:
+In each iteration of the loop, append the 'Units' column of each DataFrame to units.
+Concatenate the Series contained in the list units into a longer Series called quarter1 using pd.concat().
+Specify the keyword argument axis='rows' to stack the Series vertically.
+Verify that quarter1 has the individual Series stacked vertically by printing slices. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+# Initialize empty list: units
+units = []
+
+# Build the list of Series
+for month in [jan, feb, mar]:
+    units.append(month['Units'])
+
+# Concatenate the list: quarter1
+quarter1 = pd.concat(units,axis='rows')
+
+# Print slices from quarter1
+print(quarter1.loc['jan 27, 2015':'feb 2, 2015'])
+print(quarter1.loc['feb 26, 2015':'mar 7, 2015'])
+
+Q3:-
+Create a 'year' column in the DataFrames names_1881 and names_1981, with values of 1881 and 1981 respectively. Recall that assigning a scalar value to a DataFrame column broadcasts that value throughout.
+Create a new DataFrame called combined_names by appending the rows of names_1981 underneath the rows of names_1881. Specify the keyword argument ignore_index=True to make a new RangeIndex of unique integers for each row.
+Print the shapes of all three DataFrames. This has been done for you.
+Extract all rows from combined_names that have the name 'Morgan'. To do this, use the .loc[] accessor with an appropriate filter. The relevant column of combined_names here is 'name'.
+
+Solution:-
+# Add 'year' column to names_1881 and names_1981
+names_1881['year'] = 1881
+names_1981['year'] = 1981
+
+# Append names_1981 after names_1881 with ignore_index=True: combined_names
+combined_names = names_1881.append(names_1981,ignore_index=True)
+
+# Print shapes of names_1981, names_1881, and combined_names
+print(names_1981.shape)
+print(names_1881.shape)
+print(combined_names.shape)
+
+# Print all rows that contain the name 'Morgan'
+print(combined_names.loc[combined_names['name']=='Morgan'])
+
+Q4:-
+Create a new DataFrame called weather by concatenating the DataFrames weather_max and weather_mean horizontally.
+Pass the DataFrames to pd.concat() as a list and specify the keyword argument axis=1 to stack them horizontally.
+Print the new DataFrame weather.
+
+Solution:-
+# Concatenate weather_max and weather_mean horizontally: weather
+weather = pd.concat([weather_max,weather_mean],axis=1)
+
+# Print weather
+print(weather)
+
+Q5:-
+Iterate over medal_types in the for loop.
+Inside the for loop:
+Create file_name using string interpolation with the loop variable medal. This has been done for you. The expression "%s_top5.csv" % medal evaluates as a string with the value of medal replacing %s in the format string.
+Create the list of column names called columns. This has been done for you.
+Read file_name into a DataFrame called medal_df. Specify the keyword arguments header=0, index_col='Country', and names=columns to get the correct row and column Indexes.
+Append medal_df to medals using the list .append() method.
+Concatenate the list of DataFrames medals horizontally (using axis='columns') to create a single DataFrame called medals. Print it in its entirety.
+
+Solution:-
+for medal in medal_types:
+
+    # Create the file name: file_name
+    file_name = "%s_top5.csv" % medal
+    
+    # Create list of column names: columns
+    columns = ['Country', medal]
+    
+    # Read file_name into a DataFrame: df
+    medal_df = pd.read_csv(file_name, header=0,index_col='Country',names=columns)
+
+    # Append medal_df to medals
+    medals.append(medal_df)
+
+# Concatenate medals horizontally: medals
+medals = pd.concat(medals,axis='columns')
+
+# Print medals
+print(medals)
+
+Q6:-
+Within the for loop:
+Read file_name into a DataFrame called medal_df. Specify the index to be 'Country'.
+Append medal_df to medals.
+Concatenate the list of DataFrames medals into a single DataFrame called medals. Be sure to use the keyword argument keys=['bronze', 'silver', 'gold'] to create a vertically stacked DataFrame with a MultiIndex.
+Print the new DataFrame medals. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+for medal in medal_types:
+
+    file_name = "%s_top5.csv" % medal
+    
+    # Read file_name into a DataFrame: medal_df
+    medal_df = pd.read_csv(file_name,index_col='Country')
+    
+    # Append medal_df to medals
+    medals.append(medal_df)
+    
+# Concatenate medals: medals
+medals = pd.concat(medals,keys=['bronze', 'silver', 'gold'])
+
+# Print medals in entirety
+print(medals)
+
+Q7:-
+Create a new DataFrame medals_sorted with the entries of medals sorted. Use .sort_index(level=0) to ensure the Index is sorted suitably.
+Print the number of bronze medals won by Germany and all of the silver medal data. This has been done for you.
+Create an alias for pd.IndexSlice called idx. A slicer pd.IndexSlice is required when slicing on the inner level of a MultiIndex.
+Slice all the data on medals won by the United Kingdom. To do this, use the .loc[] accessor with idx[:,'United Kingdom'], :.
+
+Solution:-
