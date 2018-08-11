@@ -1,0 +1,107 @@
+Q1:-
+Extract the 'NOC' column from the DataFrame medals and assign the result to country_names. Notice that this Series has repeated entries for every medal (of any type) a country has won in any Edition of the Olympics.
+Create a Series medal_counts by applying .value_counts() to the Series country_names.
+Print the top 15 countries ranked by total number of medals won. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Soltuion:-
+# Select the 'NOC' column of medals: country_names
+country_names = medals['NOC']
+
+# Count the number of medals won by each country: medal_counts
+medal_counts = country_names.value_counts()
+
+# Print top 15 countries ranked by medals
+print(medal_counts.head(15))
+
+Q2:-
+Construct a pivot table counted from the DataFrame medals aggregating by count. Use 'NOC' as the index, 'Athlete' for the values, and 'Medal' for the columns.
+Modify the DataFrame counted by adding a column counted['totals']. The new column 'totals' should contain the result of taking the sum along the columns (i.e., use .sum(axis='columns')).
+Overwrite the DataFrame counted by sorting it with the .sort_values() method. Specify the keyword argument ascending=False.
+Print the first 15 rows of counted using .head(15). This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Construct the pivot table: counted
+counted = medals.pivot_table(index='NOC', values='Athlete', columns='Medal', aggfunc='count')
+
+# Create the new column: counted['totals']
+counted['totals'] = counted.sum(axis='columns')
+
+# Sort counted by the 'totals' column
+counted = counted.sort_values('totals', ascending=False)
+
+# Print the top 15 rows of counted
+print(counted.head(15))
+
+Q3:-
+Select the columns 'Event_gender' and 'Gender'.
+Create a dataframe ev_gen_uniques containing the unique pairs contained in ev_gen.
+Print ev_gen_uniques. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Select columns: ev_gen
+ev_gen = medals[['Event_gender','Gender']]
+
+# Drop duplicate pairs: ev_gen_uniques
+ev_gen_uniques = ev_gen.drop_duplicates()
+
+# Print ev_gen_uniques
+print(ev_gen_uniques)
+
+Q4:-
+Group medals by 'Event_gender' and 'Gender'.
+Create a medal_count_by_gender DataFrame with a group count using the .count() method.
+Print medal_count_by_gender. This has been done for you, so hit 'Submit Answer' to view the result.
+
+Solution:-
+# Group medals by the two columns: medals_by_gender
+medals_by_gender = medals.groupby(['Event_gender','Gender'])
+
+# Create a DataFrame with a group count: medal_count_by_gender
+medal_count_by_gender = medals_by_gender.count()
+
+# Print medal_count_by_gender
+print(medal_count_by_gender)
+
+Q5:-
+Create a Boolean Series with a condition that captures the only row that has medals.Event_gender == 'W' and medals.Gender == 'Men'. Be sure to use the & operator.
+Use the Boolean Series to create a DataFrame called suspect with the suspicious row.
+Print suspect. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Create the Boolean Series: sus
+sus = (medals.Event_gender == 'W') & (medals.Gender == 'Men')
+
+# Create a DataFrame with the suspicious row: suspect
+suspect = medals[sus]
+
+# Print suspect
+print(suspect)
+
+Q6:-
+Group medals by 'NOC'.
+Compute the number of distinct sports in which each country won medals. To do this, select the 'Sport' column from country_grouped and apply .nunique().
+Sort Nsports in descending order with .sort_values() and ascending=False.
+Print the first 15 rows of Nsports. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# Compute the number of distinct sports in which each country won medals: Nsports
+Nsports = country_grouped['Sport'].nunique()
+
+# Sort the values of Nsports in descending order
+Nsports = Nsports.sort_values(ascending=False)
+
+# Print the top 15 rows of Nsports
+print(Nsports.head(15))
+
+Q7:-
+Using medals, create a Boolean Series called during_cold_war that is True when 'Edition' is >= 1952 and <= 1988.
+Using medals, create a Boolean Series called is_usa_urs that is True when 'NOC' is either 'USA' or 'URS'.
+Filter the medals DataFrame using during_cold_war and is_usa_urs to create a new DataFrame called cold_war_medals.
+Group cold_war_medals by 'NOC'.
+Create a Series Nsports from country_grouped using indexing & chained methods:
+Extract the column 'Sport'.
+Use .nunique() to get the number of unique elements in each group;
+Apply .sort_values(ascending=False) to rearrange the Series.
+Print the final Series Nsports. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
