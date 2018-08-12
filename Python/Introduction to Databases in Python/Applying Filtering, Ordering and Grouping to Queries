@@ -1,0 +1,147 @@
+Q1:-
+Import create_engine from sqlalchemy.
+Create an engine to the census database by concatenating the following strings:
+'postgresql+psycopg2://'
+'student:datacamp'
+'@postgresql.csrrinzqubik.us-east-1.rds.amazonaws.com'
+':5432/census'
+Use the .table_names() method on engine to print the table names.
+
+Solution:-
+# Import create_engine function
+from sqlalchemy import create_engine
+
+# Create an engine to the census database
+engine = create_engine('postgresql+psycopg2://student:datacamp@postgresql.csrrinzqubik.us-east-1.rds.amazonaws.com:5432/census')
+
+# Use the .table_names() method on the engine to print the table names
+print(engine.table_names())
+
+Q2:-
+Select all records from the census table by passing in census as a list to select().
+Append a where clause to stmt to return only the records with a state of 'New York'.
+Execute the statement stmt using .execute() and retrieve the results using .fetchall().
+Iterate over results and print the age, sex and pop2008 columns from each record. For example, you can print out the age of result with result.age.
+
+Solution:-
+# Create a select query: stmt
+stmt = select([census])
+
+# Add a where clause to filter the results to only those for New York
+stmt = stmt.where(census.columns.state=='New York')
+
+# Execute the query to retrieve all the data returned: results
+results = connection.execute(stmt).fetchall()
+
+# Loop over the results and print the age, sex, and pop2008
+for result in results:
+    print(result.age, result.sex, result.pop2008)
+
+Q3:-
+Select all records from the census table by passing it in as a list to select().
+Append a where clause to return all the records with a state in the states list. Use in_(states) on census.columns.state to do this.
+Loop over the ResultProxy connection.execute(stmt) and print the state and pop2000 columns from each record.
+
+Solution:-
+# Create a query for the census table: stmt
+stmt = select([census])
+
+# Append a where clause to match all the states in_ the list states
+stmt = stmt.where(census.columns.state.in_(states))
+
+# Loop over the ResultProxy and print the state and its population in 2000
+for rec in connection.execute(stmt):
+    print(rec.state, rec.pop2000)
+
+Q4:-
+Import and_ from the sqlalchemy module.
+Select all records from the census table.
+Append a where clause to filter all the records whose state is 'California', and whose sex is not 'M'.
+Iterate over the ResultProxy and print the age and sex columns from each record.
+
+Solution:-
+# Import and_
+from sqlalchemy import and_
+
+# Build a query for the census table: stmt
+stmt = select([census])
+
+# Append a where clause to select only non-male records from California using and_
+stmt = stmt.where(
+    # The state of California with a non-male sex
+    and_(census.columns.state == 'California',
+         census.columns.sex != 'M'
+         )
+)
+
+# Loop over the ResultProxy printing the age and sex
+for r in connection.execute(stmt):
+    print(r.age, r.sex)
+
+Q5:-
+Select all records of the state column from the census table. To do this, pass census.columns.state as a list to select().
+Append an .order_by() to sort the result output by the state column.
+Execute stmt using the .execute() method on connection and retrieve all the results using .fetchall().
+Print the first 10 rows of results.
+
+Solution:-
+# Build a query to select the state column: stmt
+stmt = select([census.columns.state])
+
+# Order stmt by the state column
+stmt = stmt.order_by(census.columns.state)
+
+# Execute the query and store the results: results
+results = connection.execute(stmt).fetchall()
+
+# Print the first 10 results
+print(results[:10])
+
+Q6:-
+Import desc from the sqlalchemy module.
+Select all records of the state column from the census table.
+Append an .order_by() to sort the result output by the state column in descending order. Save the result as rev_stmt.
+Execute rev_stmt using connection.execute() and fetch all the results with .fetchall(). Save them as rev_results.
+Print the first 10 rows of rev_results.
+
+Solution:-
+# Import desc
+from sqlalchemy import desc
+
+# Build a query to select the state column: stmt
+stmt = select([census.columns.state])
+
+# Order stmt by state in descending order: rev_stmt
+rev_stmt = stmt.order_by(desc(census.columns.state))
+
+# Execute the query and store the results: rev_results
+rev_results = connection.execute(rev_stmt).fetchall()
+
+# Print the first 10 rev_results
+print(rev_results[:10])
+
+Q7:-
+Select all records of the state and age columns from the census table.
+Use .order_by() to sort the output of the state column in ascending order and age in descending order. (NOTE: desc is already imported).
+Execute stmt using the .execute() method on connection and retrieve all the results using .fetchall().
+Print the first 20 results.
+
+Solution:-
+# Build a query to select state and age: stmt
+stmt = select([census.columns.state, census.columns.age])
+
+# Append order by to ascend by state and descend by age
+stmt = stmt.order_by(census.columns.state, desc(census.columns.age))
+
+# Execute the statement and store all the records: results
+results = connection.execute(stmt).fetchall()
+
+# Print the first 20 results
+print(results[:20])
+
+Q8:-
+Build a select statement to count the distinct values in the state field of census.
+Execute stmt to get the count and store the results as distinct_state_count.
+Print the value of distinct_state_count.
+
+Solution:-
