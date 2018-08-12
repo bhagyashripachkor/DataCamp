@@ -23,3 +23,123 @@ In your call to pd.merge(), you will have to specify the parameters left_on and 
 Print the new DataFrame combined.
 
 Solution:-
+# Merge revenue & managers on 'city' & 'branch': combined
+combined = pd.merge(revenue,managers,left_on='city',right_on='branch')
+
+# Print combined
+print(combined)
+
+Q3:-
+Create a column called 'state' in the DataFrame revenue, consisting of the list ['TX','CO','IL','CA'].
+Create a column called 'state' in the DataFrame managers, consisting of the list ['TX','CO','CA','MO'].
+Merge the DataFrames revenue and managers using three columns :'branch_id', 'city', and 'state'. Pass them in as a list to the on paramater of pd.merge().
+
+Solution:-
+# Add 'state' column to revenue: revenue['state']
+revenue['state'] = ['TX','CO','IL','CA']
+
+# Add 'state' column to managers: managers['state']
+managers['state'] = ['TX','CO','CA','MO']
+
+# Merge revenue & managers on 'branch_id', 'city', & 'state': combined
+combined = pd.merge(revenue,managers,on=['branch_id', 'city', 'state'])
+
+# Print combined
+print(combined)
+
+Q4:-
+Execute a right merge using pd.merge() with revenue and sales to yield a new DataFrame revenue_and_sales.
+Use how='right' and on=['city', 'state'].
+Print the new DataFrame revenue_and_sales. This has been done for you.
+Execute a left merge with sales and managers to yield a new DataFrame sales_and_managers.
+Use how='left', left_on=['city', 'state'], and right_on=['branch', 'state'].
+Print the new DataFrame sales_and_managers. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+# Merge revenue and sales: revenue_and_sales
+revenue_and_sales = pd.merge(revenue,sales ,how='right',on=['city','state'])
+
+# Print revenue_and_sales
+print(revenue_and_sales)
+
+# Merge sales and managers: sales_and_managers
+sales_and_managers = pd.merge(sales,managers,how='left',left_on=['city','state'],right_on=['branch','state'])
+
+# Print sales_and_managers
+print(sales_and_managers)
+
+Q5:-
+Merge sales_and_managers with revenue_and_sales. Store the result as merge_default.
+Print merge_default. This has been done for you.
+Merge sales_and_managers with revenue_and_sales using how='outer'. Store the result as merge_outer.
+Print merge_outer. This has been done for you.
+Merge sales_and_managers with revenue_and_sales only on ['city','state'] using an outer join. Store the result as merge_outer_on and hit 'Submit Answer' to see what the merged DataFrames look like!
+
+Solution:-
+# Perform the first merge: merge_default
+merge_default = pd.merge(sales_and_managers,revenue_and_sales)
+
+# Print merge_default
+print(merge_default)
+
+# Perform the second merge: merge_outer
+merge_outer = pd.merge(sales_and_managers,revenue_and_sales,how='outer')
+
+# Print merge_outer
+print(merge_outer)
+
+# Perform the third merge: merge_outer_on
+merge_outer_on = pd.merge(sales_and_managers,revenue_and_sales,on=['city','state'],how='outer')
+
+# Print merge_outer_on
+print(merge_outer_on)
+
+Q6:-
+Perform an ordered merge on austin and houston using pd.merge_ordered(). Store the result as tx_weather.
+Print tx_weather. You should notice that the rows are sorted by the date but it is not possible to tell which observation came from which city.
+Perform another ordered merge on austin and houston.
+This time, specify the keyword arguments on='date' and suffixes=['_aus','_hus'] so that the rows can be distinguished. Store the result as tx_weather_suff.
+Print tx_weather_suff to examine its contents. This has been done for you.
+Perform a third ordered merge on austin and houston.
+This time, in addition to the on and suffixes parameters, specify the keyword argument fill_method='ffill' to use forward-filling to replace NaN entries with the most recent non-null entry, and hit 'Submit Answer' to examine the contents of the merged DataFrames!
+
+Solution:-
+# Perform the first ordered merge: tx_weather
+tx_weather = pd.merge_ordered(austin,houston)
+
+# Print tx_weather
+print(tx_weather)
+
+# Perform the second ordered merge: tx_weather_suff
+tx_weather_suff = pd.merge_ordered(austin,houston,on='date',suffixes=['_aus','_hus'])
+
+# Print tx_weather_suff
+print(tx_weather_suff)
+
+# Perform the third ordered merge: tx_weather_ffill
+tx_weather_ffill = pd.merge_ordered(austin,houston,on='date',suffixes=['_aus','_hus'],fill_method='ffill')
+
+# Print tx_weather_ffill
+print(tx_weather_ffill)
+
+Q7:-
+Merge auto and oil using pd.merge_asof() with left_on='yr' and right_on='Date'. Store the result as merged.
+Print the tail of merged. This has been done for you.
+Resample merged using 'A' (annual frequency), and on='Date'. Select [['mpg','Price']] and aggregate the mean. Store the result as yearly.
+Hit Submit Answer to examine the contents of yearly and yearly.corr(), which shows the Pearson correlation between the resampled 'Price' and 'mpg'.
+
+Solution:-
+# Merge auto and oil: merged
+merged = pd.merge_asof(auto,oil,left_on='yr',right_on='Date')
+
+# Print the tail of merged
+print(merged.tail())
+
+# Resample merged: yearly
+yearly = merged.resample('A',on='Date')[['mpg','Price']].mean()
+
+# Print yearly
+print(yearly)
+
+# print yearly.corr()
+print(yearly.corr())
