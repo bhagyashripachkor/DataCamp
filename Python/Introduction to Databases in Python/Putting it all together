@@ -1,0 +1,168 @@
+Q1:-
+Import create_engine and MetaData from sqlalchemy.
+Create an engine to the chapter 5 database by using 'sqlite:///chapter5.sqlite' as the connection string.
+Create a MetaData object as metadata.
+
+Solution:-
+# Import create_engine, MetaData
+from sqlalchemy import create_engine,MetaData
+
+# Define an engine to connect to chapter5.sqlite: engine
+engine = create_engine('sqlite:///chapter5.sqlite')
+
+# Initialize MetaData: metadata
+metadata = MetaData()
+
+Q2:-
+Import Table, Column, String, and Integer from sqlalchemy.
+Define a census table with the following columns:
+'state' - String - length of 30
+'sex' - String - length of 1
+'age' - Integer
+'pop2000' - Integer
+'pop2008' - Integer
+Create the table in the database using the metadata and engine.
+
+Solution:-
+# Import Table, Column, String, and Integer
+from sqlalchemy import Table, Column,String,Integer
+
+# Build a census table: census
+census = Table('census', metadata,
+               Column('state', String(30)),
+               Column('sex', String(1)),
+               Column('age',Integer()),
+               Column('pop2000', Integer()),
+               Column('pop2008', Integer()))
+
+# Create the table in the database
+metadata.create_all(engine)
+
+Q3:-
+Create an empty list called values_list.
+Iterate over the rows of csv_reader with a for loop, creating a dictionary called data for each row and append it to values_list.
+Within the for loop, row will be a list whose entries are 'state' , 'sex', 'age', 'pop2000' and 'pop2008' (in that order).
+
+Solution:-
+# Create an empty list: values_list
+values_list = []
+
+# Iterate over the rows
+for row in csv_reader:
+    # Create a dictionary with the values
+    data = {'state': row[0], 'sex': row[1], 'age':row[2], 'pop2000': row[3],
+            'pop2008': row[4]}
+    # Append the dictionary to the values list
+    values_list.append(data)
+
+Q4:-
+Import insert from sqlalchemy.
+Build an insert statement for the census table.
+Execute the statement stmt along with values_list. You will need to pass them both as arguments to connection.execute().
+Print the rowcount attribute of results.
+
+Solution:-
+# Import insert
+from sqlalchemy import insert
+
+# Build insert statement: stmt
+stmt = insert(census)
+
+# Use values_list to insert data: results
+results = connection.execute(stmt, values_list)
+
+# Print rowcount
+print(results.rowcount)
+
+Q5:-
+Import select from sqlalchemy.
+Build a statement to:
+Select sex from the census table.
+Select the average age weighted by the population in 2008 (pop2008). See the example given in the assignment text to see how you can do this. Label this average age calculation as 'average_age'.
+Group the query by sex.
+Execute the query and store it as results.
+Loop over results and print the sex and average_age for each record.
+
+Solution:-
+# Import select
+from sqlalchemy import select
+
+# Calculate weighted average age: stmt
+stmt = select([census.columns.sex,
+               (func.sum(census.columns.pop2008 * census.columns.age) /
+                func.sum(census.columns.pop2008)).label('average_age')
+               ])
+
+# Group by sex
+stmt = stmt.group_by(census.columns.sex)
+
+# Execute the query and store the results: results
+results = connection.execute(stmt).fetchall()
+
+# Print the average age by sex
+for row in results:
+    print(row.sex, row.average_age)
+
+Q6:-
+Import case, cast and Float from sqlalchemy.
+Define a statement to select state and the percentage of females in 2000.
+Inside func.sum(), use case() to select females (using the sex column) from pop2000. Remember to specify else_=0 if the sex is not 'F'.
+To get the percentage, divide the number of females in the year 2000 by the overall population in 2000. Cast the divisor - census.columns.pop2000 - to Float before multiplying by 100.
+Group the query by state.
+Execute the query and store it as results.
+Print state and percent_female for each record. This has been done for you, so hit 'Submit Answer' to see the result.
+
+Solution:-
+# import case, cast and Float from sqlalchemy
+from sqlalchemy import case, cast, Float
+
+# Build a query to calculate the percentage of females in 2000: stmt
+stmt = select([census.columns.state,
+    (func.sum(
+        case([
+            (census.columns.sex == 'F', census.columns.pop2000)
+        ], else_=0)) /
+     cast(func.sum(census.columns.pop2000), Float) * 100).label('percent_female')
+])
+
+# Group By state
+stmt = stmt.group_by(census.columns.state)
+
+# Execute the query and store the results: results
+results = connection.execute(stmt).fetchall()
+
+# Print the percentage
+for result in results:
+    print(result.state, result.percent_female)
+
+Q7:-
+Build a statement to:
+Select state.
+Calculate the difference in population between 2008 (pop2008) and 2000 (pop2000).
+Group the query by census.columns.state using the .group_by() method on stmt.
+Order by 'pop_change' in descending order using the .order_by() method with the desc() function on 'pop_change'.
+Limit the query to the top 10 states using the .limit() method.
+Execute the query and store it as results.
+Print the state and the population change for each result. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+# Build query to return state name and population difference from 2008 to 2000
+stmt = select([census.columns.state,
+     (census.columns.pop2008-census.columns.pop2000).label('pop_change')
+])
+
+# Group by State
+stmt = stmt.group_by(census.columns.state)
+
+# Order by Population Change
+stmt = stmt.order_by(desc('pop_change'))
+
+# Limit to top 10
+stmt = stmt.limit(10)
+
+# Use connection to execute the statement and fetch all results
+results = connection.execute(stmt).fetchall()
+
+# Print the state and population change for each record
+for result in results:
+    print('{}:{}'.format(result.state, result.pop_change))
