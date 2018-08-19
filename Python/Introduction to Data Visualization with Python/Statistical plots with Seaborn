@@ -1,0 +1,189 @@
+Q1:-
+Import matplotlib.pyplot and seaborn using the standard names plt and sns respectively.
+Plot a linear regression between the 'weight' column (on the x-axis) and the 'hp' column (on the y-axis) from the DataFrame auto.
+Display the plot as usual with plt.show(). This has been done for you, so hit 'Submit Answer' to view the plot.
+
+Solution:-
+# Import plotting modules
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Plot a linear regression between 'weight' and 'hp'
+sns.lmplot(x='weight', y='hp', data=auto)
+
+# Display the plot
+plt.show()
+
+Q2:-
+Import matplotlib.pyplot and seaborn using the standard names plt and sns respectively.
+Generate a green residual plot of the regression between 'hp' (on the x-axis) and 'mpg' (on the y-axis). You will need to specify the additional data and color parameters.
+Display the plot as usual using plt.show(). This has been done for you, so hit 'Submit Answer' to view the plot.
+
+Solution:-
+# Import plotting modules
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Generate a green residual plot of the regression between 'hp' and 'mpg'
+sns.residplot(x='hp', y='mpg', data=auto, color='green')
+
+# Display the plot
+plt.show()
+
+Q3:-
+Modify the call to plt.scatter() to plot auto['weight'] on the x-axis and auto['mpg'] on the y-axis, filled with red circles and with label='data'.
+Plot a linear regression line of 'order 1' between 'weight' and 'mpg' in 'blue' without the scatter points.
+You need to specify the label and color parameters, in addition to scatter=None.
+Plot a linear regression line of 'order 2' between 'weight' and 'mpg' in 'green' without the scatter points.
+To force a higher order regression, you need to specify the order parameter. Here, it should be 2.
+Add a legend to the 'upper right'.
+
+Solution:-
+# Generate a scatter plot of 'weight' and 'mpg' using red circles
+plt.scatter(auto['weight'], auto['mpg'], label='data', color='red', marker='o')
+
+# Plot in blue a linear regression of order 1 between 'weight' and 'mpg'
+sns.regplot(x='weight', y='mpg', data=auto, scatter=None, color='blue', label='order 1')
+
+# Plot in green a linear regression of order 2 between 'weight' and 'mpg'
+sns.regplot(x='weight',y='mpg',data=auto,scatter=None,color='green',label='order 2',order=2)
+
+# Add a legend and display the plot
+plt.legend(loc='upper right')
+plt.show()
+
+Q4:-
+Plot a linear regression between 'weight' and 'hp' grouped by 'origin'.
+Use the keyword argument hue to group rows with the categorical column 'origin'.
+Use the keyword argument palette to specify the 'Set1' palette for coloring the distinct groups.
+
+Solution:-
+# Plot a linear regression between 'weight' and 'hp', with a hue of 'origin' and palette of 'Set1'
+sns.lmplot(x='weight',y='hp',hue='origin',palette='Set1',data=auto)
+
+# Display the plot
+plt.show()
+
+Q5:-
+Plot linear regressions of 'hp' (on the y-axis) versus 'weight' (on the x-axis) grouped row-wise by 'origin' from DataFrame auto.
+Use the keyword argument row to group observations with the categorical column 'origin' in subplots organized in rows.
+
+Solution:-
+# Plot linear regressions between 'weight' and 'hp' grouped row-wise by 'origin'
+sns.lmplot(x='weight',y='hp',data=auto,row='origin')
+
+# Display the plot
+plt.show()
+
+Q6:-
+In the first row of subplots, make a strip plot showing distribution of 'hp' values grouped horizontally by 'cyl'.
+In the second row of subplots, make a second strip plot with improved readability. In particular, you'll call sns.stripplot() again, this time adding jitter=True and decreasing the point size to 3 using the size parameter.
+
+Solution:-
+# Make a strip plot of 'hp' grouped by 'cyl'
+plt.subplot(2,1,1)
+sns.stripplot(x='cyl', y='hp', data=auto)
+
+# Make the strip plot again using jitter and a smaller point size
+plt.subplot(2,1,2)
+sns.stripplot(x='cyl', y='hp', data=auto, size=3, jitter=True)
+
+# Display the plot
+plt.show()
+
+Q7:-
+In the first row of subplots, make a swarm plot showing distribution of 'hp' values grouped horizontally by 'cyl'.
+In the second row of subplots, make a second swarm plot with horizontal orientation (i.e., grouped vertically by 'cyl' with 'hp' value spread out horizontally) with points colored by 'origin'. You need to specify the orient parameter to explicitly set the horizontal orientation.
+
+Solution:-
+# Generate a swarm plot of 'hp' grouped horizontally by 'cyl'  
+plt.subplot(2,1,1)
+sns.swarmplot(x='cyl',y='hp',data=auto)
+
+# Generate a swarm plot of 'hp' grouped vertically by 'cyl' with a hue of 'origin'
+plt.subplot(2,1,2)
+sns.swarmplot(x='hp',y='cyl',data=auto,hue='origin',orient='h')
+
+# Display the plot
+plt.show()
+
+Q8:-
+In the first row of subplots, make a violin plot showing the distribution of 'hp' grouped by 'cyl'.
+In the second row of subplots, make a second violin plot without the inner annotations (by specifying inner=None) and with the color 'lightgray'.
+In the second row of subplots, overlay a strip plot with jitter and a point size of 1.5.
+
+Solution:-
+# Generate a violin plot of 'hp' grouped horizontally by 'cyl'
+plt.subplot(2,1,1)
+sns.violinplot(x='cyl', y='hp', data=auto)
+
+# Generate the same violin plot again with a color of 'lightgray' and without inner annotations
+plt.subplot(2,1,2)
+sns.violinplot(x='cyl', y='hp', data=auto,inner=None,color='lightgray')
+
+# Overlay a strip plot on the violin plot
+sns.stripplot(x='cyl', y='hp', data=auto,jitter=True,size=1.5)
+
+# Display the plot
+plt.show()
+
+Q9:-
+Use sns.jointplot() to visualize the joint variation of the columns 'hp' (on the x-axis) and 'mpg' (on the y-axis) from the DataFrame auto.
+
+Solution:-
+# Generate a joint plot of 'hp' and 'mpg'
+sns.jointplot(x='hp',y='mpg',data=auto)
+
+# Display the plot
+plt.show()
+
+Q10:-
+Create a hexbin plot of the joint distribution between 'hp' and 'mpg'.
+
+Solution:-
+# Generate a joint plot of 'hp' and 'mpg' using a hexbin plot
+sns.jointplot(x='hp',y='mpg',data=auto,kind='hex')
+
+# Display the plot
+plt.show()
+
+Q11:-
+Print the first five rows of the DataFrame auto. This is done for you.
+Plot the joint distributions between columns from the entire DataFrame auto.
+
+Solution:-
+# Print the first 5 rows of the DataFrame
+print(auto.head())
+
+# Plot the pairwise joint distributions from the DataFrame 
+sns.pairplot(auto)
+
+# Display the plot
+plt.show()
+
+Q12:-
+Plot the pairwise joint distributions separated by continent of origin and display the regressions.
+
+Solution:-
+# Print the first 5 rows of the DataFrame
+print(auto.head())
+
+# Plot the pairwise joint distributions grouped by 'origin' along with regression lines
+sns.pairplot(auto,hue='origin',kind='reg')
+
+# Display the plot
+plt.show()
+
+Q13:-
+Print the covariance matrix cov_matrix to examine its contents and labels. This has been done for you.
+Plot the covariance matrix cov_matrix using sns.heatmap().
+
+Solution:-
+# Print the covariance matrix
+print(cov_matrix)
+
+# Visualize the covariance matrix using a heatmap
+sns.heatmap(cov_matrix)
+
+# Display the heatmap
+plt.show()
