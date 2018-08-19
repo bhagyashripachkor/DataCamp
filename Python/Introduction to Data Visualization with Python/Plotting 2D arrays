@@ -93,3 +93,168 @@ plt.title('Winter')
 plt.tight_layout()
 plt.show()
 
+Q4:-
+Generate a two-dimensional histogram to view the joint variation of the mpg and hp arrays.
+Put hp along the horizontal axis and mpg along the vertical axis.
+Specify 20 by 20 rectangular bins with the bins argument.
+Specify the region covered with the optional range argument so that the plot samples hp between 40 and 235 on the x-axis and mpg between 8 and 48 on the y-axis.
+Add a color bar to the histogram.
+
+Solution:-
+# Generate a 2-D histogram
+plt.hist2d(hp,mpg,bins=(20,20),range=((40,235),(8,48)))
+
+# Add a color bar to the histogram
+plt.colorbar()
+
+# Add labels, title, and display the plot
+plt.xlabel('Horse power [hp]')
+plt.ylabel('Miles per gallon [mpg]')
+plt.title('hist2d() plot')
+plt.show()
+
+Q5:-
+Generate a two-dimensional histogram with plt.hexbin() to view the joint variation of the mpg and hp vectors.
+Put hp along the horizontal axis and mpg along the vertical axis.
+Specify a hexagonal tesselation with 15 hexagons across the x-direction and 12 hexagons across the y-direction using gridsize.
+Specify the rectangular region covered with the optional extent argument: use hp from 40 to 235 and mpg from 8 to 48.
+Add a color bar to the histogram.
+
+Solution:-
+# Generate a 2d histogram with hexagonal bins
+plt.hexbin(hp,mpg,gridsize=(15,12),extent=(40,235,8,48))
+
+           
+# Add a color bar to the histogram
+plt.colorbar()
+
+# Add labels, title, and display the plot
+plt.xlabel('Horse power [hp]')
+plt.ylabel('Miles per gallon [mpg]')
+plt.title('hexbin() plot')
+plt.show()
+
+Q6:-
+Load the file '480px-Astronaut-EVA.jpg' into an array.
+Print the shape of the img array. How wide and tall do you expect the image to be?
+Prepare img for display using plt.imshow().
+Turn off the axes using plt.axis('off').
+
+Solution:-
+# Load the image into an array: img
+img = plt.imread('480px-Astronaut-EVA.jpg')
+
+# Print the shape of the image
+print(img.shape)
+
+# Display the image
+plt.imshow(img)
+
+# Hide the axes
+plt.axis('off')
+plt.show()
+
+Q7:-
+Print the shape of the existing image array.
+Compute the sum of the red, green, and blue channels of img by using the .sum() method with axis=2.
+Print the shape of the intensity array to verify this is the shape you expect.
+Plot intensity with plt.imshow() using a 'gray' colormap.
+Add a colorbar to the figure.
+
+Solution:-
+# Load the image into an array: img
+img = plt.imread('480px-Astronaut-EVA.jpg')
+
+# Print the shape of the image
+print(img.shape)
+
+# Compute the sum of the red, green and blue channels: intensity
+intensity = img.sum(axis=2)
+
+# Print the shape of the intensity
+print(intensity.shape)
+
+# Display the intensity with a colormap of 'gray'
+plt.imshow(intensity,cmap='gray')
+
+# Add a colorbar
+plt.colorbar()
+
+# Hide the axes and show the figure
+plt.axis('off')
+plt.show()
+
+Q8:-
+Display img in the top left subplot with horizontal extent from -1 to 1, vertical extent from -1 to 1, and aspect ratio 0.5.
+Display img in the top right subplot with horizontal extent from -1 to 1, vertical extent from -1 to 1, and aspect ratio 1.
+Display img in the bottom left subplot with horizontal extent from -1 to 1, vertical extent from -1 to 1, and aspect ratio 2.
+Display img in the bottom right subplot with horizontal extent from -2 to 2, vertical extent from -1 to 1, and aspect ratio 2.
+
+Solution:-
+# Load the image into an array: img
+img = plt.imread('480px-Astronaut-EVA.jpg')
+
+# Specify the extent and aspect ratio of the top left subplot
+plt.subplot(2,2,1)
+plt.title('extent=(-1,1,-1,1),\naspect=0.5') 
+plt.xticks([-1,0,1])
+plt.yticks([-1,0,1])
+plt.imshow(img, extent=(-1,1,-1,1), aspect=0.5)
+
+# Specify the extent and aspect ratio of the top right subplot
+plt.subplot(2,2,2)
+plt.title('extent=(-1,1,-1,1),\naspect=1')
+plt.xticks([-1,0,1])
+plt.yticks([-1,0,1])
+plt.imshow(img, extent=(-1,1,-1,1), aspect=1)
+
+# Specify the extent and aspect ratio of the bottom left subplot
+plt.subplot(2,2,3)
+plt.title('extent=(-1,1,-1,1),\naspect=2')
+plt.xticks([-1,0,1])
+plt.yticks([-1,0,1])
+plt.imshow(img, extent=(-1,1,-1,1), aspect=2)
+
+# Specify the extent and aspect ratio of the bottom right subplot
+plt.subplot(2,2,4)
+plt.title('extent=(-2,2,-1,1),\naspect=2')
+plt.xticks([-2,-1,0,1,2])
+plt.yticks([-1,0,1])
+plt.imshow(img,extent=(-2,2,-1,1),aspect=2)
+
+# Improve spacing and display the figure
+plt.tight_layout()
+plt.show()
+
+Q9:-
+Use the methods .min() and .max() to save the minimum and maximum values from the array image as pmin and pmax respectively.
+Create a new 2-D array rescaled_image using 256*(image-pmin)/(pmax-pmin)
+Plot the original array image in the top subplot of a 2×1 grid.
+Plot the new array rescaled_image in the bottom subplot of a 2×1 grid.
+
+Solution:-
+# Load the image into an array: image
+image = plt.imread('640px-Unequalized_Hawkes_Bay_NZ.jpg')
+
+# Extract minimum and maximum values from the image: pmin, pmax
+pmin, pmax = image.min(), image.max()
+print("The smallest & largest pixel intensities are %d & %d." % (pmin, pmax))
+
+# Rescale the pixels: rescaled_image
+rescaled_image = 256*(image - pmin) / (pmax - pmin)
+print("The rescaled smallest & largest pixel intensities are %.1f & %.1f." % 
+      (rescaled_image.min(), rescaled_image.max()))
+
+# Display the original image in the top subplot
+plt.subplot(2,1,1)
+plt.title('original image')
+plt.axis('off')
+plt.imshow(image)
+
+# Display the rescaled image in the bottom subplot
+plt.subplot(2,1,2)
+plt.title('rescaled image')
+plt.axis('off')
+plt.imshow(rescaled_image)
+
+plt.show()
