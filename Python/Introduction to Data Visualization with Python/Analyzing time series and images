@@ -107,4 +107,72 @@ plt.xticks(rotation=45)
 plt.title('2007/11-2008/04')
 plt.show()
 
+Q5:-
+In the top left subplot, plot the 30-day moving averages series mean_30 in 'green'.
+In the top right subplot, plot the 75-day moving averages series mean_75 in 'red'.
+In the bottom left subplot, plot the 125-day moving averages series mean_125 in 'magenta'.
+In the bottom right subplot, plot the 250-day moving averages series mean_250 in 'cyan'.
 
+Solution:-
+# Plot the 30-day moving average in the top left subplot in green
+plt.subplot(2,2,1)
+plt.plot(mean_30, color='green')
+plt.plot(aapl, 'k-.')
+plt.xticks(rotation=60)
+plt.title('30d averages')
+
+# Plot the 75-day moving average in the top right subplot in red
+plt.subplot(2,2,2)
+plt.plot(mean_75, 'red')
+plt.plot(aapl, 'k-.')
+plt.xticks(rotation=60)
+plt.title('75d averages')
+
+# Plot the 125-day moving average in the bottom left subplot in magenta
+plt.subplot(2, 2, 3)
+plt.plot(mean_125,color='magenta')
+plt.plot(aapl, 'k-.')
+plt.xticks(rotation=60)
+plt.title('125d averages')
+
+# Plot the 250-day moving average in the bottom right subplot in cyan
+plt.subplot(2,2,4)
+plt.plot(mean_250, color='cyan')
+plt.plot(aapl, 'k-.')
+plt.xticks(rotation=60)
+plt.title('250d averages')
+
+# Display the plot
+plt.show()
+
+Q6:-
+Produce a single plot with four curves overlayed:
+the series std_30 in 'red' (with corresponding label '30d').
+the series std_75 in 'cyan' (with corresponding label '75d').
+the series std_125 in 'green' (with corresponding label '125d').
+the series std_250 in 'magenta' (with corresponding label '250d').
+Add a legend to the 'upper left' corner of the plot.
+
+Solution:-
+# Plot std_30 in red
+plt.plot(std_30, color='red', label='30d')
+
+# Plot std_75 in cyan
+plt.plot(std_75, color='cyan', label='75d')
+
+# Plot std_125 in green
+plt.plot(std_125, color='green', label='125d')
+
+# Plot std_250 in magenta
+plt.plot(std_250, color='magenta',label='250d')
+
+# Add a legend to the upper left
+plt.legend(loc='upper left')
+
+# Add a title
+plt.title('Moving standard deviations')
+
+# Display the plot
+plt.show()
+
+Q7:-
