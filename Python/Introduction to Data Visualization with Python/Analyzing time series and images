@@ -176,3 +176,82 @@ plt.title('Moving standard deviations')
 plt.show()
 
 Q7:-
+Load data from the file '640px-Unequalized_Hawkes_Bay_NZ.jpg' into an array.
+Display image with a color map of 'gray' in the top subplot.
+Flatten image into a 1-D array using the .flatten() method.
+Display a histogram of pixels in the bottom subplot.
+Use histogram options bins=64, range=(0,256), and normed=True to control numerical binning and the vertical scale.
+Use plotting options color='red' and alpha=0.4 to tailor the color and transparency.
+
+Solution:-
+image = plt.imread('640px-Unequalized_Hawkes_Bay_NZ.jpg')
+
+# Display image in top subplot using color map 'gray'
+plt.subplot(2,1,1)
+plt.title('Original image')
+plt.axis('off')
+plt.imshow(image, cmap='gray')
+
+# Flatten the image into 1 dimension: pixels
+pixels = image.flatten()
+
+# Display a histogram of the pixels in the bottom subplot
+plt.subplot(2,1,2)
+plt.xlim((0,255))
+plt.title('Normalized histogram')
+plt.hist(pixels, bins=64, color='red', alpha=0.4, range=(0, 256), normed=True)
+
+# Display the plot
+plt.show()
+
+Q8:-
+First, use plt.hist() to plot the histogram of the 1-D array pixels in the bottom subplot.
+Use the histogram options bins=64, range=(0,256), and normed=False.
+Use the plotting options alpha=0.4 and color='red' to make the overlayed plots easier to see.
+Second, use plt.twinx() to overlay plots with different vertical scales on a common horizontal axis.
+Third, call plt.hist() again to overlay the CDF in the bottom subplot.
+Use the histogram options bins=64, range=(0,256), and normed=True.
+This time, also use cumulative=True to compute and display the CDF.
+Also, use alpha=0.4 and color='blue' to make the overlayed plots easier to see.
+
+Solution:-
+# Load the image into an array: image
+image = plt.imread('640px-Unequalized_Hawkes_Bay_NZ.jpg')
+
+# Display image in top subplot using color map 'gray'
+plt.subplot(2,1,1)
+plt.imshow(image, cmap='gray')
+plt.title('Original image')
+plt.axis('off')
+
+# Flatten the image into 1 dimension: pixels
+pixels = image.flatten()
+
+# Display a histogram of the pixels in the bottom subplot
+plt.subplot(2,1,2)
+pdf = plt.hist(pixels, bins=64, range=(0,256), normed=False,
+               color='red', alpha=0.4)
+plt.grid('off')
+
+# Use plt.twinx() to overlay the CDF in the bottom subplot
+plt.twinx()
+
+# Display a cumulative histogram of the pixels
+cdf = plt.hist(pixels, bins=64, range=(0,256),
+               normed=True, cumulative=True,
+               color='blue', alpha=0.4)
+               
+# Specify x-axis range, hide axes, add title and display plot
+plt.xlim((0,256))
+plt.grid('off')
+plt.title('PDF & CDF (original image)')
+plt.show()
+
+Q9:-
+Use the NumPy array method .reshape() to create a 2-D array new_image from the 1-D array new_pixels. The resulting new_image should have the same shape as image.shape.
+Display new_image with a 'gray' color map to display the sharper, equalized image.
+Plot the PDF of new_pixels in 'red'.
+Use plt.twinx() to overlay plots with different vertical scales on a common horizontal axis.
+Plot the CDF of new_pixels in 'blue'.
+
+Solution:-
