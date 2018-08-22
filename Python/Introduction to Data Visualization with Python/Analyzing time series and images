@@ -255,3 +255,117 @@ Use plt.twinx() to overlay plots with different vertical scales on a common hori
 Plot the CDF of new_pixels in 'blue'.
 
 Solution:-
+# Load the image into an array: image
+image = plt.imread('640px-Unequalized_Hawkes_Bay_NZ.jpg')
+
+# Flatten the image into 1 dimension: pixels
+pixels = image.flatten()
+
+# Generate a cumulative histogram
+cdf, bins, patches = plt.hist(pixels, bins=256, range=(0,256), normed=True, cumulative=True)
+new_pixels = np.interp(pixels, bins[:-1], cdf*255)
+
+# Reshape new_pixels as a 2-D array: new_image
+new_image = new_pixels.reshape(image.shape)
+
+# Display the new image with 'gray' color map
+plt.subplot(2,1,1)
+plt.title('Equalized image')
+plt.axis('off')
+plt.imshow(new_image,cmap='gray')
+
+# Generate a histogram of the new pixels
+plt.subplot(2,1,2)
+pdf = plt.hist(new_pixels, bins=64, range=(0,256), normed=False,
+               color='red', alpha=0.4)
+plt.grid('off')
+
+# Use plt.twinx() to overlay the CDF in the bottom subplot
+plt.twinx()
+plt.xlim((0,256))
+plt.grid('off')
+
+# Add title
+plt.title('PDF & CDF (equalized image)')
+
+# Generate a cumulative histogram of the new pixels
+cdf = plt.hist(new_pixels, bins=64, range=(0,256),
+               cumulative=True, normed=True,
+               color='blue', alpha=0.4)
+plt.show()
+
+Q10:-
+Display image in the top subplot of a 2×1 subplot grid. Don't use a colormap here.
+Flatten the 2-D arrays red, green, and blue into 1-D arrays.
+Display three histograms in the bottom subplot: one for red_pixels, one for green_pixels, and one for blue_pixels. For each, use 64 bins and specify a translucency of alpha=0.2.
+
+Solution:-
+# Load the image into an array: image
+image = plt.imread('hs-2004-32-b-small_web.jpg')
+
+# Display image in top subplot
+plt.subplot(2,1,1)
+plt.title('Original image')
+plt.axis('off')
+plt.imshow(image)
+
+# Extract 2-D arrays of the RGB channels: red, blue, green
+red, green, blue = image[:,:,0], image[:,:,1], image[:,:,2]
+
+# Flatten the 2-D arrays of the RGB channels into 1-D
+red_pixels = red.flatten()
+blue_pixels = blue.flatten()
+green_pixels = green.flatten()
+
+# Overlay histograms of the pixels of each color in the bottom subplot
+plt.subplot(2,1,2)
+plt.title('Histograms from color image')
+plt.xlim((0,256))
+plt.hist(red_pixels, bins=64, normed=True, color='red', alpha=0.2)
+plt.hist(blue_pixels, bins=64, normed=True, color='blue', alpha=0.2)
+plt.hist(green_pixels, bins=64, normed=True, color='green', alpha=0.2)
+
+# Display the plot
+plt.show()
+
+Q11:-
+Make a 2-D histogram in the top left subplot showing the joint variation of red_pixels (on the x-axis) and green_pixels (on the y-axis). Use bins=(32,32) to control binning.
+Make a 2-D histogram in the top right subplot showing the joint variation of green_pixels (on the x-axis) and blue_pixels (on the y-axis). Use bins=(32,32) to control binning.
+Make a 2-D histogram in the bottom left subplot showing the joint variation of blue_pixels (on the x-axis) and red_pixels (on the y-axis). Use bins=(32,32) to control binning.
+
+Solution:-
+# Load the image into an array: image
+image = plt.imread('hs-2004-32-b-small_web.jpg')
+
+# Extract RGB channels and flatten into 1-D array
+red, blue, green = image[:,:,0], image[:,:,1], image[:,:,2]
+red_pixels = red.flatten()
+blue_pixels = blue.flatten()
+green_pixels = green.flatten()
+
+# Generate a 2-D histogram of the red and green pixels
+plt.subplot(2,2,1)
+plt.grid('off') 
+plt.xticks(rotation=60)
+plt.xlabel('red')
+plt.ylabel('green')
+plt.hist2d(red_pixels,green_pixels,bins=(32,32))
+
+# Generate a 2-D histogram of the green and blue pixels
+plt.subplot(2,2,2)
+plt.grid('off')
+plt.xticks(rotation=60)
+plt.xlabel('green')
+plt.ylabel('blue')
+plt.hist2d(green_pixels,blue_pixels,bins=(32,32))
+
+# Generate a 2-D histogram of the blue and red pixels
+plt.subplot(2,2,3)
+plt.grid('off')
+plt.xticks(rotation=60)
+plt.xlabel('blue')
+plt.ylabel('red')
+plt.hist2d(blue_pixels,red_pixels,bins=(32,32))
+
+# Display the plot
+plt.show()
