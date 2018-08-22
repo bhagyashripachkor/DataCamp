@@ -1,1 +1,69 @@
 Q1:-
+Import the figure function from bokeh.plotting, and the output_file and show functions from bokeh.io.
+Create the figure p with figure(). It has two parameters: x_axis_label and y_axis_label.
+Add a circle glyph to the figure p using the function p.circle() where the inputs are, in order, the x-axis data and y-axis data.
+Use the output_file() function to specify the name 'fert_lit.html' for the output file.
+Create and display the output file using show() and passing in the figure p.
+
+Solution:-
+# Import figure from bokeh.plotting
+from bokeh.plotting import figure
+
+# Import output_file and show from bokeh.io
+from bokeh.io import output_file, show
+
+# Create the figure: p
+p = figure(x_axis_label='fertility (children per woman)', y_axis_label='female_literacy (% population)')
+
+# Add a circle glyph to the figure p
+p.circle(fertility,female_literacy)
+
+# Call the output_file() function and specify the name of the file
+output_file('fert_lit.html')
+
+# Display the plot
+show(p)
+
+Q2:-
+Create the figure p with the figure() function. It has two parameters: x_axis_label and y_axis_label.
+Add a circle glyph to the figure p using the function p.circle() where the inputs are the x and y data from Latin America: fertility_latinamerica and female_literacy_latinamerica.
+Add an x glyph to the figure p using the function p.x() where the inputs are the x and y data from Africa: fertility_africa and female_literacy_africa.
+The code to create, display, and specify the name of the output file has been written for you, so after adding the x glyph, hit 'Submit Answer' to view the figure.
+
+Solution:-
+# Create the figure: p
+p = figure(x_axis_label='fertility', y_axis_label='female_literacy (% population)')
+
+# Add a circle glyph to the figure p
+p.circle(fertility_latinamerica,female_literacy_latinamerica)
+
+# Add an x glyph to the figure p
+p.x(fertility_africa,female_literacy_africa)
+
+# Specify the name of the file
+output_file('fert_lit_separate.html')
+
+# Display the plot
+show(p)
+
+Q3:-
+Using the Latin America data (fertility_latinamerica and female_literacy_latinamerica), add a blue circle glyph of size=10 and alpha=0.8 to the figure p. To do this, you will need to specify the color, size and alpha keyword arguments inside p.circle().
+Using the Africa data (fertility_africa and female_literacy_africa), add a red circle glyph of size=10 and alpha=0.8 to the figure p.
+
+Solution:-
+# Create the figure: p
+p = figure(x_axis_label='fertility (children per woman)', y_axis_label='female_literacy (% population)')
+
+# Add a blue circle glyph to the figure p
+p.circle(fertility_latinamerica, female_literacy_latinamerica, color='blue', size=10, alpha=0.8)
+
+# Add a red circle glyph to the figure p
+p.circle(fertility_africa,female_literacy_africa,color='red',size=10,alpha=0.8)
+
+# Specify the name of the file
+output_file('fert_lit_separate_colors.html')
+
+# Display the plot
+show(p)
+
+Q4:-
