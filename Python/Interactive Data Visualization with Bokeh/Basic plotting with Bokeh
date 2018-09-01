@@ -67,3 +67,200 @@ output_file('fert_lit_separate_colors.html')
 show(p)
 
 Q4:-
+Import the figure function from bokeh.plotting.
+Create a figure p using the figure() function with x_axis_type set to 'datetime'. The other two parameters are x_axis_label and y_axis_label.
+Plot date and price along the x- and y-axes using p.line().
+
+Solution:-
+# Import figure from bokeh.plotting
+from bokeh.plotting import figure
+
+# Create a figure with x_axis_type="datetime": p
+p = figure(x_axis_type="datetime", x_axis_label='Date', y_axis_label='US Dollars')
+
+# Plot date along the x axis and price along the y axis
+p.line(date,price)
+
+# Specify the name of the output file and show the result
+output_file('line.html')
+show(p)
+
+Q5:-
+Plot date along the x-axis and price along the y-axis with p.line().
+With date on the x-axis and price on the y-axis, use p.circle() to add a 'white' circle glyph of size 4. To do this, you will need to specify the fill_color and size arguments.
+
+Solution:-
+# Import figure from bokeh.plotting
+from bokeh.plotting import figure
+
+# Create a figure with x_axis_type='datetime': p
+p = figure(x_axis_type='datetime', x_axis_label='Date', y_axis_label='US Dollars')
+
+# Plot date along the x-axis and price along the y-axis
+p.line(date,price)
+
+# With date on the x-axis and price on the y-axis, add a white circle glyph of size 4
+p.circle(date, price, fill_color='white', size=4)
+
+# Specify the name of the output file and show the result
+output_file('line.html')
+show(p)
+
+Q6:-
+Create a list of the longitude positions for each state as x. This has already been done for you.
+Create a list of the latitude positions for each state as y. The variable names for the latitude positions are az_lats, co_lats, nm_lats, and ut_lats.
+Use p.patches() to add the patches glyph to the figure p. Supply the x and y lists as arguments along with a line_color of 'white'.
+
+Solution:-
+# Create a list of az_lons, co_lons, nm_lons and ut_lons: x
+x = [az_lons, co_lons, nm_lons, ut_lons]
+
+# Create a list of az_lats, co_lats, nm_lats and ut_lats: y
+y = [az_lats, co_lats, nm_lats, ut_lats]
+
+# Add patches to figure p with line_color=white for x and y
+p.patches(x,y,line_color='white')
+
+# Specify the name of the output file and show the result
+output_file('four_corners.html')
+show(p)
+
+Q7:-
+Import numpy as np.
+Create an array x using np.linspace() with 0, 5, and 100 as inputs.
+Create an array y using np.cos() with x as input.
+Add circles at x and y using p.circle().
+
+Solution:-
+# Import numpy as np
+import numpy as np
+
+# Create array using np.linspace: x
+x = np.linspace(0,5,100)
+
+# Create array using np.cos: y
+y = np.cos(x)
+
+# Add circles at x and y
+p.circle(x,y)
+
+# Specify the name of the output file and show the result
+output_file('numpy.html')
+show(p)
+
+Q8:-
+Import pandas as pd.
+Use the read_csv() function of pandas to read in 'auto.csv' and store it in the DataFrame df.
+Import figure from bokeh.plotting.
+Use the figure() function to create a figure p with the x-axis labeled 'HP' and the y-axis labeled 'MPG'.
+Plot mpg (on the y-axis) vs hp (on the x-axis) by color using p.circle(). Note that the x-axis should be specified before the y-axis inside p.circle(). You will need to use Pandas DataFrame indexing to pass in the columns. For example, to access the color column, you can use df['color'], and then pass it in as an argument to the color parameter of p.circle(). Also specify a size of 10.
+
+Solution:-
+# Import pandas as pd
+import pandas as pd
+
+# Read in the CSV file: df
+df = pd.read_csv('auto.csv')
+
+# Import figure from bokeh.plotting
+from bokeh.plotting import figure
+
+# Create the figure: p
+p = figure(x_axis_label='HP', y_axis_label='MPG')
+
+# Plot mpg vs hp by color
+p.circle(df['hp'],df['mpg'],color=df['color'],size=10)
+
+# Specify the name of the output file and show the result
+output_file('auto-df.html')
+show(p)
+
+Q9:-
+Import the ColumnDataSource class from bokeh.plotting.
+Use the ColumnDataSource() function to make a new ColumnDataSource object called source from the DataFrame df.
+Use p.circle() to plot circle glyphs of size=8 on the figure p with 'Year' on the x-axis and 'Time' on the y-axis. Be sure to also specify source=source and color='color' so that the ColumnDataSource object is used and each glyph is colored by the color column.
+
+Solution:-
+# Import the ColumnDataSource class from bokeh.plotting
+from bokeh.plotting import ColumnDataSource
+
+# Import the ColumnDataSource class from bokeh.plotting
+from bokeh.plotting import ColumnDataSource
+
+# Create a ColumnDataSource: source
+source = ColumnDataSource(df)
+
+# Add circle glyphs to the figure p
+p.circle(x='Year', y='Time', color='color', size=8, source=source)
+
+# Specify the name of the output file and show the result
+output_file('sprint.html')
+show(p)
+
+Q10:-
+Create a figure p with an x-axis label of 'Year', y-axis label of 'Time', and the 'box_select' tool. To add the 'box_select' tool, you have to specify the keyword argument tools='box_select' inside the figure() function.
+Now that you have added 'box_select' to p, add in circle glyphs with p.circle() such that the selected glyphs are red and non-selected glyphs are transparent blue. This can be done by specifying 'red' as the argument to selection_color and 0.1 to nonselection_alpha. Remember to also pass in the arguments for the x ('Year'), y ('Time'), and source parameters of p.circle().
+Click 'Submit Answer' to output the file and show the figure.
+
+Solution:-
+# Create a figure with the "box_select" tool: p
+p = figure(x_axis_label = 'Year', y_axis_label='Time', tools='box_select')
+
+# Add circle glyphs to the figure p with the selected and non-selected properties
+p.circle(x='Year', y='Time', source=source, selection_color='red', nonselection_alpha=0.1)
+
+# Specify the name of the output file and show the result
+output_file('selection_glyph.html')
+show(p)
+
+Q11:-
+Import HoverTool from bokeh.models.
+Add a circle glyph to the existing figure p for x and y with a size of 10, fill_color of 'grey', alpha of 0.1, line_color of None, hover_fill_color of 'firebrick', hover_alpha of 0.5, and hover_line_color of 'white'.
+Use the HoverTool() function to create a HoverTool called hover with tooltips=None and mode='vline'.
+Add the HoverTool hover to the figure p using the p.add_tools() function.
+
+Solution:-
+# import the HoverTool
+from bokeh.models import HoverTool
+
+# Add circle glyphs to figure p
+p.circle(x, y, size=10,
+         fill_color='grey', alpha=0.1, line_color=None,
+         hover_fill_color='firebrick', hover_alpha=0.5,
+         hover_line_color='white')
+
+# Create a HoverTool: hover
+hover = HoverTool(tooltips=None, mode='vline')
+
+# Add the hover tool to the figure p
+p.add_tools(hover)
+
+# Specify the name of the output file and show the result
+output_file('hover_glyph.html')
+show(p)
+
+Q12:-
+Import CategoricalColorMapper from bokeh.models.
+Convert the DataFrame df to a ColumnDataSource called source. This has already been done for you.
+Make a CategoricalColorMapper object called color_mapper with the CategoricalColorMapper() function. It has two parameters here: factors and palette.
+Add a circle glyph to the figure p to plot 'mpg' (on the y-axis) vs 'weight' (on the x-axis). Remember to pass in source and 'origin' as arguments to source and legend. For the color parameter, use dict(field='origin', transform=color_mapper).
+
+Solution:-
+#Import CategoricalColorMapper from bokeh.models
+from bokeh.models import CategoricalColorMapper
+
+# Convert df to a ColumnDataSource: source
+source = ColumnDataSource(df)
+
+# Make a CategoricalColorMapper object: color_mapper
+color_mapper = CategoricalColorMapper(factors=['Europe', 'Asia', 'US'],
+                                      palette=['red', 'green', 'blue'])
+
+# Add a circle glyph to the figure p
+p.circle(x='weight',y='mpg', source=source,
+            color=dict(field='origin', transform=color_mapper),
+            legend='origin')
+
+# Specify the name of the output file and show the result
+output_file('colormap.html')
+show(p)
