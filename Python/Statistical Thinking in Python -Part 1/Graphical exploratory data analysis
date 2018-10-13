@@ -1,0 +1,92 @@
+Q1:-
+Import matplotlib.pyplot and seaborn as their usual aliases (plt and sns).
+Use seaborn to set the plotting defaults.
+Plot a histogram of the Iris versicolor petal lengths using plt.hist() and the provided NumPy array versicolor_petal_length.
+Show the histogram using plt.show().
+
+Solution:-
+# Import plotting modules
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# Set default Seaborn style
+sns.set()
+
+# Plot histogram of versicolor petal lengths
+plt.hist(versicolor_petal_length)
+
+# Show histogram
+plt.show()
+
+Q2:-
+Label the axes. Don't forget that you should always include units in your axis labels. Your y-axis label is just 'count'. Your x-axis label is 'petal length (cm)'. The units are essential!
+Display the plot constructed in the above steps using plt.show().
+
+Solution:-
+# Plot histogram of versicolor petal lengths
+_ = plt.hist(versicolor_petal_length)
+
+# Label axes
+plt.xlabel('petal length (cm)')
+plt.ylabel('count')
+
+# Show histogram
+plt.show()
+
+Q3:-
+Import numpy as np. This gives access to the square root function, np.sqrt().
+Determine how many data points you have using len().
+Compute the number of bins using the square root rule.
+Convert the number of bins to an integer using the built in int() function.
+Generate the histogram and make sure to use the bins keyword argument.
+Hit 'Submit Answer' to plot the figure and see the fruit of your labors!
+
+Solution:-
+# Import numpy
+import numpy as np
+
+# Compute number of data points: n_data
+n_data = len(versicolor_petal_length)
+
+# Number of bins is the square root of number of data points: n_bins
+n_bins = np.sqrt(n_data)
+
+# Convert number of bins to integer: n_bins
+n_bins = int(n_bins)
+
+# Plot the histogram
+plt.hist(versicolor_petal_length, bins= n_bins)
+
+# Label axes
+_ = plt.xlabel('petal length (cm)')
+_ = plt.ylabel('count')
+
+# Show histogram
+plt.show()
+
+Q4:-
+In the IPython Shell, inspect the DataFrame df using df.head(). This will let you identify which column names you need to pass as the x and y keyword arguments in your call to sns.swarmplot().
+Use sns.swarmplot() to make a bee swarm plot from the DataFrame containing the Fisher iris data set, df. The x-axis should contain each of the three species, and the y-axis should contain the petal lengths.
+Label the axes.
+Show your plot.
+
+Solution:-
+# Create bee swarm plot with Seaborn's default settings
+df.head()
+
+# Label the axes
+sns.swarmplot(x = 'species', y = 'petal length (cm)' , data = df)
+_ = plt.xlabel('species')
+_ = plt.ylabel('petal length (cm)')
+# Show the plot
+plt.show()
+
+Q5:-
+Define a function with the signature ecdf(data). Within the function definition,
+Compute the number of data points, n, using the len() function.
+The x-values are the sorted data. Use the np.sort() function to perform the sorting.
+The y data of the ECDF go from 1/n to 1 in equally spaced increments. You can construct this using np.arange(). Remember, however, that the end value in np.arange() is not inclusive. Therefore, np.arange() will need to go from 1 to n+1. Be sure to divide this by n.
+The function returns the values x and y.
+
+Solution:-
