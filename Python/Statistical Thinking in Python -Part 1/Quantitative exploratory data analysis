@@ -1,0 +1,4 @@
+Q1:-
+Compute the mean petal length of Iris versicolor from Anderson's classic data set. The variable versicolor_petal_length is provided in your namespace. Assign the mean to mean_length_vers.
+
+Solution:-
