@@ -45,4 +45,77 @@ Don't forget to label your axes!
 Display the figure using the normal call.
 
 Solution:-
+# Create box plot with Seaborn's default settings
+_ = sns.boxplot(x='species', y='petal length (cm)', data=df)
+
+# Label the axes
+_ = plt.xlabel('species')
+
+_ = plt.ylabel('petal length (cm)')
+
+
+# Show the plot
+plt.show()
+
+Q5:-
+Create an array called differences that is the difference between the petal lengths (versicolor_petal_length) and the mean petal length. The variable versicolor_petal_length is already in your namespace as a NumPy array so you can take advantage of NumPy's vectorized operations.
+Square each element in this array. For example, x**2 squares each element in the array x. Store the result as diff_sq.
+Compute the mean of the elements in diff_sq using np.mean(). Store the result as variance_explicit.
+Compute the variance of versicolor_petal_length using np.var(). Store the result as variance_np.
+Print both variance_explicit and variance_np in one print call to make sure they are consistent.
+
+Solution:-
+# Array of differences to mean: differences
+differences = np.array(versicolor_petal_length - np.mean(versicolor_petal_length))
+
+# Square the differences: diff_sq
+diff_sq = differences **2
+
+# Compute the mean square difference: variance_explicit
+variance_explicit = np.mean(diff_sq)
+
+# Compute the variance using NumPy: variance_np
+variance_np = np.var(versicolor_petal_length)
+
+# Print the results
+print(variance_explicit,variance_np)
+
+Q6:-
+Compute the variance of the data in the versicolor_petal_length array using np.var() and store it in a variable called variance.
+
+Print the square root of this value.
+
+Print the standard deviation of the data in the versicolor_petal_length array using np.std().
+
+Solution:-
+# Compute the variance: variance
+variance = np.var(versicolor_petal_length)
+
+# Print the square root of the variance
+print(np.sqrt(variance))
+
+# Print the standard deviation
+print(np.std(versicolor_petal_length))
+
+Q7:-
+Use plt.plot() with the appropriate keyword arguments to make a scatter plot of versicolor petal length (x-axis) versus petal width (y-axis). The variables versicolor_petal_length and versicolor_petal_width are already in your namespace. Do not forget to use the marker='.' and linestyle='none' keyword arguments.
+Label the axes.
+Display the plot.
+
+Solution:-
+# Make a scatter plot
+_ = plt.plot(versicolor_petal_length,versicolor_petal_width,marker='.',linestyle='none')
+
+
+# Label the axes
+_ = plt.xlabel('versicolor petal length')
+
+_ = plt.ylabel('versicolor petal width')
+
+
+
+# Show the result
+plt.show()
+
+Q8:-
 
