@@ -118,4 +118,44 @@ _ = plt.ylabel('versicolor petal width')
 plt.show()
 
 Q8:-
+Use np.cov() to compute the covariance matrix for the petal length (versicolor_petal_length) and width (versicolor_petal_width) of I. versicolor.
+Print the covariance matrix.
+Extract the covariance from entry [0,1] of the covariance matrix. Note that by symmetry, entry [1,0] is the same as entry [0,1].
+Print the covariance.
+
+Solution:-
+# Compute the covariance matrix: covariance_matrix
+covariance_matrix = np.cov(versicolor_petal_length, versicolor_petal_width)
+
+# Print covariance matrix
+print(covariance_matrix)
+
+# Extract covariance of length and width of petals: petal_cov
+petal_cov = covariance_matrix[0,1]
+
+# Print the length/width covariance
+print(petal_cov)
+
+Q9:-
+Define a function with signature pearson_r(x, y).
+Use np.corrcoef() to compute the correlation matrix of x and y (pass them to np.corrcoef() in that order).
+The function returns entry [0,1] of the correlation matrix.
+Compute the Pearson correlation between the data in the arrays versicolor_petal_length and versicolor_petal_width. Assign the result to r.
+Print the result.
+
+Solution:-
+def pearson_r(x, y):
+    """Compute Pearson correlation coefficient between two arrays."""
+    # Compute correlation matrix: corr_mat
+    corr_mat = np.corrcoef(x,y)
+
+
+    # Return entry [0,1]
+    return corr_mat[0,1]
+
+# Compute Pearson correlation coefficient for I. versicolor: r
+r = pearson_r(versicolor_petal_length,versicolor_petal_width)
+
+# Print the result
+print(r)
 
