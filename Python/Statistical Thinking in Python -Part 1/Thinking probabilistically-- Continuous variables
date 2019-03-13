@@ -4,3 +4,119 @@ Plot a histograms of each of the samples; for each, use 100 bins, also using the
 Hit 'Submit Answer' to make a legend, showing which standard deviations you used, and show your plot! There is no need to label the axes because we have not defined what is being described by the Normal distribution; we are just looking at shapes of PDFs.
 
 Solution:-
+# Draw 100000 samples from Normal distribution with stds of interest: samples_std1, samples_std3, samples_std10
+samples_std1 = np.random.normal(20,1,100000)
+samples_std3 = np.random.normal(20,3,100000)
+samples_std10 = np.random.normal(20,10,100000)
+
+
+# Make histograms
+plt.hist(samples_std1,bins=100, normed=True,histtype='step')
+plt.hist(samples_std3,bins=100, normed=True,histtype='step')
+plt.hist(samples_std10,bins=100, normed=True,histtype='step')
+
+# Make a legend, set limits and show plot
+_ = plt.legend(('std = 1', 'std = 3', 'std = 10'))
+plt.ylim(-0.01, 0.42)
+plt.show()
+
+Q2:-
+Use your ecdf() function to generate x and y values for CDFs: x_std1, y_std1, x_std3, y_std3 and x_std10, y_std10, respectively.
+Plot all three CDFs as dots (do not forget the marker and linestyle keyword arguments!).
+Hit submit to make a legend, showing which standard deviations you used, and to show your plot. There is no need to label the axes because we have not defined what is being described by the Normal distribution; we are just looking at shapes of CDFs.
+
+Solution:-
+# Generate CDFs
+x_std1, y_std1 = ecdf(samples_std1)
+x_std3, y_std3 = ecdf(samples_std3)
+x_std10, y_std10 = ecdf(samples_std10)
+
+# Plot CDFs
+_ = plt.plot(x_std1, y_std1 , marker='.', linestyle='none')
+_ = plt.plot(x_std3, y_std3 , marker='.', linestyle='none')
+_ = plt.plot(x_std10, y_std10 , marker='.', linestyle='none')
+
+
+# Make a legend and show the plot
+_ = plt.legend(('std = 1', 'std = 3', 'std = 10'), loc='lower right')
+plt.show()
+
+Q3:-
+Compute mean and standard deviation of Belmont winners' times with the two outliers removed. The NumPy array belmont_no_outliers has these data.
+Take 10,000 samples out of a normal distribution with this mean and standard deviation using np.random.normal().
+Compute the CDF of the theoretical samples and the ECDF of the Belmont winners' data, assigning the results to x_theor, y_theor and x, y, respectively.
+Hit submit to plot the CDF of your samples with the ECDF, label your axes and show the plot.
+
+Solution:-
+# Compute mean and standard deviation: mu, sigma
+mu, sigma = np.mean(belmont_no_outliers), np.std(belmont_no_outliers)
+
+
+# Sample out of a normal distribution with this mu and sigma: samples
+samples = np.random.normal(mu,sigma,10000)
+
+# Get the CDF of the samples and of the data
+x_theor, y_theor = ecdf(samples)
+x,y = ecdf(belmont_no_outliers)
+
+
+# Plot the CDFs and show the plot
+_ = plt.plot(x_theor, y_theor)
+_ = plt.plot(x, y, marker='.', linestyle='none')
+_ = plt.xlabel('Belmont winning time (sec.)')
+_ = plt.ylabel('CDF')
+plt.show()
+
+Q4:-
+Take 1,000,000 samples from the normal distribution using the np.random.normal() function. The mean mu and standard deviation sigma are already loaded into the namespace of your IPython instance.
+Compute the fraction of samples that have a time less than or equal to Secretariat's time of 144 seconds.
+
+Solution:-
+# Take a million samples out of the Normal distribution: samples
+samples = np.random.normal(mu,sigma,1000000)
+
+# Compute the fraction that are faster than 144 seconds: prob
+prob = sum(samples <= 144)/1000000
+
+# Print the result
+print('Probability of besting Secretariat:', prob)
+
+Q5:-
+Define a function with call signature successive_poisson(tau1, tau2, size=1) that samples the waiting time for a no-hitter and a hit of the cycle.
+Draw waiting times tau1 (size number of samples) for the no-hitter out of an exponential distribution and assign to t1.
+Draw waiting times tau2 (size number of samples) for hitting the cycle out of an exponential distribution and assign to t2.
+The function returns the sum of the waiting times for the two events.
+
+Solution:-
+def successive_poisson(tau1, tau2, size=1):
+    """Compute time for arrival of 2 successive Poisson processes."""
+    # Draw samples out of first exponential distribution: t1
+    t1 = np.random.exponential(tau1, size)
+
+    # Draw samples out of second exponential distribution: t2
+    t2 = np.random.exponential(tau2, size)
+
+    return t1 + t2
+ 
+ Q6:-
+ Use your successive_poisson() function to draw 100,000 out of the distribution of waiting times for observing a no-hitter and a hitting of the cycle.
+Plot the PDF of the waiting times using the step histogram technique of a previous exercise. Don't forget the necessary keyword arguments. You should use bins=100, normed=True, and histtype='step'.
+Label the axes.
+Show your plot.
+
+Solution:-
+# Draw samples of waiting times: waiting_times
+waiting_times = waiting_times = np.array(successive_poisson(764, 715, 100000))
+
+# Make the histogram
+plt.hist(waiting_times, bins=100,normed=True,histtype='step')
+
+
+# Label axes
+plt.xlabel('x')
+plt.ylabel('y')
+
+
+# Show the plot
+plt.show()
+  
