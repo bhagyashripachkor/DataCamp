@@ -1,1 +1,52 @@
 Q1:-
+Seed the random number generator with 42.
+Compute the mean time (in units of number of games) between no-hitters.
+Draw 100,000 samples from an Exponential distribution with the parameter you computed from the mean of the inter-no-hitter times.
+Plot the theoretical PDF using plt.hist(). Remember to use keyword arguments bins=50, normed=True, and histtype='step'. Be sure to label your axes.
+Show your plot.
+
+Solution:-
+# Seed random number generator
+np.random.seed(42)
+
+# Compute mean no-hitter time: tau
+tau = np.mean(nohitter_times)
+
+# Draw out of an exponential distribution with parameter tau: inter_nohitter_time
+inter_nohitter_time = np.random.exponential(tau, 100000)
+
+# Plot the PDF and label axes
+_ = plt.hist(inter_nohitter_time,
+             bins=50, normed=True, histtype='step')
+_ = plt.xlabel('Games between no-hitters')
+_ = plt.ylabel('PDF')
+
+# Show the plot
+plt.show()
+
+Q2:-
+# Create an ECDF from real data: x, y
+x, y = ecdf(nohitter_times)
+
+# Create a CDF from theoretical samples: x_theor, y_theor
+x_theor, y_theor = ecdf(inter_nohitter_time)
+
+# Overlay the plots
+plt.plot(x_theor, y_theor)
+plt.plot(x, y, marker='.', linestyle='none')
+
+# Margins and axis labels
+plt.margins(0.02)
+plt.xlabel('Games between no-hitters')
+plt.ylabel('CDF')
+
+# Show the plot
+plt.show()
+
+Q3:-
+Take 10000 samples out of an Exponential distribution with parameter τ1/2 = tau/2.
+Take 10000 samples out of an Exponential distribution with parameter τ2 = 2*tau.
+Generate CDFs from these two sets of samples using your ecdf() function.
+Add these two CDFs as lines to your plot. This has been done for you, so hit 'Submit Answer' to view the plot!
+
+Solution:-
