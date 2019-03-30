@@ -50,3 +50,145 @@ Generate CDFs from these two sets of samples using your ecdf() function.
 Add these two CDFs as lines to your plot. This has been done for you, so hit 'Submit Answer' to view the plot!
 
 Solution:-
+# Plot the theoretical CDFs
+plt.plot(x_theor, y_theor)
+plt.plot(x, y, marker='.', linestyle='none')
+plt.margins(0.02)
+plt.xlabel('Games between no-hitters')
+plt.ylabel('CDF')
+
+# Take samples with half tau: samples_half
+samples_half = np.random.exponential(tau/2,10000)
+
+# Take samples with double tau: samples_double
+samples_double = np.random.exponential(2*tau,10000)
+
+# Generate CDFs from these samples
+x_half, y_half = ecdf(samples_half)
+x_double, y_double = ecdf(samples_double)
+
+# Plot these CDFs as lines
+_ = plt.plot(x_half, y_half)
+_ = plt.plot(x_double, y_double)
+
+# Show the plot
+plt.show()
+
+Q4:-
+Plot fertility (y-axis) versus illiteracy (x-axis) as a scatter plot.
+Set a 2% margin.
+Compute and print the Pearson correlation coefficient between illiteracy and fertility.
+
+Solution:-
+# Plot the illiteracy rate versus fertility
+_ = plt.plot(illiteracy, fertility, marker='.', linestyle='none')
+
+# Set the margins and label axes
+plt.margins(0.02)
+_ = plt.xlabel('percent illiterate')
+_ = plt.ylabel('fertility')
+
+# Show the plot
+plt.show()
+
+# Show the Pearson correlation coefficient
+print(pearson_r(illiteracy, fertility))
+
+Q5:-
+Compute the slope and intercept of the regression line using np.polyfit(). Remember, fertility is on the y-axis and illiteracy on the x-axis.
+Print out the slope and intercept from the linear regression.
+To plot the best fit line, create an array x that consists of 0 and 100 using np.array(). Then, compute the theoretical values of y based on your regression parameters. I.e., y = a * x + b.
+Plot the data and the regression line on the same plot. Be sure to label your axes.
+Hit 'Submit Answer' to display your plot.
+
+Solution:-
+# Plot the illiteracy rate versus fertility
+_ = plt.plot(illiteracy, fertility, marker='.', linestyle='none')
+plt.margins(0.02)
+_ = plt.xlabel('percent illiterate')
+_ = plt.ylabel('fertility')
+
+# Perform a linear regression using np.polyfit(): a, b
+a, b = np.polyfit(illiteracy,fertility,1)
+
+# Print the results to the screen
+print('slope =', a, 'children per woman / percent illiterate')
+print('intercept =', b, 'children per woman')
+
+# Make theoretical line to plot
+x = np.array([0,100])
+y = a * x + b
+
+# Add regression line to your plot
+_ = plt.plot(x, y)
+
+# Draw the plot
+plt.show()
+
+Q6:-
+Specify the values of the slope to compute the RSS. Use np.linspace() to get 200 points in the range between 0 and 0.1. For example, to get 100 points in the range between 0 and 0.5, you could use np.linspace() like so: np.linspace(0, 0.5, 100).
+Initialize an array, rss, to contain the RSS using np.empty_like() and the array you created above. The empty_like() function returns a new array with the same shape and type as a given array (in this case, a_vals).
+Write a for loop to compute the sum of RSS of the slope. Hint: the RSS is given by np.sum((y_data - a * x_data - b)**2). The variable b you computed in the last exercise is already in your namespace. Here, fertility is the y_data and illiteracy the x_data.
+Plot the RSS (rss) versus slope (a_vals).
+
+Solution:-
+# Specify slopes to consider: a_vals
+a_vals = np.linspace(0,0.1,200)
+
+# Initialize sum of square of residuals: rss
+rss = np.empty_like(a_vals)
+
+# Compute sum of square of residuals for each value of a_vals
+for i, a in enumerate(a_vals):
+    rss[i] = np.sum((fertility - a*illiteracy - b)**2)
+
+# Plot the RSS
+plt.plot(a_vals, rss, '-')
+plt.xlabel('slope (children per woman / percent illiterate)')
+plt.ylabel('sum of square of residuals')
+
+plt.show()
+
+Q7:-
+Compute the parameters for the slope and intercept using np.polyfit(). The Anscombe data are stored in the arrays x and y.
+Print the slope a and intercept b.
+Generate theoretical x and y data from the linear regression. Your x array, which you can create with np.array(), should consist of 3 and 15. To generate the y data, multiply the slope by x_theor and add the intercept.
+Plot the Anscombe data as a scatter plot and then plot the theoretical line. Remember to include the marker='.' and linestyle='none' keyword arguments in addition to x and y when to plot the Anscombe data as a scatter plot. You do not need these arguments when plotting the theoretical line.
+
+Solution:-
+# Perform linear regression: a, b
+a, b = np.polyfit(x,y,1)
+
+# Print the slope and intercept
+print(a, b)
+
+# Generate theoretical x and y data: x_theor, y_theor
+x_theor = np.array([3, 15])
+y_theor = a * x_theor + b
+
+# Plot the Anscombe data and theoretical line
+_ = plt.plot(x,y,marker='.',linestyle='none')
+_ = plt.plot(x_theor,y_theor)
+
+# Label the axes
+plt.xlabel('x')
+plt.ylabel('y')
+
+# Show the plot
+plt.show()
+
+Q7:-
+Write a for loop to do the following for each Anscombe data set.
+Compute the slope and intercept.
+Print the slope and intercept.
+
+Solution:-
+# Iterate through x,y pairs
+for x, y in zip(anscombe_x , anscombe_y ):
+    # Compute the slope and intercept: a, b
+    a, b = np.polyfit(x,y,1)
+
+    # Print the result
+    print('slope:', a, 'intercept:', b)
+
+
