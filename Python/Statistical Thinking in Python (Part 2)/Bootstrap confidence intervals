@@ -30,3 +30,165 @@ _ = plt.ylabel('ECDF')
 plt.show()
 
 Q2:-
+Define a function with call signature draw_bs_reps(data, func, size=1).
+Using np.empty(), initialize an array called bs_replicates of size size to hold all of the bootstrap replicates.
+Write a for loop that ranges over size and computes a replicate using bootstrap_replicate_1d(). Refer to the exercise description above to see the function signature of bootstrap_replicate_1d(). Store the replicate in the appropriate index of bs_replicates.
+Return the array of replicates bs_replicates. This has already been done for you.
+
+Solution:-
+def draw_bs_reps(data, func, size=1):
+    """Draw bootstrap replicates."""
+
+    # Initialize array of replicates: bs_replicates
+    bs_replicates = np.empty(size)
+
+    # Generate replicates
+    for i in range(size):
+        bs_replicates[i] = bootstrap_replicate_1d(data,func)
+
+    return bs_replicates
+
+Q3:-
+Draw 10000 bootstrap replicates of the mean annual rainfall using your draw_bs_reps() function and the rainfall array. Hint: Pass in np.mean for func to compute the mean.
+As a reminder, draw_bs_reps() accepts 3 arguments: data, func, and size.
+Compute and print the standard error of the mean of rainfall.
+The formula to compute this is np.std(data) / np.sqrt(len(data)).
+Compute and print the standard deviation of your bootstrap replicates bs_replicates.
+Make a histogram of the replicates using the normed=True keyword argument and 50 bins.
+
+Solution:-
+# Take 10,000 bootstrap replicates of the mean: bs_replicates
+bs_replicates = draw_bs_reps(rainfall,np.mean,10000)
+
+# Compute and print SEM
+sem = np.std(rainfall) / np.sqrt(len(rainfall))
+print(sem)
+
+# Compute and print standard deviation of bootstrap replicates
+bs_std = np.std(bs_replicates) 
+print(bs_std)
+
+# Make a histogram of the results
+_ = plt.hist(bs_replicates, bins=50, normed=True)
+_ = plt.xlabel('mean annual rainfall (mm)')
+_ = plt.ylabel('PDF')
+
+# Show the plot
+plt.show()
+
+Q4:-
+Draw 10000 bootstrap replicates of the variance in annual rainfall, stored in the rainfall dataset, using your draw_bs_reps() function. Hint: Pass in np.var for computing the variance.
+Divide your variance replicates (bs_replicates) by 100 to put the variance in units of square centimeters for convenience.
+Make a histogram of bs_replicates using the normed=True keyword argument and 50 bins.
+
+Solution:-
+# Generate 10,000 bootstrap replicates of the variance: bs_replicates
+bs_replicates = draw_bs_reps(rainfall,np.var,10000)
+
+# Put the variance in units of square centimeters
+bs_replicates = bs_replicates/100
+
+# Make a histogram of the results
+_ = plt.hist(bs_replicates, bins=50, normed=True)
+_ = plt.xlabel('variance of annual rainfall (sq. cm)')
+_ = plt.ylabel('PDF')
+
+# Show the plot
+plt.show()
+
+Q5:-
+Generate 10000 bootstrap replicates of τ from the nohitter_times data using your draw_bs_reps() function. Recall that the the optimal τ is calculated as the mean of the data.
+Compute the 95% confidence interval using np.percentile() and passing in two arguments: The array bs_replicates, and the list of percentiles - in this case 2.5 and 97.5.
+Print the confidence interval.
+
+Solution:-
+# Draw bootstrap replicates of the mean no-hitter time (equal to tau): bs_replicates
+bs_replicates = draw_bs_reps(nohitter_times, np.mean,10000)
+
+# Compute the 95% confidence interval: conf_int
+conf_int = np.percentile(bs_replicates,[2.5,97.5])
+
+# Print the confidence interval
+print('95% confidence interval =', conf_int, 'games')
+
+# Plot the histogram of the replicates
+_ = plt.hist(bs_replicates, bins=50, normed=True)
+_ = plt.xlabel(r'$\tau$ (games)')
+_ = plt.ylabel('PDF')
+
+# Show the plot
+plt.show()
+
+Q6:-
+Define a function with call signature draw_bs_pairs_linreg(x, y, size=1) to perform pairs bootstrap estimates on linear regression parameters.
+Use np.arange() to set up an array of indices going from 0 to len(x). These are what you will resample and use them to pick values out of the x and y arrays.
+Use np.empty() to initialize the slope and intercept replicate arrays to be of size size.
+Write a for loop to:
+Resample the indices inds. Use np.random.choice() to do this.
+Make new x and y arrays bs_x and bs_y using the the resampled indices bs_inds. To do this, slice x and y with bs_inds.
+Use np.polyfit() on the new x and y arrays and store the computed slope and intercept.
+Return the pair bootstrap replicates of the slope and intercept.
+
+Solution:-
+def draw_bs_pairs_linreg(x, y, size=1):
+    """Perform pairs bootstrap for linear regression."""
+
+    # Set up array of indices to sample from: inds
+    inds = np.arange(len(x))
+
+    # Initialize replicates: bs_slope_reps, bs_intercept_reps
+    bs_slope_reps = np.empty(size)
+    bs_intercept_reps = np.empty(size)
+
+    # Generate replicates
+    for i in range(size):
+        bs_inds = np.random.choice(inds, size=len(inds))
+        bs_x, bs_y = x[bs_inds], y[bs_inds]
+        bs_slope_reps[i], bs_intercept_reps[i] = np.polyfit(bs_x,bs_y,1)
+
+    return bs_slope_reps, bs_intercept_reps
+
+Q7:-
+Use your draw_bs_pairs_linreg() function to take 1000 bootstrap replicates of the slope and intercept. The x-axis data is illiteracy and y-axis data is fertility.
+Compute and print the 95% bootstrap confidence interval for the slope.
+Plot and show a histogram of the slope replicates. Be sure to label your axes. This has been done for you, so click 'Submit Answer' to see your histogram!
+
+Solution:-
+# Generate replicates of slope and intercept using pairs bootstrap
+bs_slope_reps, bs_intercept_reps = draw_bs_pairs_linreg(illiteracy,fertility,1000)
+
+# Compute and print 95% CI for slope
+print(np.percentile(bs_slope_reps, [2.5, 97.5]))
+
+# Plot the histogram
+_ = plt.hist(bs_slope_reps, bins=50, normed=True)
+_ = plt.xlabel('slope')
+_ = plt.ylabel('PDF')
+plt.show()
+
+Q8:-
+Generate an array of x-values consisting of 0 and 100 for the plot of the regression lines. Use the np.array() function for this.
+Write a for loop in which you plot a regression line with a slope and intercept given by the pairs bootstrap replicates. Do this for 100 lines.
+When plotting the regression lines in each iteration of the for loop, recall the regression equation y = a*x + b. Here, a is bs_slope_reps[i] and b is bs_intercept_reps[i].
+Specify the keyword arguments linewidth=0.5, alpha=0.2, and color='red' in your call to plt.plot().
+Make a scatter plot with illiteracy on the x-axis and fertility on the y-axis. Remember to specify the marker='.' and linestyle='none' keyword arguments.
+Label the axes, set a 2% margin, and show the plot. This has been done for you, so hit 'Submit Answer' to visualize the bootstrap regressions!
+
+Solution:-
+# Generate array of x-values for bootstrap lines: x
+x = np.array([0,100])
+
+# Plot the bootstrap lines
+for i in range(100):
+    _ = plt.plot(x,bs_slope_reps[i]*x
+                 + bs_intercept_reps[i],
+                 linewidth=0.5, alpha=0.2, color='red')
+
+# Plot the data
+_ = plt.plot(illiteracy,fertility,marker='.',linestyle='none')
+
+# Label axes, set the margins, and show the plot
+_ = plt.xlabel('illiteracy')
+_ = plt.ylabel('fertility')
+plt.margins(0.02)
+plt.show()
