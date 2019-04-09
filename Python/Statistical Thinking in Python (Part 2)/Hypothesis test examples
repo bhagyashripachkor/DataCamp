@@ -1,0 +1,7 @@
+Q1:-
+Construct Boolean arrays, dems and reps that contain the votes of the respective parties; e.g., dems has 153 True entries and 91 False entries.
+Write a function, frac_yea_dems(dems, reps) that returns the fraction of Democrats that voted yea. The first input is an array of Booleans, Two inputs are required to use your draw_perm_reps() function, but the second is not used.
+Use your draw_perm_reps() function to draw 10,000 permutation replicates of the fraction of Democrat yea votes.
+Compute and print the p-value.
+
+Solution:-
