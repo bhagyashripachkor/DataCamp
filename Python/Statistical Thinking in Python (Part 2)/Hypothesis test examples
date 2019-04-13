@@ -5,3 +5,69 @@ Use your draw_perm_reps() function to draw 10,000 permutation replicates of the 
 Compute and print the p-value.
 
 Solution:-
+# Construct arrays of data: dems, reps
+dems = np.array([True] * 153 + [False] * 91)
+reps = np.array([True]* 136 + [False]*35)
+
+def frac_yea_dems(dems, reps):
+    """Compute fraction of Democrat yea votes."""
+    frac = np.sum(dems) / len(dems)
+    return frac
+
+# Acquire permutation samples: perm_replicates
+perm_replicates = draw_perm_reps(dems, reps, frac_yea_dems, size=10000)
+
+# Compute and print p-value: p
+p = np.sum(perm_replicates <= 153/244) / len(perm_replicates)
+print('p-value =', p)
+
+Q2:-
+Compute the observed difference in mean inter-nohitter time using diff_of_means().
+Generate 10,000 permutation replicates of the difference of means using draw_perm_reps().
+Compute and print the p-value.
+
+Solution:-
+# Compute the observed difference in mean inter-no-hitter times: nht_diff_obs
+nht_diff_obs = diff_of_means(nht_dead,nht_live)
+
+# Acquire 10,000 permutation replicates of difference in mean no-hitter time: perm_replicates
+perm_replicates = draw_perm_reps(nht_dead,nht_live,diff_of_means,size=10000)
+
+
+# Compute and print the p-value: p
+p = np.sum(perm_replicates <= nht_diff_obs)/len(perm_replicates)
+print('p-val =', p)
+
+Q3:-
+Compute the observed Pearson correlation between illiteracy and fertility.
+Initialize an array to store your permutation replicates.
+Write a for loop to draw 10,000 replicates:
+Permute the illiteracy measurements using np.random.permutation().
+Compute the Pearson correlation between the permuted illiteracy array, illiteracy_permuted, and fertility.
+Compute and print the p-value from the replicates.
+
+Solution:-
+# Compute observed correlation: r_obs
+r_obs = pearson_r(illiteracy,fertility)
+
+# Initialize permutation replicates: perm_replicates
+perm_replicates = np.empty(10000)
+
+# Draw replicates
+for i in range(10000):
+    # Permute illiteracy measurments: illiteracy_permuted
+    illiteracy_permuted = np.random.permutation(illiteracy)
+
+    # Compute Pearson correlation
+    perm_replicates[i] = pearson_r(illiteracy_permuted,fertility)
+
+# Compute p-value: p
+p = np.sum(perm_replicates >= 1)/len(perm_replicates)
+print('p-val =', p)
+
+Q4:-
+Use your ecdf() function to generate x,y values from the control and treated arrays for plotting the ECDFs.
+Plot the ECDFs on the same plot.
+The margins have been set for you, along with the legend and axis labels. Hit 'Submit Answer' to see the result!
+
+Solution:-
