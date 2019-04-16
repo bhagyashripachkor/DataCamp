@@ -206,3 +206,132 @@ print('1975: mean ratio =', mean_ratio_1975,
       'conf int =', conf_int_1975)
 print('2012: mean ratio =', mean_ratio_2012,
       'conf int =', conf_int_2012)
+
+Q8:-
+Generate scatter plots for both species. Display the data for G. fortis in blue and G. scandens in red.
+Set the axis labels, make a legend, and show the plot.
+
+Solution:-
+# Make scatter plots
+_ = plt.plot(bd_parent_fortis, bd_offspring_fortis,
+             marker='.', linestyle='none', color='blue', alpha=0.5)
+_ = plt.plot(bd_parent_scandens, bd_offspring_scandens,
+             marker='.', linestyle='none', color='red', alpha=0.5)
+
+# Label axes
+_ = plt.xlabel('parental beak depth (mm)')
+_ = plt.ylabel('offspring beak depth (mm)')
+
+# Add legend
+_ = plt.legend(('G. fortis', 'G. scandens'), loc='lower right')
+
+# Show plot
+plt.show()
+
+Q9:-
+Set up an array of indices to sample from. (Remember, when doing pairs bootstrap, we randomly choose indices and use those to get the pairs.)
+Initialize the array of bootstrap replicates. This should be a one-dimensional array of length size.
+Write a for loop to draw the samples.
+Randomly choose induces from the array of indices you previously set up.
+Extract x values and y values from the input array using the indices you just chose to generate a bootstrap sample.
+Use func to compute the statistic of interest from the bootstrap samples of x and y and store it in your array of bootstrap replicates.
+Return the array of bootstrap replicates.
+
+Solution:-
+def draw_bs_pairs(x, y, func, size=1):
+    """Perform pairs bootstrap for a single statistic."""
+
+    # Set up array of indices to sample from: inds
+    inds = np.arange(len(x))
+
+    # Initialize replicates: bs_replicates
+    bs_replicates = np.empty(size)
+
+    # Generate replicates
+    for i in range(size):
+        bs_inds = np.random.choice(inds,len(inds))
+        bs_x, bs_y = x[bs_inds],y[bs_inds]
+        bs_replicates[i] = func(bs_x,bs_y,)
+
+    return bs_replicates
+
+Q10:-
+Use the pearson_r() function you wrote in the prequel to this course to compute the Pearson correlation coefficient for G. scandens and G. fortis.
+Acquire 1000 pairs bootstrap replicates of the Pearson correlation coefficient using the draw_bs_pairs() function you wrote in the previous exercise for G. scandens and G. fortis.
+Compute the 95% confidence interval for both using your bootstrap replicates.
+
+Solution:-
+# Compute the Pearson correlation coefficients
+r_scandens = pearson_r(bd_parent_scandens,bd_offspring_scandens)
+r_fortis = pearson_r(bd_parent_fortis,bd_offspring_fortis)
+
+# Acquire 1000 bootstrap replicates of Pearson r
+bs_replicates_scandens = draw_bs_pairs(bd_parent_scandens,bd_offspring_scandens,pearson_r,size=1000)
+
+bs_replicates_fortis = draw_bs_pairs(bd_parent_fortis,bd_offspring_fortis,pearson_r,size=1000)
+
+
+# Compute 95% confidence intervals
+conf_int_scandens = np.percentile(bs_replicates_scandens,[2.5,97.5])
+conf_int_fortis = np.percentile(bs_replicates_fortis,[2.5,97.5])
+
+# Print results
+print('G. scandens:', r_scandens, conf_int_scandens)
+print('G. fortis:', r_fortis, conf_int_fortis)
+
+Q11:-
+Write a function heritability(parents, offspring) that computes heritability defined as the ratio of the covariance of the trait in parents and offspring divided by the variance of the trait in the parents. Hint: Remind yourself of the np.cov() function we covered in the prequel to this course.
+Use this function to compute the heritability for G. scandens and G. fortis.
+Acquire 1000 bootstrap replicates of the heritability using pairs bootstrap for G. scandens and G. fortis.
+Compute the 95% confidence interval for both using your bootstrap replicates.
+Print the results.
+
+Solution:-
+def heritability(parents, offspring):
+    """Compute the heritability from parent and offspring samples."""
+    covariance_matrix = np.cov(parents, offspring)
+    return covariance_matrix[0,1] / covariance_matrix[0,0]
+
+# Compute the heritability
+heritability_scandens = heritability(bd_parent_scandens,bd_offspring_scandens)
+heritability_fortis = heritability(bd_parent_fortis,bd_offspring_fortis)
+
+# Acquire 1000 bootstrap replicates of heritability
+replicates_scandens = draw_bs_pairs(
+        bd_parent_scandens, bd_offspring_scandens, heritability, size=1000)
+        
+replicates_fortis = draw_bs_pairs(
+        bd_parent_fortis, bd_offspring_fortis, heritability, size=1000)
+
+
+# Compute 95% confidence intervals
+conf_int_scandens = np.percentile(replicates_scandens,[2.5,97.5])
+conf_int_fortis = np.percentile(replicates_fortis,[2.5,97.5])
+
+# Print results
+print('G. scandens:', heritability_scandens, conf_int_scandens)
+print('G. fortis:', heritability_fortis, conf_int_fortis)
+
+Q12:-
+Initialize your array of replicates of heritability. We will take 10,000 pairs permutation replicates.
+Write a for loop to generate your replicates.
+Permute the bd_parent_scandens array using np.random.permutation().
+Compute the heritability between the permuted array and the bd_offspring_scandens array using the heritability() function you wrote in the last exercise. Store the result in the replicates array.
+Compute the p-value as the number of replicates that are greater than the observed heritability_scandens you computed in the last exercise.
+
+Solution:-
+# Initialize array of replicates: perm_replicates
+perm_replicates = np.empty(10000)
+
+# Draw replicates
+for i in range(10000):
+    # Permute parent beak depths
+    bd_parent_permuted = np.random.permutation(bd_parent_scandens)
+    perm_replicates[i] = heritability(bd_parent_permuted,bd_offspring_scandens)
+
+
+# Compute p-value: p
+p = np.sum(perm_replicates >= heritability_scandens) / len(perm_replicates)
+
+# Print the p-value
+print('p-val =', p)
