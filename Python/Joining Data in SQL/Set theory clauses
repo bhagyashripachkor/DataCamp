@@ -1,0 +1,242 @@
+Q1:-
+Combine these two tables into one table containing all of the fields in economies2010. The economies table is also included for reference.
+Sort this resulting single table by country code and then by year, both in ascending order.
+
+Solution:-
+-- Select fields from 2010 table
+select *
+  -- From 2010 table
+  from  economies2010
+	-- Set theory clause
+	union
+-- Select fields from 2015 table
+select *
+  -- From 2015 table
+  from  economies2015
+-- Order by code and year
+order by code, year;
+
+Q2:-
+Determine all (non-duplicated) country codes in either the cities or the currencies table. The result should be a table with only one field called country_code.
+Sort by country_code in alphabetical order.
+
+Solution:-
+-- Select field
+select  country_code
+  -- From cities
+  from cities
+	-- Set theory clause
+	union
+-- Select field
+select code
+  -- From currencies
+  from currencies
+-- Order by country_code
+order by country_code;
+
+Q3:-
+Determine all combinations (include duplicates) of country code and year that exist in either the economies or the populations tables. Order by code then year.
+The result of the query should only have two columns/fields. Think about how many records this query should result in.
+You'll use code very similar to this in your next exercise after the video. Make note of this code after completing it.
+
+Solution:-
+-- Select fields
+SELECT code, year
+  -- From economies
+  FROM economies
+	-- Set theory clause
+	union all
+-- Select fields
+SELECT country_code, year
+  -- From populations
+  FROM populations
+-- Order by code, year
+ORDER BY code, year;
+
+Q4:-
+Again, order by code and then by year, both in ascending order.
+Note the number of records here (given at the bottom of query result) compared to the similar UNION ALL query result (814 records).
+
+Solution:-
+-- Select fields
+SELECT code, year
+  -- From economies
+  FROM economies
+	-- Set theory clause
+	intersect
+-- Select fields
+SELECT country_code, year
+  -- From populations
+  FROM populations
+-- Order by code, year
+ORDER BY code, year;
+
+Q5:-
+Use INTERSECT to answer this question with countries and cities!
+
+Solution:-
+-- Select fields
+select name
+  -- From countries
+  from countries
+	-- Set theory clause
+	intersect
+-- Select fields
+select name
+  -- From cities
+  from cities;
+
+Q6:-
+Order the resulting field in ascending order.
+Can you spot the city/cities that are actually capital cities which this query misses?
+
+Solution:-
+-- Select field
+SELECT name
+  -- From cities
+  FROM cities 
+	-- Set theory clause
+	except
+-- Select field
+SELECT capital
+  -- From countries
+  FROM countries
+-- Order by result
+ORDER BY name;
+
+Q7:-
+Order by capital in ascending order.
+The cities table contains information about 236 of the world's most populous cities. The result of your query may surprise you in terms of the number of capital cities that DO NOT appear in this list!
+
+Solution:-
+-- Select field
+select capital
+  -- From countries
+  from countries
+	-- Set theory clause
+	except
+-- Select field
+select name
+  -- From cities
+  from cities
+-- Order by ascending capital
+order by capital;
+
+Q8:-
+Flash back to our Intro to SQL for Data Science course and begin by selecting all country codes in the Middle East as a single field result using SELECT, FROM, and WHERE
+
+Solution:-
+-- Select code
+select code
+  -- From countries
+  from countries
+-- Where region is Middle East
+where region = 'Middle East';
+
+Q9:-
+Comment out the answer to the previous tab by surrounding it in /* and */. You'll come back to it!
+Below the commented code, select only unique languages by name appearing in the languages table.
+Order the resulting single field table by name in ascending order.
+
+Solution:-
+/*
+SELECT code
+  FROM countries
+WHERE region = 'Middle East';
+*/
+
+-- Select field
+select distinct(name) as name
+  -- From languages
+  from languages
+-- Order by name
+order by name;
+
+Q10:-
+Now combine the previous two queries into one query:
+Add a WHERE IN statement to the SELECT DISTINCT query, and use the commented out query from the first instruction in there. That way, you can determine the unique languages spoken in the Middle East.
+
+Solution:-
+-- Select distinct fields
+select distinct(name) as name
+  -- From languages
+  from languages
+-- Where in statement
+WHERE code IN
+  -- Subquery
+  (select code
+   from countries
+   where region = 'Middle East')
+-- Order by name
+order by name;
+
+Q11:-
+Begin by determining the number of countries in countries that are listed in Oceania using SELECT, FROM, and WHERE.
+
+Solution:-
+-- Select statement
+select count(name)
+  -- From countries
+  from countries
+-- Where continent is Oceania
+where continent = 'Oceania';
+
+Q12:-
+Complete an inner join with countries AS c1 on the left and currencies AS c2 on the right to get the different currencies used in the countries of Oceania.
+Match ON the code field in the two tables.
+Include the country code, country name, and basic_unit AS currency.
+Observe query result and make note of how many different countries are listed here.
+
+Solution:-
+-- 5. Select fields (with aliases)
+select c1.code,c1.name,basic_unit AS currency
+  -- 1. From countries (alias as c1)
+  from countries as c1
+  	-- 2. Join with currencies (alias as c2)
+  	inner join currencies as c2
+    -- 3. Match on code
+    on c1.code=c2.code
+-- 4. Where continent is Oceania
+where c1.continent = 'Oceania';
+
+Q13:-
+Note that not all countries in Oceania were listed in the resulting inner join with currencies. Use an anti-join to determine which countries were not included!
+Use NOT IN and (SELECT code FROM currencies) as a subquery to get the country code and country name for the Oceanian countries that are not included in the currencies table.
+
+Solution:-
+-- 3. Select fields
+select name,code
+  -- 4. From Countries
+  from countries
+  -- 5. Where continent is Oceania
+  where continent = 'Oceania'
+  	-- 1. And code not in
+  	and code not in 
+  	-- 2. Subquery
+  	(select code 
+  	 from currencies);
+     
+Q14:-
+Identify the country codes that are included in either economies or currencies but not in populations.
+Use that result to determine the names of cities in the countries that match the specification in the previous instruction.
+
+Solution:-
+-- Select the city name
+select name
+  -- Alias the table where city name resides
+  from cities AS c1
+  -- Choose only records matching the result of multiple set theory clauses
+  WHERE country_code IN
+(
+    -- Select appropriate field from economies AS e
+    SELECT e.code
+    FROM economies AS e
+    -- Get all additional (unique) values of the field from currencies AS c2  
+    union
+    SELECT c2.code
+    FROM currencies AS c2
+    -- Exclude those appearing in populations AS p
+    except
+    SELECT p.country_code
+    FROM populations AS p
+);
