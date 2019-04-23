@@ -35,3 +35,43 @@ Perform an inner join. Alias the name of the country field as country and the na
 Sort based on descending country name.
 
 Solution:-
+/*
+5. Select country name AS country, the country's local name,
+the language name AS language, and
+the percent of the language spoken in the country
+*/
+select c.name AS country, local_name, l.name AS language, percent
+-- 1. From left table (alias as c)
+FROM countries AS c
+  -- 2. Join to right table (alias as l)
+  inner JOIN languages AS l
+    -- 3. Match on fields
+    ON c.code = l.code
+-- 4. Order by descending country
+ORDER BY  country desc;
+
+Q4:-
+Perform a left join instead of an inner join. Observe the result, and also note the change in the number of records in the result.
+Carefully review which records appear in the left join result, but not in the inner join result.
+
+Solution:-
+/*
+5. Select country name AS country, the country's local name,
+the language name AS language, and
+the percent of the language spoken in the country
+*/
+select c.name AS country, local_name, l.name AS language, percent
+-- 1. From left table (alias as c)
+FROM countries AS c
+  -- 2. Join to right table (alias as l)
+  left JOIN languages AS l
+    -- 3. Match on fields
+    ON c.code = l.code
+-- 4. Order by descending country
+ORDER BY country DESC;
+
+Q5:-
+Begin with a left join with the countries table on the left and the economies table on the right.
+Focus only on records with 2010 as the year.
+
+Solution:-
