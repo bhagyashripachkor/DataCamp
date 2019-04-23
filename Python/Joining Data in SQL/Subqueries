@@ -1,0 +1,181 @@
+Q1:-
+figure out which countries had high average life expectancies (at the country level) in 2015.Begin by calculating the average life expectancy across all countries for 2015.
+
+Solution:-
+-- Select average life_expectancy
+select avg(life_expectancy)
+  -- From populations
+  from populations
+-- Where year is 2015
+where year=2015
+
+Q2:-
+Select all fields from populations with records corresponding to larger than 1.15 times the average you calculated in the first task for 2015. In other words, change the 100 in the example above with a subquery.
+
+Solution:-
+-- Select fields
+select *
+  -- From populations
+  from populations
+-- Where life_expectancy is greater than
+where life_expectancy > 
+  -- 1.15 * subquery
+  1.15 * (select avg(life_expectancy) 
+    from populations
+ where year = 2015)
+ and year = 2015;
+ 
+Q3:-
+Make use of the capital field in the countries table in your subquery.
+Select the city name, country code, and urban area population fields.
+
+Solution:-
+-- 2. Select fields
+select name, country_code, urbanarea_pop
+  -- 3. From cities
+  from cities
+-- 4. Where city name in the field of capital cities
+where name IN
+  -- 1. Subquery
+  (select capital
+   from  countries)
+ORDER BY urbanarea_pop DESC;
+
+Q4:-
+Convert the GROUP BY code to use a subquery inside of SELECT, i.e. fill in the blanks to get a result that matches the one given using the GROUP BY code in the first query.
+Again, sort the result by cities_num descending and then by country ascending.
+
+Solution:-
+/*SELECT countries.name AS country, COUNT(*) AS cities_num
+  FROM cities
+    INNER JOIN countries
+    ON countries.code = cities.country_code
+GROUP BY country
+ORDER BY cities_num DESC, country
+LIMIT 9;
+*/
+
+SELECT name AS country,
+  (SELECT count(*)
+   FROM cities
+   WHERE countries.code = cities.country_code) AS cities_num
+FROM countries
+ORDER BY cities_num desc, country
+LIMIT 9;
+
+Q5:-
+Begin by determining for each country code how many languages are listed in the languages table using SELECT, FROM, and GROUP BY.
+Alias the aggregated field as lang_num
+
+Solution:-
+-- Select fields (with aliases)
+select code,count(*) as lang_num
+  -- From languages
+  from languages
+-- Group by code
+group by code;
+
+Q6:-
+Include the previous query (aliased as subquery) as a subquery in the FROM clause of a new query.
+Select the local name of the country from countries.
+Also, select lang_num from subquery.
+Make sure to use WHERE appropriately to match code in countries and in subquery.
+Sort by lang_num in descending order.
+
+Solution:-
+-- Select fields
+select local_name,subquery.lang_num
+  -- From countries
+  from countries,
+  	-- Subquery (alias as subquery)
+  	(select code,count(name) as lang_num
+  	 from languages
+  	 group by code) AS subquery
+  -- Where codes match
+  where countries.code = subquery.code
+-- Order by descending number of languages
+order by lang_num desc;
+
+Q7:-
+Create an inner join with countries on the left and economies on the right with USING. Do not alias your tables or columns.
+Retrieve the country name, continent, and inflation rate for 2015.
+
+Solution:-
+-- Select fields
+select name,continent,inflation_rate
+  -- From countries
+  from countries
+  	-- Join to economies
+  	left join economies
+    -- Match on code
+    using(code)
+-- Where year is 2015
+where year = 2015;
+
+Q8:-
+Determine the maximum inflation rate for each continent in 2015 using the previous query as a subquery called subquery in the FROM clause.
+Select the maximum inflation rate AS max_inf grouped by continent.
+This will result in the six maximum inflation rates in 2015 for the six continents as one field table. (Don't include continent in the outer SELECT statement.)
+
+Solution:-
+-- Select fields
+select max(inflation_rate) as max_inf 
+  -- Subquery using FROM (alias as subquery)
+  FROM (
+      select name,continent,inflation_rate
+      from countries
+      inner join economies
+      using(code)
+      where year = 2015) AS subquery
+-- Group by continent
+group by continent;
+
+Q9:-
+Append the second part's query to the first part's query using WHERE, AND, and IN to obtain the name of the country, its continent, and the maximum inflation rate for each continent in 2015. Revisit the sample output in the assignment text at the beginning of the exercise to see how this matches up.
+For the sake of practice, change all joining conditions to use ON instead of USING.
+This code works since each of the six maximum inflation rate values occur only once in the 2015 data. Think about whether this particular code involving subqueries would work in cases where there are ties for the maximum inflation rate values.
+
+Solution:-
+-- Select fields
+select name,continent,inflation_rate
+  -- From countries
+  from countries
+	-- Join to economies
+	inner join economies
+	-- Match on code
+	on countries.code=economies.code
+  -- Where year is 2015
+  and year = 2015
+    -- And inflation rate in subquery (alias as subquery)
+    and inflation_rate in (
+        select max(inflation_rate) as max_inf
+        from (
+             select name,continent,inflation_rate
+             from countries
+             inner join economies
+             on countries.code=economies.code
+             and year = 2015) as  subquery
+        group by continent);
+       
+Q10:-
+Use a subquery to get 2015 economic data for countries that do not havegov_form of 'Constitutional Monarchy' or 'Republic' in their gov_form.
+Here, gov_form stands for the form of the government for each country. Review the different entries for gov_form in the countries table.
+Select the country code, inflation rate, and unemployment rate.
+Order by inflation rate ascending.
+Do not use table aliasing in this exercise.
+
+Solution:-
+-- Select fields
+SELECT code, inflation_rate, unemployment_rate
+  -- From economies
+  FROM economies
+  -- Where year is 2015 and code is not in
+  WHERE year = 2015 AND code not in
+  	-- Subquery
+  	(SELECT code
+  	 FROM countries
+  	 WHERE (gov_form = 'Constitutional Monarchy' OR gov_form LIKE '%Republic%'))
+-- Order by inflation rate
+ORDER BY inflation_rate;
+
+Q11:-
