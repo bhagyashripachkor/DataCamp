@@ -75,3 +75,239 @@ Begin with a left join with the countries table on the left and the economies ta
 Focus only on records with 2010 as the year.
 
 Solution:-
+-- 5. Select name, region, and gdp_percapita
+SELECT name, region, gdp_percapita
+-- 1. From countries (alias as c)
+FROM countries AS c
+  -- 2. Left join with economies (alias as e)
+  LEFT JOIN economies AS e
+    -- 3. Match on code fields
+    ON e.code = c.code
+-- 4. Focus on 2010
+WHERE e.year = 2010;
+
+Q6:-
+Modify your code to calculate the average GDP per capita AS avg_gdp for each region in 2010.
+Select the region and avg_gdp fields.
+
+Solution:-
+-- Select fields
+SELECT region, avg(gdp_percapita) AS avg_gdp
+-- From countries (alias as c)
+FROM countries AS c
+  -- Left join with economies (alias as e)
+  LEFT JOIN economies AS e
+  -- Match on code fields
+    ON e.code = c.code
+-- Focus on 2010
+WHERE e.year = 2010
+-- Group by region
+GROUP BY region;
+
+Q7:-
+Arrange this data on average GDP per capita for each region in 2010 from highest to lowest average GDP per capita.
+
+Solution:-
+-- Select fields
+SELECT region, AVG(gdp_percapita) AS avg_gdp
+-- From countries (alias as c)
+from countries as c
+  -- Left join with economies (alias as e)
+  left join economies as e
+    -- Match on code fields
+    on c.code = e.code
+-- Focus on 2010
+where e.year =2010
+-- Group by region
+group by region
+-- Order by descending avg_gdp
+order by avg_gdp desc;
+
+Q8:-
+The left join code is commented out here. Your task is to write a new query using rights joins that produces the same result as what the query using left joins produces. Keep this left joins code commented as you write your own query just below it using right joins to solve the problem.
+Note the order of the joins matters in your conversion to using right joins!
+
+Solution:-
+-- convert this code to use RIGHT JOINs instead of LEFT JOINs
+/*
+SELECT cities.name AS city, urbanarea_pop, countries.name AS country,
+       indep_year, languages.name AS language, percent
+FROM cities
+  LEFT JOIN countries
+    ON cities.country_code = countries.code
+  LEFT JOIN languages
+    ON countries.code = languages.code
+ORDER BY city, language;
+*/
+
+SELECT cities.name AS city, urbanarea_pop, countries.name AS country,
+       indep_year, languages.name AS language, percent
+FROM languages
+  right JOIN countries
+    ON languages.code = countries.code
+  right JOIN cities
+    ON countries.code = cities.country_code
+ORDER BY city, language;
+
+Q9:-
+Choose records in which region corresponds to North America or is NULL.
+
+Solution:-
+SELECT name AS country, code, region, basic_unit
+-- 3. From countries
+FROM countries
+  -- 4 Join to currencies
+  FULL JOIN currencies
+    -- 5. Match on code
+    USING (code)
+-- 1. Where region is North America or null
+WHERE region = 'North America' OR region IS null
+-- 2. Order by region
+ORDER BY region;
+
+Q10:-
+Repeat the same query as above but use a LEFT JOIN instead of a FULL JOIN. Note what has changed compared to the FULL JOIN result!
+
+Solution:-
+SELECT name AS country, code, region, basic_unit
+-- 1. From countries
+FROM countries
+  -- 2. Join to currencies
+  left JOIN currencies
+    -- 3. Match on code
+    USING (code)
+-- 4. Where region is North America or null
+WHERE region = 'North America' OR region IS null
+-- 5. Order by region
+ORDER BY region;
+
+Q11:-
+Repeat the same query as above but use an INNER JOIN instead of a FULL JOIN. Note what has changed compared to the FULL JOIN and LEFT JOIN results!
+
+Solution:-
+SELECT name AS country, code, region, basic_unit
+FROM countries
+  -- 1. Join to currencies
+  inner JOIN currencies
+    USING (code)
+-- 2. Where region is North America or null
+WHERE region = 'North America' OR region IS null
+-- 3. Order by region
+ORDER BY region;
+
+Q12:-
+Choose records in which countries.name starts with the capital letter 'V' or is NULL.
+Arrange by countries.name in ascending order to more clearly see the results.
+
+Solution:-
+SELECT countries.name, code, languages.name AS language
+-- 3. From languages
+FROM languages
+  -- 4. Join to countries
+  FULL JOIN countries
+    -- 5. Match on code
+    USING (code)
+-- 1. Where countries.name starts with V or is null
+WHERE countries.name LIKE 'V%' OR countries.name IS null
+-- 2. Order by ascending countries.name
+ORDER BY countries.name;
+
+Q13:-
+Repeat the same query as above but use a left join instead of a full join. Note what has changed compared to the full join result!
+
+Solution:-
+SELECT countries.name, code, languages.name AS language
+FROM languages
+  -- 1. Join to countries
+  left JOIN countries
+    -- 2. Match using code
+    USING (code)
+-- 3. Where countries.name starts with V or is null
+WHERE countries.name LIKE 'V%' OR countries.name IS NULL
+ORDER BY countries.name;
+
+Q14:-
+Repeat once more, but use an inner join instead of a left join. Note what has changed compared to the full join and left join results.
+
+Solution:-
+SELECT countries.name, code, languages.name AS language
+FROM languages
+  -- 1. Join to countries
+  inner JOIN countries
+    USING (code)
+-- 2. Where countries.name starts with V or is null
+WHERE countries.name LIKE 'V%' OR countries.name IS NULL
+ORDER BY countries.name;
+
+Q15:-
+Complete a full join with countries on the left and languages on the right.
+Next, full join this result with currencies on the right.
+Use LIKE to choose the Melanesia and Micronesia regions (Hint: 'M%esia').
+Select the fields corresponding to the country name AS country, region, language name AS language, and basic and fractional units of currency.
+
+Solution:-
+-- 7. Select fields (with aliases)
+SELECT c1.name AS country, region, l.name AS language,
+       basic_unit, frac_unit
+-- 1. From countries (alias as c1)
+FROM countries AS c1
+  -- 2. Join with languages (alias as l)
+  FULL JOIN languages AS l
+    -- 3. Match on code
+    USING (code)
+  -- 4. Join with currencies (alias as c2)
+  FULL JOIN currencies AS c2
+    -- 5. Match on code
+    USING (code)
+-- 6. Where region like Melanesia and Micronesia
+WHERE region LIKE 'M%esia';
+
+Q16:-
+Create the cross join as described above. (Recall that cross joins do not use ON or USING.)
+Make use of LIKE and Hyder% to choose Hyderabad in both countries.
+Select only the city name AS city and language name AS language
+
+Solution:-
+-- 4. Select fields
+SELECT c.name AS city, l.name AS language
+-- 1. From cities (alias as c)
+FROM cities AS c        
+  -- 2. Join to languages (alias as l)
+  CROSS JOIN languages AS l
+-- 3. Where c.name like Hyderabad
+WHERE c.name LIKE 'Hyder%';
+
+Q17:-
+Use an inner join instead of a cross join. Think about what the difference will be in the results for this inner join result and the one for the cross join.
+
+Solution:-
+-- 5. Select fields
+SELECT c.name AS city, l.name AS language 
+-- 1. From cities (alias as c)
+from cities as c      
+  -- 2. Join to languages (alias as l)
+  inner JOIN languages AS l
+    -- 3. Match on country code
+    on  c.country_code = l.code
+-- 4. Where c.name like Hyderabad
+where c.name like 'Hyder%';
+
+Q18:-
+Select country name AS country, region, and life expectancy AS life_exp.
+Make sure to use LEFT JOIN, WHERE, ORDER BY, and LIMIT.
+
+Solution:-
+-- Select fields
+select c.name as country,region,p.life_expectancy as life_exp
+-- From countries (alias as c)
+from countries as c
+  -- Join to populations (alias as p)
+  left join populations as p
+    -- Match on country code
+    on p.country_code = c.code
+-- Focus on 2010
+where p.year = 2010
+-- Order by life_exp
+order by life_exp
+-- Limit to 5 records
+limit 5;
