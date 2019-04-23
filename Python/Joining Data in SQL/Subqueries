@@ -179,3 +179,79 @@ SELECT code, inflation_rate, unemployment_rate
 ORDER BY inflation_rate;
 
 Q11:-
+Select unique country names. Also select the total investment and imports fields.
+Use a left join with countries on the left. (An inner join would also work, but please use a left join here.)
+Match on code in the two tables AND use a subquery inside of ON to choose the appropriate languages records.
+Order by country name ascending.
+Use table aliasing but not field aliasing in this exercise.
+
+Solution:-
+-- Select fields
+SELECT DISTINCT c.name, e.total_investment, e.imports
+  -- From table (with alias)
+  FROM countries AS c
+    -- Join with table (with alias)
+    LEFT JOIN economies AS e
+      -- Match on code
+      ON (c.code = e.code
+      -- and code in Subquery
+        AND c.code IN (
+          SELECT l.code
+          FROM languages AS l
+          WHERE official = 'true'
+        ) )
+  -- Where region and year are correct
+  WHERE c.region = 'Central America' AND year = 2015
+-- Order by field
+ORDER BY c.name;
+
+Q12:-
+Let's ease up a bit and calculate the average fertility rate for each region in 2015.
+Include the name of region, its continent, and average fertility rate aliased as avg_fert_rate.
+Sort based on avg_fert_rate ascending.
+Remember that you'll need to GROUP BY all fields that aren't included in the aggregate function of SELECT.
+
+Solution:-
+-- Select fields
+SELECT region, continent, avg(fertility_rate) AS avg_fert_rate
+  -- From left table
+  FROM countries AS c
+    -- Join to right table
+    INNER JOIN populations AS p
+      -- Match on join condition
+      ON c.code = p.country_code
+  -- Where specific records matching some condition
+  WHERE year = 2015
+-- Group appropriately
+GROUP BY region, continent
+-- Order appropriately
+ORDER BY avg_fert_rate;
+
+Q13:-
+determining the top 10 capital cities in Europe and the Americas in terms of a calculated percentage using city_proper_pop and metroarea_pop in cities
+Select the city name, country code, city proper population, and metro area population.
+Calculate the percentage of metro area population composed of city proper population for each city in cities, aliased as city_perc.
+Focus only on capital cities in Europe and the Americas in a subquery.
+Make sure to exclude records with missing data on metro area population.
+Order the result by city_perc descending.
+Then determine the top 10 capital cities in Europe and the Americas in terms of this city_perc percentage.
+
+Solution:-
+-- Select fields
+SELECT name, country_code, city_proper_pop, metroarea_pop,  
+      -- Calculate city_perc
+      city_proper_pop / metroarea_pop * 100 AS city_perc
+  -- From appropriate table
+  FROM cities
+  -- Where 
+  WHERE name IN
+    -- Subquery
+    (SELECT capital
+     FROM countries
+     WHERE (continent = 'Europe'
+        OR continent LIKE '%America'))
+       AND metroarea_pop  IS not null
+-- Order appropriately
+ORDER BY city_perc desc
+-- Limit amount
+limit 10;
