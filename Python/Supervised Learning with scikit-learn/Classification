@@ -1,1 +1,7 @@
 Q1:-
+Import KNeighborsClassifier from sklearn.neighbors.
+Create arrays X and y for the features and the target variable. Here this has been done for you. Note the use of .drop() to drop the target variable 'party' from the feature array X as well as the use of the .values attribute to ensure X and y are NumPy arrays. Without using .values, X and y are a DataFrame and Series respectively; the scikit-learn API will accept them in this form also as long as they are of the right shape.
+Instantiate a KNeighborsClassifier called knn with 6 neighbors by specifying the n_neighbors parameter.
+Fit the classifier to the data using the .fit() method.
+
+Solution:-
