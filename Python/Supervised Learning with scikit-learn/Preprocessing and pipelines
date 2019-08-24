@@ -134,3 +134,132 @@ y_pred = pipeline.predict(X_test)
 
 # Compute metrics
 print(classification_report(y_test, y_pred))
+
+Q7:-
+Import scale from sklearn.preprocessing.
+Scale the features X using scale().
+Print the mean and standard deviation of the unscaled features X, and then the scaled features X_scaled. Use the numpy functions np.mean() and np.std() to compute the mean and standard deviations.
+
+Solution:-
+# Import scale
+from sklearn.preprocessing import scale
+
+# Scale the features: X_scaled
+X_scaled = scale(X)
+
+# Print the mean and standard deviation of the unscaled features
+print("Mean of Unscaled Features: {}".format(np.mean(X))) 
+print("Standard Deviation of Unscaled Features: {}".format(np.std(X)))
+
+# Print the mean and standard deviation of the scaled features
+print("Mean of Scaled Features: {}".format(np.mean(X_scaled))) 
+print("Standard Deviation of Scaled Features: {}".format(np.std(X_scaled)))
+
+Q8:-
+Import the following modules:
+StandardScaler from sklearn.preprocessing.
+Pipeline from sklearn.pipeline.
+Complete the steps of the pipeline with StandardScaler() for 'scaler' and KNeighborsClassifier() for 'knn'.
+Create the pipeline using Pipeline() and steps.
+Create training and test sets, with 30% used for testing. Use a random state of 42.
+Fit the pipeline to the training set.
+Compute the accuracy scores of the scaled and unscaled models by using the .score() method inside the provided print() functions.
+
+Solution:-
+# Import the necessary modules
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+# Setup the pipeline steps: steps
+steps = [('scaler', StandardScaler()),
+        ('knn', KNeighborsClassifier())]
+        
+# Create the pipeline: pipeline
+pipeline = Pipeline(steps)
+
+# Create train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X,y,random_state=42,test_size=.30)
+
+# Fit the pipeline to the training set: knn_scaled
+knn_scaled = pipeline.fit(X_train,y_train)
+
+# Instantiate and fit a k-NN classifier to the unscaled data
+knn_unscaled = KNeighborsClassifier().fit(X_train, y_train)
+
+# Compute and print metrics
+print('Accuracy with Scaling: {}'.format(knn_scaled.score(X_test,y_test)))
+print('Accuracy without Scaling: {}'.format(knn_unscaled.score(X_test,y_test)))
+
+Q9:-
+Setup the pipeline with the following steps:
+Scaling, called 'scaler' with StandardScaler().
+Classification, called 'SVM' with SVC().
+Specify the hyperparameter space using the following notation: 'step_name__parameter_name'. Here, the step_name is SVM, and the parameter_names are C and gamma.
+Create training and test sets, with 20% of the data used for the test set. Use a random state of 21.
+Instantiate GridSearchCV with the pipeline and hyperparameter space and fit it to the training set. Use 3-fold cross-validation (This is the default, so you don't have to specify it).
+Predict the labels of the test set and compute the metrics. The metrics have been computed for you.
+
+Solution:-
+# Setup the pipeline
+steps = [('scaler', StandardScaler()),
+         ('SVM', SVC())]
+
+pipeline = Pipeline(steps)
+
+# Specify the hyperparameter space
+parameters = {'SVM__C':[1, 10, 100],
+              'SVM__gamma':[0.1, 0.01]}
+
+# Create train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X,y,random_state=21, test_size=.20)
+
+# Instantiate the GridSearchCV object: cv
+cv = GridSearchCV(pipeline,param_grid=parameters)
+
+# Fit to the training set
+cv.fit(X_train,y_train)
+
+# Predict the labels of the test set: y_pred
+y_pred = cv.predict(X_test)
+
+# Compute and print metrics
+print("Accuracy: {}".format(cv.score(X_test, y_test)))
+print(classification_report(y_test, y_pred))
+print("Tuned Model Parameters: {}".format(cv.best_params_))
+
+Q10:-
+Set up a pipeline with the following steps:
+'imputation', which uses the Imputer() transformer and the 'mean' strategy to impute missing data ('NaN') using the mean of the column.
+'scaler', which scales the features using StandardScaler().
+'elasticnet', which instantiates an ElasticNet() regressor.
+Specify the hyperparameter space for the l1 ratio using the following notation: 'step_name__parameter_name'. Here, the step_name is elasticnet, and the parameter_name is l1_ratio.
+Create training and test sets, with 40% of the data used for the test set. Use a random state of 42.
+Instantiate GridSearchCV with the pipeline and hyperparameter space. Use 3-fold cross-validation (This is the default, so you don't have to specify it).
+Fit the GridSearchCV object to the training set.
+Compute R2 and the best parameters. This has been done for you, so hit 'Submit Answer' to see the results!
+
+Solution:-
+# Setup the pipeline steps: steps
+steps = [('imputation', Imputer(missing_values='NaN', strategy='mean', axis=0)),
+         ('scaler', StandardScaler()),
+         ('elasticnet', ElasticNet())]
+
+# Create the pipeline: pipeline 
+pipeline = Pipeline(steps)
+
+# Specify the hyperparameter space
+parameters = {'elasticnet__l1_ratio':np.linspace(0,1,30)}
+
+# Create train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X,y,random_state=42,test_size=.40)
+
+# Create the GridSearchCV object: gm_cv
+gm_cv = GridSearchCV(pipeline,param_grid=parameters)
+
+# Fit to the training set
+gm_cv.fit(X_train,y_train)
+
+# Compute and print the metrics
+r2 = gm_cv.score(X_test, y_test)
+print("Tuned ElasticNet Alpha: {}".format(gm_cv.best_params_))
+print("Tuned ElasticNet R squared: {}".format(r2))
