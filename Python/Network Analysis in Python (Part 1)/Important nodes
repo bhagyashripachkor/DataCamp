@@ -1,0 +1,256 @@
+Q1:-
+Write a function called nodes_with_m_nbrs() that has two parameters - G and m - and returns all nodes that have m neighbors. To do this:
+Iterate over all nodes in G (not including the metadata).
+Use the len() and list() functions together with the .neighbors() method to calculate the total number of neighbors that node n in graph G has.
+If the number of neighbors of node n is equal to m, add n to the set nodes using the .add() method.
+After iterating over all the nodes in G, return the set nodes.
+Use your nodes_with_m_nbrs() function to retrieve all the nodes that have 6 neighbors in the graph T.
+
+Solution:-
+# Define nodes_with_m_nbrs()
+def nodes_with_m_nbrs(G,m):
+    """
+    Returns all nodes in graph G that have m neighbors.
+    """
+    nodes = set()
+
+    # Iterate over all nodes in G
+    for n in G.nodes():
+
+        # Check if the number of neighbors of n matches m
+        if len(list(G.neighbors(n))) == m:
+
+            # Add the node n to the set
+            nodes.add(n)
+
+    # Return the nodes with m neighbors
+    return nodes
+
+# Compute and print all nodes in T that have 6 neighbors
+six_nbrs = nodes_with_m_nbrs(T,6)
+print(six_nbrs)
+
+Q2:-
+Use a list comprehension along with the .neighbors(n) method to get the degree of every node. The result should be a list of integers.
+Use n as your iterator variable.
+The output expression of your list comprehension should be the number of neighbors that node n has - that is, its degree. Use the len() and list() functions together with the .neighbors() method to compute this.
+The iterable in your list comprehension is all the nodes in T, accessed using the .nodes() method.
+Print the degrees.
+
+Solution:-
+# Compute the degree of every node: degrees
+degrees = [len(list(T.neighbors(n))) for n in T.nodes()]
+
+# Print the degrees
+print(degrees)
+
+Q3:-
+Compute the degree centrality of the Twitter network T.
+Using plt.hist(), plot a histogram of the degree centrality distribution of T. This can be accessed using list(deg_cent.values()).
+Plot a histogram of the degree distribution degrees of T. This is the same list you computed in the last exercise.
+Create a scatter plot with degrees on the x-axis and the degree centrality distribution list(deg_cent.values()) on the y-axis.
+
+Solution:-
+# Import matplotlib.pyplot
+import matplotlib.pyplot as plt
+
+# Compute the degree centrality of the Twitter network: deg_cent
+deg_cent = nx.degree_centrality(T)
+
+# Plot a histogram of the degree centrality distribution of the graph.
+plt.figure()
+plt.hist(list(deg_cent.values()))
+plt.show()
+
+# Plot a histogram of the degree distribution of the graph
+plt.figure()
+plt.hist(degrees)
+plt.show()
+
+# Plot a scatter plot of the centrality distribution and the degree distribution
+plt.figure()
+plt.scatter(degrees,list(deg_cent.values()))
+plt.show()
+
+Q4:-
+Create a function called path_exists() that has 3 parameters - G, node1, and node2 - and returns whether or not a path exists between the two nodes.
+Initialize the queue of nodes to visit with the first node, node1. queue should be a list.
+Iterate over the nodes in queue.
+Get the neighbors of the node using the .neighbors() method of the graph G.
+Check to see if the destination node node2 is in the set of neighbors. If it is, return True.
+
+Solution:-
+# Define path_exists()
+def path_exists(G,node1,node2):
+    """
+    This function checks whether a path exists between two nodes (node1, node2) in graph G.
+    """
+    visited_nodes = set()
+
+    # Initialize the queue of nodes to visit with the first node: queue
+    queue = [node1]
+
+    # Iterate over the nodes in the queue
+    for node in queue:
+
+        # Get neighbors of the node
+        neighbors = G.neighbors(node)
+
+        # Check to see if the destination node is in the set of neighbors
+        if node2 in neighbors:
+            print('Path exists between nodes {0} and {1}'.format(node1, node2))
+            return True
+            break
+            
+Q5:-
+Using the .add() method, add the current node node to the set visited_nodes to keep track of what nodes have already been visited.
+Add the neighbors of the current node node that have not yet been visited to queue. To do this, you'll need to use the .extend() method of queue together with a list comprehension. The .extend() method appends all the items in a given list.
+The output expression and iterator variable of the list comprehension are both n. The iterable is the list neighbors, and the conditional is if n is not in the visited nodes.
+
+Solution:-
+def path_exists(G, node1, node2):
+    """
+    This function checks whether a path exists between two nodes (node1, node2) in graph G.
+    """
+    visited_nodes = set()
+    queue = [node1]
+
+    for node in queue:
+        neighbors = G.neighbors(node)
+        if node2 in neighbors:
+            print('Path exists between nodes {0} and {1}'.format(node1, node2))
+            return True
+          
+        else:
+            # Add current node to visited nodes
+            visited_nodes.add(node)
+
+            # Add neighbors of current node that have not yet been visited
+            queue.extend([n for n in neighbors if n not in visited_nodes])
+            
+Q6:-
+Check to see if the queue has been emptied. You can do this by inspecting the last element of queue with [-1].
+Place the appropriate return statement for indicating whether there's a path between these two nodes.
+
+Solution:-
+def path_exists(G, node1, node2):
+    """
+    This function checks whether a path exists between two nodes (node1, node2) in graph G.
+    """
+    visited_nodes = set()
+    queue = [node1]
+
+    for node in queue:
+        neighbors = G.neighbors(node)
+        if node2 in neighbors:
+            print('Path exists between nodes {0} and {1}'.format(node1, node2))
+            return True
+            break
+
+        else:
+            visited_nodes.add(node)
+            queue.extend([n for n in neighbors if n not in visited_nodes])
+
+        # Check to see if the final element of the queue has been reached
+        if node == queue[-1]:
+            print('Path does not exist between nodes {0} and {1}'.format(node1, node2))
+
+            # Place the appropriate return statement
+            return False
+            
+Q7:-
+Compute the betweenness centrality bet_cen of the nodes in the graph T.
+Compute the degree centrality deg_cen of the nodes in the graph T.
+Compare betweenness centrality to degree centrality by creating a scatterplot of the two, with list(bet_cen.values()) on the x-axis and list(deg_cen.values()) on the y-axis.
+
+Solution:-
+# Compute the betweenness centrality of T: bet_cen
+bet_cen = nx.betweenness_centrality(T)
+
+# Compute the degree centrality of T: deg_cen
+deg_cen = nx.degree_centrality(T)
+
+# Create a scatter plot of betweenness centrality and degree centrality
+plt.scatter(list(bet_cen.values()), list(deg_cen.values()))
+
+# Display the plot
+plt.show()
+
+Q8:-
+Write a function find_nodes_with_highest_deg_cent(G) that returns the node(s) with the highest degree centrality using the following steps:
+Compute the degree centrality of G.
+Compute the maximum degree centrality using the max() function on list(deg_cent.values()).
+Iterate over the degree centrality dictionary, deg_cent.items().
+If the degree centrality value v of the current node k is equal to max_dc, add it to the set of nodes.
+Use your function to find the node(s) that has the highest degree centrality in T.
+Write an assertion statement that checks that the node(s) is/are correctly identified. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+# Define find_nodes_with_highest_deg_cent()
+def find_nodes_with_highest_deg_cent(G):
+
+    # Compute the degree centrality of G: deg_cent
+    deg_cent = nx.degree_centrality(G)
+
+    # Compute the maximum degree centrality: max_dc
+    max_dc = max(list(deg_cent.values()))
+
+    nodes = set()
+
+    # Iterate over the degree centrality dictionary
+    for k, v in deg_cent.items():
+
+        # Check if the current value has the maximum degree centrality
+        if v == max_dc:
+
+            # Add the current node to the set of nodes
+            nodes.add(k)
+
+    return nodes
+
+# Find the node(s) that has the highest degree centrality in T: top_dc
+top_dc = find_nodes_with_highest_deg_cent(T)
+print(top_dc)
+
+# Write the assertion statement
+for node in top_dc:
+    assert nx.degree_centrality(T)[node] == max(nx.degree_centrality(T).values())
+    
+Q9:-
+Write a function find_node_with_highest_bet_cent(G) that returns the node(s) with the highest betweenness centrality.
+Compute the betweenness centrality of G.
+Compute the maximum betweenness centrality using the max() function on list(bet_cent.values()).
+Iterate over the degree centrality dictionary, bet_cent.items().
+If the degree centrality value v of the current node k is equal to max_bc, add it to the set of nodes.
+Use your function to find the node(s) that has the highest betweenness centrality in T.
+Write an assertion statement that you've got the right node. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+# Define find_node_with_highest_bet_cent()
+def find_node_with_highest_bet_cent(G):
+
+    # Compute betweenness centrality: bet_cent
+    bet_cent = nx.betweenness_centrality(G)
+
+    # Compute maximum betweenness centrality: max_bc
+    max_bc = max(list(bet_cent.values()))
+
+    nodes = set()
+
+    # Iterate over the betweenness centrality dictionary
+    for k, v in bet_cent.items():
+
+        # Check if the current value has the maximum betweenness centrality
+        if v == max_bc:
+
+            # Add the current node to the set of nodes
+            nodes.add(k)
+
+    return nodes
+
+# Use that function to find the node(s) that has the highest betweenness centrality in the network: top_bc
+top_bc = find_node_with_highest_bet_cent(T)
+
+# Write an assertion statement that checks that the node(s) is/are correctly identified.
+for node in top_bc:
+    assert nx.betweenness_centrality(T)[node] == max(nx.betweenness_centrality(T).values())
