@@ -1,0 +1,160 @@
+Q1:-
+Import matplotlib.pyplot as plt and networkx as nx.
+Draw T_sub to the screen by using the nx.draw() function, and don't forget to also use plt.show() to display it.
+
+Solution:-
+# Import necessary modules
+import matplotlib.pyplot as plt
+import networkx as nx
+
+
+# Draw the graph to screen
+nx.draw(T_sub)
+plt.show()
+
+Q2:-
+Use a list comprehension to get a list of nodes from the graph T that have the 'occupation' label of 'scientist'.
+The output expression n has been specified for you, along with the iterator variables n and d. Your task is to fill in the iterable and the conditional expression.
+Use the .nodes() method of T access its nodes, and be sure to specify data=True to obtain the metadata for the nodes.
+The iterator variable d is a dictionary. The key of interest here is 'occupation' and value of interest is 'scientist'.
+Use a list comprehension to get a list of edges from the graph T that were formed for at least 6 years, i.e., from before 1 Jan 2010.
+Your task once again is to fill in the iterable and conditional expression.
+Use the .edges() method of T to access its edges. Be sure to obtain the metadata for the edges as well.
+The dates are stored as datetime.date objects in the metadata dictionary d, under the key 'date'. To access the date 1 Jan 2009, for example, the dictionary value would be date(2009, 1, 1).
+
+Solution:-
+# Use a list comprehension to get the nodes of interest: noi
+noi = [n for n, d in T.nodes(data=True) if d['occupation'] == 'scientist']
+
+# Use a list comprehension to get the edges of interest: eoi
+eoi = [(u, v) for u, v, d in T.edges(data=True) if d['date'] < date(2010,1,1)]
+
+Q3:-
+Set the 'weight' attribute of the edge between node 1 and 10 of T to be equal to 2. Refer to the following template to set an attribute of an edge: network_name.edges[node1, node2]['attribute'] = value. Here, the 'attribute' is 'weight'.
+Set the weight of every edge involving node 293 to be equal to 1.1. To do this:
+Using a for loop, iterate over all the edges of T, including the metadata.
+If 293 is involved in the list of nodes [u, v]:
+Set the weight of the edge between u and v to be 1.1.
+
+Solution:-
+# Set the weight of the edge
+T.edges[1,10]['weight'] = 2
+
+# Iterate over all the edges (with metadata)
+for u, v, d in T.edges(data=True):
+
+    # Check if node 293 is involved
+    if 293 in [u,v]:
+
+        # Set the weight to 1.1
+        T.edges[u,v]['weight'] = 1.1
+
+Q4:-
+Define a function called find_selfloop_nodes() which takes one argument: G.
+Using a for loop, iterate over all the edges in G (excluding the metadata).
+If node u is equal to node v:
+Append u to the list nodes_in_selfloops.
+Return the list nodes_in_selfloops.
+Check that the number of self loops in the graph equals the number of nodes in self loops. This has been done for you, so hit 'Submit Answer' to see the result!
+
+Solution:-
+# Define find_selfloop_nodes()
+def find_selfloop_nodes(T):
+    """
+    Finds all nodes that have self-loops in the graph G.
+    """
+    nodes_in_selfloops = []
+
+    # Iterate over all the edges of G
+    for u, v in T.edges():
+
+    # Check if node u and node v are the same
+        if u==v:
+
+            # Append node u to nodes_in_selfloops
+            nodes_in_selfloops.append(u)
+
+    return nodes_in_selfloops
+
+# Check whether number of self loops equals the number of nodes in self loops
+assert T.number_of_selfloops() == len(find_selfloop_nodes(T))
+
+Q5:-
+Import nxviz as nv.
+Plot the graph T as a matrix plot. To do this:
+Create the MatrixPlot object called m using the nv.MatrixPlot() function with T passed in as an argument.
+Draw the m to the screen using the .draw() method.
+Display the plot using plt.show().
+Convert the graph to a matrix format, and then convert the graph to back to the NetworkX form from the matrix as a directed graph. This has been done for you.
+Check that the category metadata field is lost from each node. This has also been done for you, so hit 'Submit Answer' to see the results!
+
+Solution:-
+# Import nxviz
+import nxviz as nv
+
+# Create the MatrixPlot object: m
+m = nv.MatrixPlot(T)
+
+# Draw m to the screen
+m.draw()
+
+# Display the plot
+plt.show()
+
+# Convert T to a matrix format: A
+A = nx.to_numpy_matrix(T)
+
+# Convert A back to the NetworkX form as a directed graph: T_conv
+T_conv = nx.from_numpy_matrix(A, create_using=nx.DiGraph())
+
+# Check that the `category` metadata field is lost from each node
+for n, d in T_conv.nodes(data=True):
+    assert 'category' not in d.keys()
+   
+Q6:-
+Import CircosPlot from nxviz.
+Plot the Twitter network T as a Circos plot without any styling. Use the CircosPlot() function to do this. Don't forget to draw it to the screen using .draw() and then display it using plt.show().
+
+Solution:-
+# Import necessary modules
+import matplotlib.pyplot as plt
+import nxviz as nv
+from nxviz import CircosPlot
+
+# Create the CircosPlot object: c
+c = nv.CircosPlot(T)
+
+# Draw c to the screen
+c.draw()
+
+# Display the plot
+plt.show()
+
+Q7:-
+Import ArcPlot from nxviz.
+Create an un-customized ArcPlot of T. To do this, use the ArcPlot() function with just T as the argument.
+Create another ArcPlot of T in which the nodes are ordered and colored by the 'category' keyword. You'll have to specify the node_order and node_color parameters to do this. For both plots, be sure to draw them to the screen and display them with plt.show().
+
+Solution:-
+# Import necessary modules
+import matplotlib.pyplot as plt
+import nxviz as nv
+from nxviz import ArcPlot
+
+# Create the un-customized ArcPlot object: a
+a = nv.ArcPlot(T)
+
+# Draw a to the screen
+a.draw()
+
+# Display the plot
+plt.show()
+
+# Create the customized ArcPlot object: a2
+a2 = nv.ArcPlot(T,node_order='category',node_color='category')
+
+# Draw a2 to the screen
+a2.draw()
+
+# Display the plot
+plt.show()
