@@ -1,1 +1,134 @@
 Q1:-
+Count the unique values in the violation column of the ri DataFrame, to see what violations are being committed by all drivers.
+Express the violation counts as proportions of the total.
+
+Solution:-
+# Count the unique values in 'violation'
+print(ri.violation.value_counts())
+
+# Express the counts as proportions
+print(ri.violation.value_counts(normalize=True))
+
+Q2:-
+Create a DataFrame, female, that only contains rows in which driver_gender is 'F'.
+Create a DataFrame, male, that only contains rows in which driver_gender is 'M'.
+Count the violations committed by female drivers and express them as proportions.
+Count the violations committed by male drivers and express them as proportions.
+
+Solution:-
+# Create a DataFrame of female drivers
+female = ri[ri['driver_gender'] == 'F']
+
+# Create a DataFrame of male drivers
+male = ri[ri['driver_gender'] == 'M']
+
+# Compute the violations by female drivers (as proportions)
+print(female.violation.value_counts(normalize=True))
+
+# Compute the violations by male drivers (as proportions)
+print(male.violation.value_counts(normalize=True))
+
+Q3:-
+Create a DataFrame, female_and_speeding, that only includes female drivers who were stopped for speeding.
+Create a DataFrame, male_and_speeding, that only includes male drivers who were stopped for speeding.
+Count the stop outcomes for the female drivers and express them as proportions.
+Count the stop outcomes for the male drivers and express them as proportions.
+
+Solution:-
+# Create a DataFrame of female drivers stopped for speeding
+female_and_speeding = ri[(ri.driver_gender=='F') & (ri.violation=='Speeding')]
+
+# Create a DataFrame of male drivers stopped for speeding
+male_and_speeding = ri[(ri.driver_gender=='M') & (ri.violation=='Speeding')]
+
+# Compute the stop outcomes for female drivers (as proportions)
+print(female_and_speeding.stop_outcome.value_counts(normalize=True))
+
+# Compute the stop outcomes for male drivers (as proportions)
+print(male_and_speeding.stop_outcome.value_counts(normalize=True))
+
+Q4:-
+Check the data type of search_conducted to confirm that it's a Boolean Series.
+Calculate the search rate by counting the Series values and expressing them as proportions.
+Calculate the search rate by taking the mean of the Series. (It should match the proportion of True values calculated above.)
+
+Solution:-
+# Check the data type of 'search_conducted'
+print(ri.search_conducted.dtype)
+
+# Calculate the search rate by counting the values
+print(ri.search_conducted.value_counts(normalize=True))
+
+# Calculate the search rate by taking the mean
+print(ri.search_conducted.mean())
+
+Q5:-
+Filter the DataFrame to only include female drivers, and then calculate the search rate by taking the mean of search_conducted.
+
+Solution:-
+# Calculate the search rate for female drivers
+print(ri[ri.driver_gender=='F'].search_conducted.mean())
+
+Q6:-
+Filter the DataFrame to only include male drivers, and then repeat the search rate calculation.
+
+Solution:-
+# Calculate the search rate for male drivers
+print(ri[ri.driver_gender=='M'].search_conducted.mean())
+
+Q7:-
+Group by driver gender to calculate the search rate for both groups simultaneously. (It should match the previous results.)
+
+Solution:-
+# Calculate the search rate for both groups simultaneously
+print(ri.groupby('driver_gender').search_conducted.mean())
+
+Q8:-
+Use a .groupby() to calculate the search rate for each combination of gender and violation. Are males and females searched at about the same rate for each violation?
+
+Solution:-
+# Calculate the search rate for each combination of gender and violation
+print(ri.groupby(['driver_gender','violation']).search_conducted.mean())
+
+Q9:-
+Reverse the ordering to group by violation before gender. The results may be easier to compare when presented this way.
+
+Solution:-
+# Reverse the ordering to group by violation before gender
+print(ri.groupby(['violation','driver_gender']).search_conducted.mean())
+
+Q10:-
+Count the search_type values to see how many times "Protective Frisk" was the only search type.
+Create a new column, frisk, that is True if search_type contains the string "Protective Frisk" and False otherwise.
+Check the data type of frisk to confirm that it's a Boolean Series.
+Take the sum of frisk to count the total number of frisks.
+
+Solution:-
+# Count the 'search_type' values
+print(ri.search_type.value_counts())
+
+# Check if 'search_type' contains the string 'Protective Frisk'
+ri['frisk'] = ri.search_type.str.contains('Protective Frisk', na=False)
+
+# Check the data type of 'frisk'
+print(ri.frisk.dtype)
+
+# Take the sum of 'frisk'
+print(ri.frisk.sum())
+
+Q11:-
+Create a DataFrame, searched, that only contains rows in which search_conducted is True.
+Take the mean of the frisk column to find out what percentage of searches included a frisk.
+Calculate the frisk rate for each gender using a .groupby().
+
+Solution:-
+# Create a DataFrame of stops in which a search was conducted
+searched = ri[ri.search_conducted == True]
+
+# Calculate the overall frisk rate by taking the mean of 'frisk'
+print(searched.frisk.mean())
+
+# Calculate the frisk rate for each gender
+print(searched.groupby(['driver_gender']).frisk.mean())
+
+Q12:-
