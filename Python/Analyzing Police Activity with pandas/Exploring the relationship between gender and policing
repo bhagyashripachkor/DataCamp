@@ -130,5 +130,3 @@ print(searched.frisk.mean())
 
 # Calculate the frisk rate for each gender
 print(searched.groupby(['driver_gender']).frisk.mean())
-
-Q12:-
