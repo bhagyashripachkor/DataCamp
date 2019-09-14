@@ -1,0 +1,152 @@
+Q1:-
+Take the mean of the is_arrested column to calculate the overall arrest rate.
+Group by the hour attribute of the DataFrame index to calculate the hourly arrest rate.
+Save the hourly arrest rate Series as a new object, hourly_arrest_rate.
+
+Solution:-
+# Calculate the overall arrest rate
+print(ri.is_arrested.mean())
+
+# Calculate the hourly arrest rate
+print(ri.groupby(ri.index.hour).is_arrested.mean())
+
+# Save the hourly arrest rate
+hourly_arrest_rate = ri.groupby(ri.index.hour).is_arrested.mean()
+
+Q2:-
+Import matplotlib.pyplot using the alias plt.
+Create a line plot of hourly_arrest_rate using the .plot() method.
+Label the x-axis as 'Hour', label the y-axis as 'Arrest Rate', and title the plot 'Arrest Rate by Time of Day'.
+Display the plot using the .show() function.
+
+Solution:-
+# Import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+# Create a line plot of 'hourly_arrest_rate'
+plt.plot(hourly_arrest_rate)
+
+# Add the xlabel, ylabel, and title
+plt.xlabel('Hour')
+plt.ylabel('Arrest Rate')
+plt.title('Arrest Rate by Time of Day')
+
+# Display the plot
+plt.show()
+
+Q3:-
+Calculate the annual rate of drug-related stops by resampling the drugs_related_stop column (on the 'A' frequency) and taking the mean.
+Save the annual drug rate Series as a new object, annual_drug_rate.
+Create a line plot of annual_drug_rate using the .plot() method.
+Display the plot using the .show() function.
+
+Solution:-
+# Calculate the annual rate of drug-related stops
+print(ri.drugs_related_stop.resample('A').mean())
+
+# Save the annual rate of drug-related stops
+annual_drug_rate = ri.drugs_related_stop.resample('A').mean()
+
+# Create a line plot of 'annual_drug_rate'
+plt.plot(annual_drug_rate)
+
+# Display the plot
+plt.show()
+
+Q4:-
+Calculate the annual search rate by resampling the search_conducted column, and save the result as annual_search_rate.
+Concatenate annual_drug_rate and annual_search_rate along the columns axis, and save the result as annual.
+Create subplots of the drug and search rates from the annual DataFrame.
+Display the subplots.
+
+Solution:-
+# Calculate and save the annual search rate
+annual_search_rate = ri.search_conducted.resample('A').mean()
+
+# Concatenate 'annual_drug_rate' and 'annual_search_rate'
+annual = pd.concat([annual_drug_rate,annual_search_rate], axis=1)
+
+# Create subplots from 'annual'
+annual.plot(subplots=True)
+
+# Display the subplots
+plt.show()
+
+Q5:-
+Create a frequency table from the district and violation columns using the pd.crosstab() function.
+Save the frequency table as a new object, all_zones.
+Select rows 'Zone K1' through 'Zone K3' from all_zones using the .loc[] accessor.
+Save the smaller table as a new object, k_zones.
+
+Solution:-
+# Create a frequency table of districts and violations
+print(pd.crosstab(ri.district,ri.violation))
+
+# Save the frequency table as 'all_zones'
+all_zones = pd.crosstab(ri.district,ri.violation)
+
+# Select rows 'Zone K1' through 'Zone K3'
+print(all_zones.loc['Zone K1':'Zone K3'])
+
+# Save the smaller table as 'k_zones'
+k_zones = all_zones.loc['Zone K1':'Zone K3']
+
+Q6:-
+Create a bar plot of k_zones.
+Display the plot and examine it. What do you notice about each of the zones?
+
+Solution:-
+# Create a bar plot of 'k_zones'
+k_zones.plot(kind='bar')
+
+# Display the plot
+plt.show()
+
+Q7:-
+Create a stacked bar plot of k_zones.
+Display the plot and examine it. Do you notice anything different about the data than you did previously?
+
+Solution:-
+# Create a stacked bar plot of 'k_zones'
+k_zones.plot(kind='bar',stacked=True)
+
+# Display the plot
+plt.show()
+
+Q8:-
+Print the unique values in the stop_duration column. (This has been done for you.)
+Create a dictionary called mapping that maps the stop_duration strings to the integers specified above.
+Convert the stop_duration strings to integers using the mapping, and store the results in a new column called stop_minutes.
+Print the unique values in the stop_minutes column, to verify that the durations were properly converted to integers.
+
+Solution:-
+# Print the unique values in 'stop_duration'
+print(ri.stop_duration.unique())
+
+# Create a dictionary that maps strings to integers
+mapping = {'0-15 Min':8,'16-30 Min':23,'30+ Min':45}
+
+# Convert the 'stop_duration' strings to integers using the 'mapping'
+ri['stop_minutes'] = ri.stop_duration.map(mapping)
+
+# Print the unique values in 'stop_minutes'
+print(ri.stop_minutes.unique())
+
+Q9:-
+For each value in the violation_raw column, calculate the mean number of stop_minutes that a driver is detained.
+Save the resulting Series as a new object, stop_length.
+Sort stop_length by its values, and then visualize it using a horizontal bar plot.
+Display the plot.
+
+Solution:-
+# Calculate the mean 'stop_minutes' for each value in 'violation_raw'
+print(ri.groupby(['violation_raw']).stop_minutes.mean())
+
+# Save the resulting Series as 'stop_length'
+stop_length = ri.groupby(['violation_raw']).stop_minutes.mean()
+
+# Sort 'stop_length' by its values and create a horizontal bar plot
+stop_length.sort_values().plot(kind='barh')
+
+# Display the plot
+plt.show()
