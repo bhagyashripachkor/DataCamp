@@ -1,0 +1,126 @@
+Q1:-
+Get information on all table names in the current database, while limiting your query to the 'public' table_schema.
+
+Solution:-
+-- Query the right table in information_schema
+SELECT table_name 
+FROM information_schema.tables
+-- Specify the correct table_schema value
+WHERE table_schema = 'public';
+
+Q2:-
+Now have a look at the columns in university_professors by selecting all entries in information_schema.columns that correspond to that table.
+
+Solution:-
+-- Query the right table in information_schema to get columns
+SELECT column_name, data_type 
+FROM information_schema.columns 
+WHERE table_name = 'university_professors' AND table_schema = 'public';
+
+Q3:-
+Finally, print the first five rows of the university_professors table.
+
+Solution:-
+-- Query the first five rows of our table
+select * 
+from university_professors 
+LIMIT 5;
+
+Q4:-
+Create a table professors with two text columns: firstname and lastname.
+
+Solution:-
+-- Create a table for the professors entity type
+CREATE TABLE professors (
+ firstname text,
+ lastname text
+);
+
+-- Print the contents of this table
+SELECT * 
+FROM professors
+
+Q5:-
+Create a table universities with three text columns: university_shortname, university, and university_city.
+
+Solution:-
+-- Create a table for the universities entity type
+create table universities(
+university_shortname text,
+university text,
+university_city text
+);
+
+
+
+
+
+-- Print the contents of this table
+SELECT * 
+FROM universities
+
+Q6:-
+Alter professors to add the text column university_shortname.
+
+Solution:-
+-- Add the university_shortname column
+alter table professors
+add column university_shortname text;
+
+-- Print the contents of this table
+SELECT * 
+FROM professors
+
+Q7:-
+Rename the organisation column to organization in affiliations.
+
+Solution:-
+-- Rename the organisation column
+ALTER TABLE affiliations
+RENAME column organisation TO organization;
+
+Q8:-
+Delete the university_shortname column in affiliations.
+
+Solution:-
+-- Rename the organisation column
+ALTER TABLE affiliations
+RENAME COLUMN organisation TO organization;
+
+-- Delete the university_shortname column
+alter table affiliations
+drop column university_shortname;
+
+Q9:-
+Insert all DISTINCT professors from university_professors into professors.
+Print all the rows in professors.
+
+Solution:-
+-- Insert unique professors into the new table
+insert into professors 
+SELECT DISTINCT firstname, lastname, university_shortname 
+FROM university_professors;
+
+-- Doublecheck the contents of professors
+SELECT * 
+FROM professors;
+
+Q10:-
+Insert all DISTINCT affiliations into affiliations.
+
+Solution:-
+-- Insert unique affiliations into the new table
+INSERT INTO affiliations 
+SELECT DISTINCT firstname, lastname, function, organization 
+FROM university_professors;
+
+-- Doublecheck the contents of affiliations
+SELECT * 
+FROM affiliations;
+
+Q11:-
+Delete the university_professors table.
+
+Solution:-
+-- Delete the university_professors table
+drop table university_professors;
