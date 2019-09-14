@@ -1,0 +1,182 @@
+Q1:-
+Read weather.csv into a DataFrame named weather.
+Select the temperature columns (TMIN, TAVG, TMAX) and print their summary statistics using the .describe() method.
+Create a box plot to visualize the temperature columns.
+Display the plot.
+
+Solution:-
+# Read 'weather.csv' into a DataFrame named 'weather'
+weather = pd.read_csv('weather.csv')
+
+# Describe the temperature columns
+print(weather[['TMIN', 'TAVG', 'TMAX']].describe())
+
+# Create a box plot of the temperature columns
+weather[['TMIN', 'TAVG', 'TMAX']].plot(kind='box')
+
+# Display the plot
+plt.show()
+
+Q2:-
+Create a new column in the weather DataFrame named TDIFF that represents the difference between the maximum and minimum temperatures.
+Print the summary statistics for TDIFF using the .describe() method.
+Create a histogram with 20 bins to visualize TDIFF.
+Display the plot.
+
+Solution:-
+# Create a 'TDIFF' column that represents temperature difference
+weather['TDIFF'] =weather.TMAX - weather.TMIN
+
+# Describe the 'TDIFF' column
+print(weather['TDIFF'].describe())
+
+# Create a histogram with 20 bins to visualize 'TDIFF'
+weather.TDIFF.plot(kind='hist',bins=20)
+
+# Display the plot
+plt.show()
+
+Q3:-
+Copy the columns WT01 through WT22 from weather to a new DataFrame named WT.
+Calculate the sum of each row in WT, and store the results in a new weather column named bad_conditions.
+Replace any missing values in bad_conditions with a 0. (This has been done for you.)
+Create a histogram to visualize bad_conditions, and then display the plot.
+
+Solution:-
+# Copy 'WT01' through 'WT22' to a new DataFrame
+WT = weather.loc[:,'WT01':'WT22']
+
+# Calculate the sum of each row in 'WT'
+weather['bad_conditions'] = WT.sum(axis='columns')
+
+# Replace missing values in 'bad_conditions' with '0'
+weather['bad_conditions'] = weather.bad_conditions.fillna(0).astype('int')
+
+# Create a histogram to visualize 'bad_conditions'
+weather.bad_conditions.plot(kind='hist')
+
+# Display the plot
+plt.show()
+
+Q4:-
+Count the unique values in the bad_conditions column and sort the index. (This has been done for you.)
+Create a dictionary called mapping that maps the bad_conditions integers to strings as specified above.
+Convert the bad_conditions integers to strings using the mapping and store the results in a new column called rating.
+Count the unique values in rating to verify that the integers were properly converted to strings.
+
+Solution:-
+# Count the unique values in 'bad_conditions' and sort the index
+print(weather.bad_conditions.value_counts().sort_index())
+
+# Create a dictionary that maps integers to strings
+mapping = {0:'good', 1:'bad', 2:'bad', 3:'bad',4:'bad',5:'worse',6:'worse',7:'worse',8:'worse',9:'worse'}
+
+# Convert the 'bad_conditions' integers to strings using the 'mapping'
+weather['rating'] = weather.bad_conditions.map(mapping)
+
+# Count the unique values in 'rating'
+print(weather.rating.value_counts())
+
+Q5:-
+Create a list object called cats that lists the weather ratings in a logical order: 'good', 'bad', 'worse'.
+Change the data type of the rating column from object to category. Make sure to use the cats list to define the category ordering.
+Examine the head of the rating column to confirm that the categories are logically ordered.
+
+Solution:-
+# Create a list of weather ratings in logical order
+cats= ['good','bad','worse']
+
+# Change the data type of 'rating' to category
+weather['rating'] = weather['rating'].astype('category').cat.reorder_categories(cats, ordered=True)
+
+# Examine the head of 'rating'
+print(weather['rating'].head())
+
+Q6:-
+Reset the index of the ri DataFrame.
+Examine the head of ri to verify that stop_datetime is now a DataFrame column, and the index is now the default integer index.
+Create a new DataFrame named weather_rating that contains only the DATE and rating columns from the weather DataFrame.
+Examine the head of weather_rating to verify that it contains the proper columns.
+
+Solution:-
+# Reset the index of 'ri'
+ri.reset_index(inplace=True)
+
+# Examine the head of 'ri'
+print(ri.head())
+
+# Create a DataFrame from the 'DATE' and 'rating' columns
+weather_rating = weather[['DATE','rating']]
+
+# Examine the head of 'weather_rating'
+print(weather_rating.head())
+
+Q7:-
+Examine the shape of the ri DataFrame.
+Merge the ri and weather_rating DataFrames using a left join.
+Examine the shape of ri_weather to confirm that it has two more columns but the same number of rows as ri.
+Replace the index of ri_weather with the stop_datetime column.
+
+Solution:-
+# Examine the shape of 'ri'
+print(ri.shape)
+
+# Merge 'ri' and 'weather_rating' using a left join
+ri_weather = pd.merge(left=ri, right=weather_rating, left_on='stop_date', right_on='DATE', how='left')
+
+# Examine the shape of 'ri_weather'
+print(ri_weather.shape)
+
+# Set 'stop_datetime' as the index of 'ri_weather'
+ri_weather.set_index('stop_datetime', inplace=True)
+
+Q8:-
+Calculate the overall arrest rate by taking the mean of the is_arrested Series.
+
+Solution:-
+# Calculate the overall arrest rate
+print(ri_weather.is_arrested.mean())
+
+Q9:-
+Calculate the arrest rate for each weather rating using a .groupby().
+
+Solution:-
+# Calculate the arrest rate for each 'rating'
+print(ri_weather.groupby('rating').is_arrested.mean())
+
+Q10:-
+Calculate the arrest rate for each combination of violation and rating. How do the arrest rates differ by group?
+
+Solution-
+# Calculate the arrest rate for each 'violation' and 'rating'
+print(ri_weather.groupby(['violation','rating']).is_arrested.mean())
+
+Q11:-
+Save the output of the .groupby() operation from the last exercise as a new object, arrest_rate. (This has been done for you.)
+Print the arrest_rate Series and examine it.
+Print the arrest rate for moving violations in bad weather.
+Print the arrest rates for speeding violations in all three weather conditions.
+
+Solution:-
+# Save the output of the groupby operation from the last exercise
+arrest_rate = ri_weather.groupby(['violation', 'rating']).is_arrested.mean()
+
+# Print the 'arrest_rate' Series
+print(arrest_rate)
+
+# Print the arrest rate for moving violations in bad weather
+print(arrest_rate.loc['Moving violation','bad'])
+
+# Print the arrest rates for speeding violations in all three weather conditions
+print(arrest_rate.loc['Speeding'])
+
+Q12:-
+Unstack the arrest_rate Series to reshape it into a DataFrame.
+Create the exact same DataFrame using a pivot table! Each of the three .pivot_table() parameters should be specified as one of the ri_weather columns.
+
+Solution:-
+# Unstack the 'arrest_rate' Series into a DataFrame
+print(arrest_rate.unstack())
+
+# Create the same DataFrame using a pivot table
+print(ri_weather.pivot_table(index='violation', columns=['rating'], values='is_arrested'))
