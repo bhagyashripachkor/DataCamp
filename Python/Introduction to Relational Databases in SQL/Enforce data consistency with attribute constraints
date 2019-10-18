@@ -21,3 +21,6 @@ SELECT transaction_date, amount + cast(fee as integer)  AS net_amount
 FROM transactions;
 
 Q3:-
+Have a look at the distinct university_shortname values and take note of the length of the strings.
+
+Solution:-
