@@ -1,0 +1,30 @@
+Q1:-
+First, find out the number of rows in universities.
+
+Solution:-
+-- Count the number of rows in universities
+SELECT count(*)
+FROM universities;
+
+Q2:-
+Then, find out how many unique values there are in the university_city column.
+
+Solution:-
+-- Count the number of distinct values in the university_city column
+SELECT count(distinct(university_city)) 
+FROM universities;
+
+Q3:-
+Using the above steps, identify the candidate key by trying out different combination of columns.
+
+Solution:-
+-- Try out different combinations
+select COUNT(distinct(firstname,lastname)) 
+FROM professors;
+
+Q4:-
+Rename the organization column to id in organizations.
+Make id a primary key and name it organization_pk.
+
+Solution:-
+
