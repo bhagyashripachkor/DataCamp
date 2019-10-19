@@ -27,4 +27,29 @@ Rename the organization column to id in organizations.
 Make id a primary key and name it organization_pk.
 
 Solution:-
+-- Rename the organization column to id
+ALTER TABLE organizations
+RENAME COLUMN organization TO id;
+
+-- Make id a primary key
+ALTER TABLE organizations
+ADD CONSTRAINT organization_pk PRIMARY KEY (id);
+
+Q5:-
+Rename the university_shortname column to id in universities.
+Make id a primary key and name it university_pk.
+
+Solution:-
+-- Rename the university_shortname column to id
+alter table universities
+rename column university_shortname to id;
+
+-- Make id a primary key
+alter table universities
+add constraint university_pk primary key (id);
+
+Q6:-
+Add a new column id with data type serial to the professors table.
+
+Solution:-
 
