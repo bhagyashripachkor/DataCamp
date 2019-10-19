@@ -24,3 +24,67 @@ Q3:-
 Have a look at the distinct university_shortname values and take note of the length of the strings.
 
 Solution:-
+-- Select the university_shortname column
+SELECT distinct(university_shortname) 
+FROM professors;
+
+Q4:-
+Now specify a fixed-length character type with the correct length for university_shortname
+
+Solution:-
+-- Specify the correct fixed-length character type
+ALTER TABLE professors
+ALTER COLUMN university_shortname
+TYPE char(3);
+
+Q5:-
+Change the type of the firstname column to varchar(64)
+
+Solution:-
+-- Change the type of firstname
+alter table professors
+alter column firstname
+type varchar(64);
+
+Q5:-
+Run the sample code as is and take note of the error.
+Now use SUBSTRING() to reduce firstname to 16 characters so its type can be altered to varchar(16).
+
+Solution:-
+-- Convert the values in firstname to a max. of 16 characters
+ALTER TABLE professors 
+ALTER COLUMN firstname 
+TYPE varchar(16)
+using substring(firstname from 1 for 16)
+
+Q6:-
+Add a not-null constraint for the firstname column.
+
+Solution:-
+-- Disallow NULL values in firstname
+alter table professors 
+ALTER COLUMN firstname SET NOT NULL;
+
+Q7:-
+Add a not-null constraint for the lastname column.
+
+Solution:-
+-- Disallow NULL values in lastname
+alter table professors
+alter column lastname set not null;
+
+Q8:-
+Add a unique constraint to the university_shortname column in universities. Give it the name university_shortname_unq
+
+Solution:-
+-- Make universities.university_shortname unique
+ALTER table universities
+ADD constraint university_shortname_unq UNIQUE(university_shortname);
+
+Q9:-
+Add a unique constraint to the organization column in organizations. Give it the name organization_unq
+
+Solution:-
+-- Make organizations.organization unique
+alter table organizations
+add constraint organization_unq unique(organization)
