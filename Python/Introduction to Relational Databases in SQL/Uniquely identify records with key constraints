@@ -52,4 +52,104 @@ Q6:-
 Add a new column id with data type serial to the professors table.
 
 Solution:-
+-- Add the new column to the table
+ALTER TABLE professors 
+add column id serial;
 
+Q7:-
+Make id a primary key and name it professors_pkey
+
+solution:-
+-- Add the new column to the table
+ALTER TABLE professors 
+ADD COLUMN id serial;
+
+-- Make id a primary key
+ALTER table professors 
+add CONSTRAINT professors_pkey primary key (id);
+
+Q8:-
+Write a query that returns all the columns and 10 rows from professors.
+
+solution:-
+-- Add the new column to the table
+ALTER TABLE professors 
+ADD COLUMN id serial;
+
+-- Make id a primary key
+ALTER TABLE professors 
+ADD CONSTRAINT professors_pkey PRIMARY KEY (id);
+
+-- Have a look at the first 10 rows of professors
+select * from professors limit 10;
+
+Q9:-
+Count the number of distinct rows with a combination of the make and model columns.
+
+Solution:-
+-- Count the number of distinct rows with columns make, model
+select count(distinct(make,model))
+FROM cars;
+
+Q10:-
+Add a new column id with the data type varchar(128).
+
+Solution:-
+-- Count the number of distinct rows with columns make, model
+SELECT COUNT(DISTINCT(make, model)) 
+FROM cars;
+
+-- Add the id column
+ALTER TABLE cars
+add column id varchar(128);
+
+Q11:-
+Concatenate make and model into id using an UPDATE query and the CONCAT() function.
+
+Solution:-
+-- Count the number of distinct rows with columns make, model
+SELECT COUNT(DISTINCT(make, model)) 
+FROM cars;
+
+-- Add the id column
+ALTER TABLE cars
+ADD COLUMN id varchar(128);
+
+-- Update id with make + model
+UPDATE cars
+set id = concat(make, model);
+
+Q12:-
+Make id a primary key and name it id_pk
+
+Solution:-
+-- Count the number of distinct rows with columns make, model
+SELECT COUNT(DISTINCT(make, model)) 
+FROM cars;
+
+-- Add the id column
+ALTER TABLE cars
+ADD COLUMN id varchar(128);
+
+-- Update id with make + model
+UPDATE cars
+SET id = CONCAT(make, model);
+
+-- Make id a primary key
+alter table cars
+add constraint id_pk primary key(id);
+
+-- Have a look at the table
+SELECT * FROM cars;
+
+Q13:-
+Given the above description of a student entity, create a table students with the correct column types.
+Add a primary key for the social security number.
+
+Solution:-
+-- Create the table
+create table students (
+  last_name varchar(128) not null,
+  ssn integer primary key,
+  phone_no char(12)
+);
