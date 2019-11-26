@@ -41,3 +41,65 @@ ON professors.university_id = universities.id
 where universities.university_city = 'Zurich';
 
 Q5:-
+Add a professor_id column with integer data type to affiliations, and declare it to be a foreign key that references the id column in professors.
+
+Solution:-
+-- Add a professor_id column
+alter table affiliations
+add COLUMN professor_id integer REFERENCES professors (id);
+
+Q6:-
+Rename the organization column in affiliations to organization_id.
+
+solution:-
+-- Add a professor_id column
+ALTER TABLE affiliations
+ADD COLUMN professor_id integer REFERENCES professors (id);
+
+-- Rename the organization column to organization_id
+alter table affiliations
+rename organization TO organization_id;
+
+Q7:-
+Add a foreign key constraint on organization_id so that it references the id column in organizations.
+
+Solution:-
+-- Add a professor_id column
+ALTER TABLE affiliations
+ADD COLUMN professor_id integer REFERENCES professors (id);
+
+-- Rename the organization column to organization_id
+ALTER TABLE affiliations
+RENAME organization TO organization_id;
+
+-- Add a foreign key on organization_id
+ALTER TABLE affiliations
+ADD CONSTRAINT affiliations_organization_fkey foreign key (organization_id) references organizations (id);
+
+Q8:-
+Update the professor_id column with the corresponding value of the id column in professors.
+"Corresponding" means rows in professors where the firstname and lastname are identical to the ones in affiliations.
+
+Solution:-
+-- Set professor_id to professors.id where firstname, lastname correspond to rows in professors
+UPDATE affiliations
+SET professor_id = professors.id
+FROM professors
+WHERE affiliations.firstname = professors.firstname AND affiliations.lastname = professors.lastname;
+
+Q9:-
+Drop the firstname and lastname columns from the affiliations table.
+
+Solution:-
+-- Drop the firstname column
+alter table affiliations
+DROP column firstname;
+
+-- Drop the lastname column
+alter table affiliations
+drop column lastname;
+
+Q10:-
+Delete the affiliations_organization_id_fkey foreign key constraint in affiliations.
+
+Solution:-
