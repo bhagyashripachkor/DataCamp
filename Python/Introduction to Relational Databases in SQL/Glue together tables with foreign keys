@@ -1,0 +1,43 @@
+Q1:-
+Rename the university_shortname column to university_id in professors
+
+Solution:-
+-- Rename the university_shortname column
+ALTER TABLE professors
+rename column university_shortname to university_id;
+
+Q2:-
+Add a foreign key on university_id column in professors that references the id column in universities.
+Name this foreign key professors_fkey.
+
+Solution:-
+-- Rename the university_shortname column
+ALTER TABLE professors
+RENAME COLUMN university_shortname TO university_id;
+
+-- Add a foreign key on professors referencing universities
+alter table professors 
+add constraint professors_fkey FOREIGN KEY (university_id) REFERENCES universities (id);
+
+Q3:-
+Run the sample code and have a look at the error message.
+What's wrong? Correct the university_id so that it actually reflects where Albert Einstein wrote his dissertation and became a professor – at the University of Zurich (UZH)!
+
+Solution:-
+-- Try to insert a new professor
+INSERT INTO professors (firstname, lastname, university_id)
+VALUES ('Albert', 'Einstein', 'UZH');
+
+Q4:-
+JOIN professors with universities on professors.university_id = universities.id, i.e., retain all records where the foreign key of professors is equal to the primary key of universities.
+Filter for university_city = 'Zurich'.
+
+Solution:-
+-- Select all professors working for universities in the city of Zurich
+SELECT professors.lastname, universities.id, universities.university_city
+from professors
+join universities
+ON professors.university_id = universities.id
+where universities.university_city = 'Zurich';
+
+Q5:-
