@@ -1,0 +1,90 @@
+Q1:-
+Print summary statistics of the numeric columns in the DataFrame df using the .describe() method.
+Import matplotlib.pyplot as plt.
+Create a histogram of the non-null 'FTE' column. You can do this by passing df['FTE'].dropna() to plt.hist().
+The title has been specified and axes have been labeled, so hit 'Submit Answer' to see how often school employees work full-time!
+
+Solution:-
+
+# Print the summary statistics
+print(df.describe())
+
+# Import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+# Create the histogram
+plt.hist(df['FTE'].dropna())
+
+# Add title and labels
+plt.title('Distribution of %full-time \n employee works')
+plt.xlabel('% of full-time')
+plt.ylabel('num employees')
+
+# Display the histogram
+plt.show()
+
+Q2:-
+Define the lambda function categorize_label to convert column x into x.astype('category').
+Use the LABELS list provided to convert the subset of data df[LABELS] to categorical types using the .apply() method and categorize_label. Don't forget axis=0.
+Print the converted .dtypes attribute of df[LABELS]
+
+Solution:-
+# Define the lambda function: categorize_label
+categorize_label = lambda x: x.astype('category')
+
+# Convert df[LABELS] to a categorical type
+df[LABELS] = df[LABELS].apply(categorize_label,axis=0)
+
+# Print the converted dtypes
+print(df[LABELS].dtypes)
+
+Q3:-
+Create the DataFrame num_unique_labels by using the .apply() method on df[LABELS] with pd.Series.nunique as the argument.
+Create a bar plot of num_unique_labels using pandas' .plot(kind='bar') method.
+The axes have been labeled for you, so hit 'Submit Answer' to see the number of unique values for each label.
+
+Solution:-
+# Import matplotlib.pyplot
+import matplotlib.pyplot as plt
+
+# Calculate number of unique values for each label: num_unique_labels
+num_unique_labels = df[LABELS].apply(pd.Series.nunique)
+
+# Plot number of unique values for each label
+num_unique_labels.plot(kind='bar')
+
+# Label the axes
+plt.xlabel('Labels')
+plt.ylabel('Number of unique values')
+
+# Display the plot
+plt.show()
+
+Q4:-
+Using the compute_log_loss() function, compute the log loss for the following predicted values (in each case, the actual values are contained in actual_labels):
+correct_confident.
+correct_not_confident.
+wrong_not_confident.
+wrong_confident.
+actual_labels.
+
+Solution:-
+# Compute and print log loss for 1st case
+correct_confident_loss = compute_log_loss(correct_confident, actual_labels)
+print("Log loss, correct and confident: {}".format(correct_confident_loss)) 
+
+# Compute log loss for 2nd case
+correct_not_confident_loss = compute_log_loss(correct_not_confident, actual_labels)
+print("Log loss, correct and not confident: {}".format(correct_not_confident_loss)) 
+
+# Compute and print log loss for 3rd case
+wrong_not_confident_loss = compute_log_loss(wrong_not_confident, actual_labels)
+print("Log loss, wrong and not confident: {}".format(wrong_not_confident_loss)) 
+
+# Compute and print log loss for 4th case
+wrong_confident_loss = compute_log_loss(wrong_confident,actual_labels)
+print("Log loss, wrong and confident: {}".format(wrong_confident_loss)) 
+
+# Compute and print log loss for actual labels
+actual_labels_loss = compute_log_loss(actual_labels, actual_labels)
+print("Log loss, actual labels: {}".format(actual_labels_loss))
