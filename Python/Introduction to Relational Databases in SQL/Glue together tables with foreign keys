@@ -103,3 +103,116 @@ Q10:-
 Delete the affiliations_organization_id_fkey foreign key constraint in affiliations.
 
 Solution:-
+-- Identify the correct constraint name
+SELECT constraint_name, table_name, constraint_type
+FROM information_schema.table_constraints
+WHERE constraint_type = 'FOREIGN KEY';
+
+alter table affiliations
+drop constraint affiliations_organization_id_fkey ;
+
+Q11:-
+Add a new foreign key that cascades deletion if a referenced record is deleted from organizations. Name it affiliations_organization_id_fkey.
+
+Solution:-
+-- Identify the correct constraint name
+SELECT constraint_name, table_name, constraint_type
+FROM information_schema.table_constraints
+WHERE constraint_type = 'FOREIGN KEY';
+
+-- Drop the right foreign key constraint
+ALTER TABLE affiliations
+DROP CONSTRAINT affiliations_organization_id_fkey;
+
+-- Add a new foreign key constraint from affiliations to organizations which cascades deletion
+ALTER TABLE affiliations
+add constraint affiliations_organization_id_fkey foreign KEY (organization_id) references organizations (id) on delete cascade;
+
+Q12:-
+Run the DELETE and SELECT queries to double check that the deletion cascade actually works.
+
+Solution:-
+-- Identify the correct constraint name
+SELECT constraint_name, table_name, constraint_type
+FROM information_schema.table_constraints
+WHERE constraint_type = 'FOREIGN KEY';
+
+-- Drop the right foreign key constraint
+ALTER TABLE affiliations
+DROP CONSTRAINT affiliations_organization_id_fkey;
+
+-- Add a new foreign key constraint from affiliations to organizations which cascades deletion
+ALTER TABLE affiliations
+ADD CONSTRAINT affiliations_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES organizations (id) ON DELETE CASCADE;
+
+-- Delete an organization 
+DELETE FROM organizations 
+WHERE id = 'CUREM';
+
+-- Check that no more affiliations with this organization exist
+SELECT * FROM organizations
+WHERE id = 'CUREM';
+
+Q13:-
+Count the number of total affiliations by university.
+Sort the result by that count, in descending order.
+
+Solution:-
+-- Count the total number of affiliations per university
+SELECT count(*), professors.university_id 
+FROM affiliations
+JOIN professors
+ON affiliations.professor_id = professors.id
+GROUP BY professors.university_id
+order by count DESC;
+
+Q14:-
+Join all tables in the database (starting with affiliations, professors, organizations, and universities) and look at the result.
+
+Solution:-
+-- Join all tables
+SELECT *
+FROM affiliations
+JOIN professors
+ON affiliations.professor_id = professors.id
+JOIN organizations
+ON affiliations.organization_id = organizations.id
+JOIN universities
+ON professors.university_id = universities.id;
+
+Q15:-
+Now group the result by organization sector, professor, and university city.
+Count the resulting number of rows.
+
+Solution:-
+-- Group the table by organization sector, professor and university city
+SELECT count(*), organizations.organization_sector, 
+professors.id, universities.university_city
+FROM affiliations
+JOIN professors
+ON affiliations.professor_id = professors.id
+JOIN organizations
+ON affiliations.organization_id = organizations.id
+JOIN universities
+ON professors.university_id = universities.id
+GROUP BY organizations.organization_sector, 
+professors.id, universities.university_city;
+
+Q16:-
+Only retain rows with "Media & communication" as organization sector, and sort the table by count, in descending order.
+
+Solution:-
+-- Filter the table and sort it
+SELECT COUNT(*), organizations.organization_sector, 
+professors.id, universities.university_city
+FROM affiliations
+JOIN professors
+ON affiliations.professor_id = professors.id
+JOIN organizations
+ON affiliations.organization_id = organizations.id
+JOIN universities
+ON professors.university_id = universities.id
+where organizations.organization_sector = 'Media & communication'
+GROUP BY organizations.organization_sector, 
+professors.id, universities.university_city
+order by count DESC;
