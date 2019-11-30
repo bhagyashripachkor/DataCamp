@@ -1,0 +1,166 @@
+Q1:-
+Import Pipeline from sklearn.pipeline.
+Create training and test sets using the numeric data only. Do this by specifying sample_df[['numeric']] in train_test_split().
+Instantiate a pipeline as pl by adding the classifier step. Use a name of 'clf' and the same classifier from Chapter 2: OneVsRestClassifier(LogisticRegression()).
+Fit your pipeline to the training data and compute its accuracy to see it in action! Since this is toy data, you'll use the default scoring method for now. In the next chapter, you'll return to log loss scoring.
+
+Solution:-
+# Import Pipeline
+from sklearn.pipeline import Pipeline
+
+# Import other necessary modules
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.multiclass import OneVsRestClassifier
+
+# Split and select numeric data only, no nans 
+X_train, X_test, y_train, y_test = train_test_split(sample_df[['numeric']],
+                                                    pd.get_dummies(sample_df['label']), 
+                                                    random_state=22)
+
+# Instantiate Pipeline object: pl
+pl = Pipeline([
+        ('clf', OneVsRestClassifier(LogisticRegression()))
+    ])
+
+# Fit the pipeline to the training data
+pl.fit(X_train, y_train)
+
+# Compute and print accuracy
+accuracy = pl.score(X_test, y_test)
+print("\nAccuracy on sample data - numeric, no nans: ", accuracy)
+
+Q2:-
+Import Imputer from sklearn.preprocessing.
+Create training and test sets by selecting the correct subset of sample_df: 'numeric' and 'with_missing'.
+Add the tuple ('imp', Imputer()) to the correct position in the pipeline. Pipeline processes steps sequentially, so the imputation step should come before the classifier step.
+Complete the .fit() and .score() methods to fit the pipeline to the data and compute the accuracy.
+
+Solution:-
+# Import the Imputer object
+from sklearn.preprocessing import Imputer
+
+# Create training and test sets using only numeric data
+X_train, X_test, y_train, y_test = train_test_split(sample_df[['numeric', 'with_missing']],
+                                                    pd.get_dummies(sample_df['label']), 
+                                                    random_state=456)
+
+# Insantiate Pipeline object: pl
+pl = Pipeline([
+        ('imp', Imputer()),
+        ('clf', OneVsRestClassifier(LogisticRegression()))
+    ])
+
+# Fit the pipeline to the training data
+pl.fit(X_train,y_train)
+
+# Compute and print accuracy
+accuracy = pl.score(X_test,y_test)
+print("\nAccuracy on sample data - all numeric, incl nans: ", accuracy)
+
+Q3:-
+Import CountVectorizer from sklearn.feature_extraction.text.
+Create training and test sets by selecting the correct subset of sample_df: 'text'.
+Add the CountVectorizer step (with the name 'vec') to the correct position in the pipeline.
+Fit the pipeline to the training data and compute its accuracy.
+
+Solution:-
+# Import the CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Split out only the text data
+X_train, X_test, y_train, y_test = train_test_split(sample_df['text'],
+                                                    pd.get_dummies(sample_df['label']), 
+                                                    random_state=456)
+
+# Instantiate Pipeline object: pl
+pl = Pipeline([
+        ('vec', CountVectorizer()),
+        ('clf', OneVsRestClassifier(LogisticRegression()))
+    ])
+
+# Fit to the training data
+pl.fit(X_train,y_train)
+
+# Compute and print accuracy
+accuracy = pl.score(X_test,y_test)
+print("\nAccuracy on sample data - just text data: ", accuracy)
+
+Q4:-
+Compute the selector get_text_data by using a lambda function and FunctionTransformer() to obtain all 'text' columns.
+Compute the selector get_numeric_data by using a lambda function and FunctionTransformer() to obtain all the numeric columns (including missing data). These are 'numeric' and 'with_missing'.
+Fit and transform get_text_data using the .fit_transform() method with sample_df as the argument.
+Fit and transform get_numeric_data using the same approach as above.
+
+Solution:-
+# Import FunctionTransformer
+from sklearn.preprocessing import FunctionTransformer
+
+# Obtain the text data: get_text_data
+get_text_data = FunctionTransformer(lambda x: x['text'], validate=False)
+
+# Obtain the numeric data: get_numeric_data
+get_numeric_data = FunctionTransformer(lambda x: x[['numeric', 'with_missing']], validate=False)
+
+# Fit and transform the text data: just_text_data
+just_text_data = get_text_data.fit_transform(sample_df)
+
+# Fit and transform the numeric data: just_numeric_data
+just_numeric_data = get_numeric_data.fit_transform(sample_df)
+
+# Print head to check results
+print('Text Data')
+print(just_text_data.head())
+print('\nNumeric Data')
+print(just_numeric_data.head())
+
+Q5:-
+In the process_and_join_features:
+Add the steps ('selector', get_numeric_data) and ('imputer', Imputer()) to the 'numeric_features' preprocessing step.
+Add the equivalent steps for the text_features preprocessing step. That is, use get_text_data and a CountVectorizer step with the name 'vectorizer'.
+Add the transform step process_and_join_features to 'union' in the main pipeline, pl.
+Hit 'Submit Answer' to see the pipeline in action!
+
+Solution:-
+# Import FeatureUnion
+from sklearn.pipeline import FeatureUnion
+
+# Split using ALL data in sample_df
+X_train, X_test, y_train, y_test = train_test_split(sample_df[['numeric', 'with_missing', 'text']],
+                                                    pd.get_dummies(sample_df['label']), 
+                                                    random_state=22)
+
+# Create a FeatureUnion with nested pipeline: process_and_join_features
+process_and_join_features = FeatureUnion(
+            transformer_list = [
+                ('numeric_features', Pipeline([
+                    ('selector', get_numeric_data),
+                    ('imputer', Imputer())
+                ])),
+                ('text_features', Pipeline([
+                    ('selector', get_text_data),
+                    ('vectorizer', CountVectorizer())
+                ]))
+             ]
+        )
+
+# Instantiate nested pipeline: pl
+pl = Pipeline([
+        ('union', process_and_join_features),
+        ('clf', OneVsRestClassifier(LogisticRegression()))
+    ])
+
+
+# Fit pl to the training data
+pl.fit(X_train, y_train)
+
+# Compute and print accuracy
+accuracy = pl.score(X_test, y_test)
+print("\nAccuracy on sample data - all data: ", accuracy)
+
+Q6:-
+Complete the call to multilabel_train_test_split() by selecting df[NON_LABELS].
+Compute get_text_data by using FunctionTransformer() and passing in combine_text_columns. Be sure to also specify validate=False.
+Use FunctionTransformer() to compute get_numeric_data. In the lambda function, select out the NUMERIC_COLUMNS of x. Like you did when computing get_text_data, also specify validate=False.
+
+Solution:-
