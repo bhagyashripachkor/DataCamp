@@ -164,3 +164,124 @@ Compute get_text_data by using FunctionTransformer() and passing in combine_text
 Use FunctionTransformer() to compute get_numeric_data. In the lambda function, select out the NUMERIC_COLUMNS of x. Like you did when computing get_text_data, also specify validate=False.
 
 Solution:-
+# Import FunctionTransformer
+from sklearn.preprocessing import FunctionTransformer
+
+# Get the dummy encoding of the labels
+dummy_labels = pd.get_dummies(df[LABELS])
+
+# Get the columns that are features in the original df
+NON_LABELS = [c for c in df.columns if c not in LABELS]
+
+# Split into training and test sets
+X_train, X_test, y_train, y_test = multilabel_train_test_split(df[NON_LABELS],
+                                                               dummy_labels,
+                                                               0.2, 
+                                                               seed=123)
+
+# Preprocess the text data: get_text_data
+get_text_data = FunctionTransformer(combine_text_columns,validate=False)
+
+# Preprocess the numeric data: get_numeric_data
+get_numeric_data = FunctionTransformer(lambda x: x[NUMERIC_COLUMNS], validate=False)
+
+Q7:-
+Complete the 'numeric_features' transform with the following steps:
+get_numeric_data, with the name 'selector'.
+Imputer(), with the name 'imputer'.
+Complete the 'text_features' transform with the following steps:
+get_text_data, with the name 'selector'.
+CountVectorizer(), with the name 'vectorizer'.
+Fit the pipeline to the training data.
+Hit 'Submit Answer' to compute the accuracy!
+
+Solution:-
+# Complete the pipeline: pl
+pl = Pipeline([
+        ('union', FeatureUnion(
+            transformer_list = [
+                ('numeric_features', Pipeline([
+                    ('selector', get_numeric_data),
+                    ('imputer', Imputer())
+                ])),
+                ('text_features', Pipeline([
+                    ('selector', get_text_data),
+                    ('vectorizer', CountVectorizer())
+                ]))
+             ]
+        )),
+        ('clf', OneVsRestClassifier(LogisticRegression()))
+    ])
+
+# Fit to the training data
+pl.fit(X_train,y_train)
+
+# Compute and print accuracy
+accuracy = pl.score(X_test, y_test)
+print("\nAccuracy on budget dataset: ", accuracy)
+
+Q8:-
+Import the RandomForestClassifier from sklearn.ensemble.
+Add a RandomForestClassifier() step named 'clf' to the pipeline.
+Hit 'Submit Answer' to fit the pipeline to the training data and compute its accuracy.
+
+Solution:-
+# Import random forest classifer
+from sklearn.ensemble import RandomForestClassifier
+
+# Edit model step in pipeline
+pl = Pipeline([
+        ('union', FeatureUnion(
+            transformer_list = [
+                ('numeric_features', Pipeline([
+                    ('selector', get_numeric_data),
+                    ('imputer', Imputer())
+                ])),
+                ('text_features', Pipeline([
+                    ('selector', get_text_data),
+                    ('vectorizer', CountVectorizer())
+                ]))
+             ]
+        )),
+        ('clf', RandomForestClassifier())
+    ])
+
+# Fit to the training data
+pl.fit(X_train, y_train)
+
+# Compute and print accuracy
+accuracy = pl.score(X_test, y_test)
+print("\nAccuracy on budget dataset: ", accuracy)
+
+Q9:-
+Import the RandomForestClassifier from sklearn.ensemble.
+Add a RandomForestClassifier() step with n_estimators=15 to the pipeline with a name of 'clf'.
+Hit 'Submit Answer' to fit the pipeline to the training data and compute its accuracy.
+
+Solution:-
+# Import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier
+
+# Add model step to pipeline: pl
+pl = Pipeline([
+        ('union', FeatureUnion(
+            transformer_list = [
+                ('numeric_features', Pipeline([
+                    ('selector', get_numeric_data),
+                    ('imputer', Imputer())
+                ])),
+                ('text_features', Pipeline([
+                    ('selector', get_text_data),
+                    ('vectorizer', CountVectorizer())
+                ]))
+             ]
+        )),
+        ('clf', RandomForestClassifier(n_estimators=15))
+    ])
+
+# Fit to the training data
+pl.fit(X_train, y_train)
+
+# Compute and print accuracy
+accuracy = pl.score(X_test, y_test)
+print("\nAccuracy on budget dataset: ", accuracy)
