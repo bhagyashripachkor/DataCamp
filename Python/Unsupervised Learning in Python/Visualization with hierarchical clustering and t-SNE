@@ -1,0 +1,146 @@
+Q1:-
+Import:
+linkage and dendrogram from scipy.cluster.hierarchy.
+matplotlib.pyplot as plt.
+Perform hierarchical clustering on samples using the linkage() function with the method='complete' keyword argument. Assign the result to mergings.
+Plot a dendrogram using the dendrogram() function on mergings. Specify the keyword arguments labels=varieties, leaf_rotation=90, and leaf_font_size=6.
+
+Solution:-
+# Perform the necessary imports
+from scipy.cluster.hierarchy import linkage, dendrogram
+import matplotlib.pyplot as plt
+
+# Calculate the linkage: mergings
+mergings = linkage(samples, method='complete')
+
+# Plot the dendrogram, using varieties as labels
+dendrogram(mergings,
+           labels=varieties,
+           leaf_rotation=90,
+           leaf_font_size=6,
+)
+plt.show()
+
+Q2:-
+Import normalize from sklearn.preprocessing.
+Rescale the price movements for each stock by using the normalize() function on movements.
+Apply the linkage() function to normalized_movements, using 'complete' linkage, to calculate the hierarchical clustering. Assign the result to mergings.
+Plot a dendrogram of the hierarchical clustering, using the list companies of company names as the labels. In addition, specify the leaf_rotation=90, and leaf_font_size=6 keyword arguments as you did in the previous exercise.
+
+Solution:-
+# Import normalize
+from sklearn.preprocessing import normalize
+
+# Normalize the movements: normalized_movements
+normalized_movements = normalize(movements)
+
+# Calculate the linkage: mergings
+mergings = linkage(normalized_movements,method='complete')
+
+# Plot the dendrogram
+dendrogram(mergings,labels=companies,leaf_rotation=90,leaf_font_size=6)
+plt.show()
+
+Q3:-
+Import:
+linkage and dendrogram from scipy.cluster.hierarchy.
+matplotlib.pyplot as plt.
+Perform hierarchical clustering on samples using the linkage() function with the method='single' keyword argument. Assign the result to mergings.
+Plot a dendrogram of the hierarchical clustering, using the list country_names as the labels. In addition, specify the leaf_rotation=90, and leaf_font_size=6 keyword arguments as you have done earlier.
+
+Solution:-
+# Perform the necessary imports
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import linkage, dendrogram
+
+# Calculate the linkage: mergings
+mergings = linkage(samples,method='single')
+
+# Plot the dendrogram
+dendrogram(mergings,labels=country_names,leaf_rotation=90,leaf_font_size=6)
+plt.show()
+
+Q4:-
+Import:
+pandas as pd.
+fcluster from scipy.cluster.hierarchy.
+Perform a flat hierarchical clustering by using the fcluster() function on mergings. Specify a maximum height of 6 and the keyword argument criterion='distance'.
+Create a DataFrame df with two columns named 'labels' and 'varieties', using labels and varieties, respectively, for the column values. This has been done for you.
+Create a cross-tabulation ct between df['labels'] and df['varieties'] to count the number of times each grain variety coincides with each cluster label.
+
+Solution:-
+# Perform the necessary imports
+import pandas as pd
+from scipy.cluster.hierarchy import fcluster
+
+# Use fcluster to extract labels: labels
+labels = fcluster(mergings,6,criterion='distance')
+
+# Create a DataFrame with labels and varieties as columns: df
+df = pd.DataFrame({'labels': labels, 'varieties': varieties})
+
+# Create crosstab: ct
+ct = pd.crosstab(df['labels'],df['varieties'])
+
+# Display ct
+print(ct)
+
+Q5:-
+Import TSNE from sklearn.manifold.
+Create a TSNE instance called model with learning_rate=200.
+Apply the .fit_transform() method of model to samples. Assign the result to tsne_features.
+Select the column 0 of tsne_features. Assign the result to xs.
+Select the column 1 of tsne_features. Assign the result to ys.
+Make a scatter plot of the t-SNE features xs and ys. To color the points by the grain variety, specify the additional keyword argument c=variety_numbers.
+
+Solution:-
+# Import TSNE
+from sklearn.manifold import TSNE
+
+# Create a TSNE instance: model
+model = TSNE(learning_rate=200)
+
+# Apply fit_transform to samples: tsne_features
+tsne_features = model.fit_transform(samples)
+
+# Select the 0th feature: xs
+xs = tsne_features[:,0]
+
+# Select the 1st feature: ys
+ys = tsne_features[:,1]
+
+# Scatter plot, coloring by variety_numbers
+plt.scatter(xs,ys,c=variety_numbers)
+plt.show()
+
+Q6:-
+Import TSNE from sklearn.manifold.
+Create a TSNE instance called model with learning_rate=50.
+Apply the .fit_transform() method of model to normalized_movements. Assign the result to tsne_features.
+Select column 0 and column 1 of tsne_features.
+Make a scatter plot of the t-SNE features xs and ys. Specify the additional keyword argument alpha=0.5.
+Code to label each point with its company name has been written for you using plt.annotate(), so just hit 'Submit Answer' to see the visualization!
+
+Solution:-
+# Import TSNE
+from sklearn.manifold import TSNE
+
+# Create a TSNE instance: model
+model = TSNE(learning_rate=50)
+
+# Apply fit_transform to normalized_movements: tsne_features
+tsne_features = model.fit_transform(normalized_movements)
+
+# Select the 0th feature: xs
+xs = tsne_features[:,0]
+
+# Select the 1th feature: ys
+ys = tsne_features[:,1]
+
+# Scatter plot
+plt.scatter(xs,ys,alpha=0.5)
+
+# Annotate the points
+for x, y, company in zip(xs, ys, companies):
+    plt.annotate(company, (x, y), fontsize=5, alpha=0.75)
+plt.show()
