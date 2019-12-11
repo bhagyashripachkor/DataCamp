@@ -157,3 +157,68 @@ Inspect csr_mat by calling its .toarray() method and printing the result. This h
 The columns of the array correspond to words. Get the list of words by calling the .get_feature_names() method of tfidf, and assign the result to words.
 
 Solution:-
+# Import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Create a TfidfVectorizer: tfidf
+tfidf = TfidfVectorizer() 
+
+# Apply fit_transform to document: csr_mat
+csr_mat = tfidf.fit_transform(documents)
+
+# Print result of toarray() method
+print(csr_mat.toarray())
+
+# Get the words: words
+words = tfidf.get_feature_names()
+
+# Print words
+print(words)
+
+Q7:-
+Import:
+TruncatedSVD from sklearn.decomposition.
+KMeans from sklearn.cluster.
+make_pipeline from sklearn.pipeline.
+Create a TruncatedSVD instance called svd with n_components=50.
+Create a KMeans instance called kmeans with n_clusters=6.
+Create a pipeline called pipeline consisting of svd and kmeans.
+
+Solution:-
+# Perform the necessary imports
+from sklearn.decomposition import TruncatedSVD
+from sklearn.cluster import KMeans
+from sklearn.pipeline import make_pipeline
+
+# Create a TruncatedSVD instance: svd
+svd = TruncatedSVD(n_components=50)
+
+# Create a KMeans instance: kmeans
+kmeans = KMeans(n_clusters=6)
+
+# Create a pipeline: pipeline
+pipeline = make_pipeline(svd,kmeans)
+
+Q8:-
+Import pandas as pd.
+Fit the pipeline to the word-frequency array articles.
+Predict the cluster labels.
+Align the cluster labels with the list titles of article titles by creating a DataFrame df with labels and titles as columns. This has been done for you.
+Use the .sort_values() method of df to sort the DataFrame by the 'label' column, and print the result.
+Hit 'Submit Answer' and take a moment to investigate your amazing clustering of Wikipedia pages!
+
+Solution:-
+# Import pandas
+import pandas as pd
+
+# Fit the pipeline to articles
+pipeline.fit(articles)
+
+# Calculate the cluster labels: labels
+labels = pipeline.predict(articles)
+
+# Create a DataFrame aligning labels and titles: df
+df = pd.DataFrame({'label': labels, 'article': titles})
+
+# Display df sorted by cluster label
+print(df.sort_values(by='label'))
