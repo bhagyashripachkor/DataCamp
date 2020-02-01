@@ -1,0 +1,17 @@
+Q1:-
+Import the Python wave library.
+Read in the good_morning.wav audio file and save it to good_morning.
+Create signal_gm by reading all the frames from good_morning using readframes().
+See what the first 10 frames of audio look like by slicing signal_gm.
+
+Solution:-
+import wave
+
+# Create audio file wave object
+good_morning = wave.open("good_morning.wav", 'r')
+
+# Read all frames from wave object 
+signal_gm = good_morning.readframes(-1)
+
+# View first 10
+print(signal_gm[:10])
